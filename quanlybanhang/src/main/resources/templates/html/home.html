@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trang Chủ</title>
+  <link rel="stylesheet" href="/css/genaral.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+  <header class="navtive-bar">
+    <div class="navtive-bar-flex">
+      <div class="logo">
+        <a href="/" style="cursor:pointer;">
+          <img src="/images/logo.png" alt="Logo" />
+        </a>
+      </div>
+      <div class="danhmuc">
+        <button class="button-danhmuc"><i class="fas fa-bars"></i> Danh mục</button>
+      </div>
+      <input class="search" type="text" placeholder="Bạn cần gì?" />
+      <div class="call"><i class="fas fa-phone"></i> Gọi mua hàng</div>
+      <div class="buymaket"><i class="fas fa-shopping-cart"></i> Giỏ hàng</div>
+      <div class="profile">
+        <a href="/profile"><i class="fas fa-user"></i> Tài khoản</a>
+      </div>
+    </div>
+  </header>
+
+
+  <main>
+
+    <section class="dieuhuong">
+      <div class="button-dieuhuong">
+        <button class="bt1-dh">Điện thoại</button>
+        <button class="bt1-dh">Laptop</button>
+        <button class="bt1-dh">Đồng hồ</button>
+        <button class="bt1-dh">Tivi</button>
+      </div>
+      <div class="ad">
+
+        <img src="https://via.placeholder.com/600x200" alt="Quảng cáo" />
+      </div>
+    </section>
+
+
+    <p class="title-product">Sản phẩm</p>
+    <section class="products">
+
+      <div class="tag-product">
+        <img src="https://via.placeholder.com/150" alt="Sản phẩm 1" />
+        <p>Tên sản phẩm 1</p>
+        <p>Giá: 10.000.000₫</p>
+        <p>Thương hiệu: ABC</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h4>Tổng đài hỗ trợ miễn phí</h4>
+        <p>Gọi mua hàng: <strong>1800.2097</strong> (7:30 - 22:00)</p>
+        <p>Khiếu nại: <strong>1800.2063</strong> (8:00 - 21:30)</p>
+        <p>Bảo hành: <strong>1800.2064</strong> (8:00 - 21:00)</p>
+      </div>
+      <div class="footer-column">
+        <h4>Thông tin và chính sách</h4>
+        <ul>
+          <li>Chính sách bảo hành</li>
+          <li>Hướng dẫn mua hàng online</li>
+          <li>Chính sách đổi trả</li>
+          <li>Giao hàng & thanh toán</li>
+          <li>Hướng dẫn mua hàng trả góp</li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Dịch vụ và thông tin khác</h4>
+        <ul>
+          <li>Khách hàng doanh nghiệp (B2B)</li>
+          <li>Ưu đãi thanh toán</li>
+          <li>Quy chế hoạt động</li>
+          <li>Chính sách xử lý dữ liệu cá nhân</li>
+          <li>Liên hệ hợp tác kinh doanh</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+</body>
+<script>
+  function goHome() {
+    if (window.location.pathname === '/') {
+      window.location.reload();
+    } else {
+      window.location.href = '/';
+    }
+  }
+</script>
+</html>

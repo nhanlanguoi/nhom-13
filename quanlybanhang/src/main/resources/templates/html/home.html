@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -46,12 +46,11 @@
 
     <p class="title-product">Sản phẩm</p>
     <section class="products">
-
-      <div class="tag-product">
-        <img src="https://via.placeholder.com/150" alt="Sản phẩm 1" />
-        <p>Tên sản phẩm 1</p>
-        <p>Giá: 10.000.000₫</p>
-        <p>Thương hiệu: ABC</p>
+      <div class="tag-product" th:each = "product : ${products}">
+        <img th:src="${product.img}" alt="Sản phẩm 1" />
+        <p th:text="${product.name}">Tên sản phẩm 1</p>
+        <p th:text="${product.price}">Giá: 10.000.000₫</p>
+        <p th:text="${product.sale}">Thương hiệu: ABC</p>
       </div>
     </section>
   </main>

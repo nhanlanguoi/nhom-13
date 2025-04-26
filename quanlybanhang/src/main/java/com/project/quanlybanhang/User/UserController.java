@@ -11,6 +11,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public String profile(HttpSession session, Model model) {
+
         Object userObj = session.getAttribute("user");
         if (userObj instanceof User user) {
             model.addAttribute("user", user);
@@ -19,7 +20,7 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";

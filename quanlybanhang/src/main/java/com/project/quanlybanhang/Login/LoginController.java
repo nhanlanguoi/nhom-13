@@ -60,7 +60,6 @@ public class LoginController {
                     }
                 }
             }
-
             model.addAttribute("error", "Không có tài khoản");
             return "html/login";
         } catch (Exception e) {

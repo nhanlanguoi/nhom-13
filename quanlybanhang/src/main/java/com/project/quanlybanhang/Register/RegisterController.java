@@ -43,28 +43,35 @@ public class RegisterController {
             file.getParentFile().mkdirs();
 
             List<Map<String, String>> users = new ArrayList<>();
-            if (file.exists()) {
+
+            // Nếu file không tồn tại, tạo file và list rỗng
+            if (!file.exists()) {
+                file.getParentFile().mkdirs(); // tạo thư mục nếu chưa có
+                file.createNewFile();          // tạo file
+            } else if (file.length() > 0) {
+                // Nếu file có nội dung, thì đọc vào list
                 users = mapper.readValue(file, new TypeReference<>() {});
-                // Kiểm tra username trùng
-                for (Map<String, String> u : users) {
-                    if (u.get("username").equals(username)) {
-                        model.addAttribute("error", "Tên đăng nhập đã tồn tại");
-                        return "html/register";
-                    }
+            }
+
+            // Kiểm tra username trùng
+            for (Map<String, String> u : users) {
+                if (u.get("username").equals(username)) {
+                    model.addAttribute("error", "Tên đăng nhập đã tồn tại");
+                    return "html/register";
                 }
             }
 
-            // Sử dụng LinkedHashMap để giữ thứ tự key
+            // Tạo user mới
             Map<String, String> newUser = new LinkedHashMap<>();
             newUser.put("username", username);
             newUser.put("password", password);
-            newUser.put("fullname", fullname != null ? fullname : "");
-            newUser.put("email", email != null ? email : "");
+            newUser.put("fullname", fullname );
+            newUser.put("email", email );
 
+            // Thêm vào danh sách
             users.add(newUser);
-            System.out.println("Đọc file từ: " + file.getAbsolutePath());
 
-            // Ghi file
+            // Ghi lại danh sách ra file với định dạng đẹp
             mapper.writerWithDefaultPrettyPrinter().writeValue(file, users);
 
             return "redirect:/login";

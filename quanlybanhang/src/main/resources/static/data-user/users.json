@@ -1,11 +1,11 @@
 [ {
-  "username" : "user1",
-  "password" : "password123",
-  "fullname" : "User One",
-  "email" : "user1@example.com"
+  "username" : "hello",
+  "password" : "1234",
+  "fullname" : "nhan100",
+  "email" : "nthanhnhu44@gmail.com"
 }, {
-  "username" : "user2",
-  "password" : "password456",
-  "fullname" : "User Two",
-  "email" : "user2@example.com"
+  "username" : "kkk",
+  "password" : "1234",
+  "fullname" : "nhan100",
+  "email" : "nhunguyenthanhnhu83@gmail.com"
 } ]

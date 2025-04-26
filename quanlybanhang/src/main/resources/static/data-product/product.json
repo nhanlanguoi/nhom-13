@@ -1,0 +1,49 @@
+[{
+  "id": "1233412",
+  "img": "/data-product/image/2_653.webp",
+  "name": "Iphone14proMax",
+  "price": 100000,
+  "sale" : 10,
+  "ratting" : 4.5,
+  "thuonghieu": "apple"
+},{
+  "id": "123341",
+  "img": "/data-product/image/mhlt3_av3.webp",
+  "name": "Iphone14proMax",
+  "price": 100000,
+  "sale" : 10,
+  "ratting" : 4.5,
+  "thuonghieu": "apple"
+},{
+  "id": "123341",
+  "img": "/data-product/image/op-lung-iphone-14-plus-apple-leather-case-with-magsafe.webp",
+  "name": "Iphone14proMax",
+  "price": 100000,
+  "sale" : 10,
+  "ratting" : 4.5,
+  "thuonghieu": "apple"
+},{
+  "id": "123341",
+  "img": "/data-product/image/op-lung-iphone-14-plus-apple-silicone-case-with-magsafe.webp",
+  "name": "Iphone14proMax",
+  "price": 100000,
+  "sale" : 10,
+  "ratting" : 4.5,
+  "thuonghieu": "apple"
+},{
+  "id": "123341",
+  "img": "/data-product/image/op-lung-magsafe-iphone-15-silicone.webp",
+  "name": "Iphone14proMax",
+  "price": 100000,
+  "sale" : 10,
+  "ratting" : 4.5,
+  "thuonghieu": "apple"
+},{
+  "id": "123341",
+  "img": "/data-product/image/op-lung-iphone-14-plus-apple-silicone-case-with-magsafe.webp",
+  "name": "Iphone14proMax",
+  "price": 100000,
+  "sale" : 10,
+  "ratting" : 4.5,
+  "thuonghieu": "apple"
+}]

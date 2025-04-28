@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>product</title>
+</head>
+<body>
+<div>
+  <h1 th:text="${product.name}">Tên sản phẩm</h1>
+  <img th:src="${product.img}" alt="ảnh sản phẩm"/>
+  <p>Giá: <span th:text="${product.price}"></span> ₫</p>
+  <p>Thương hiệu: <span th:text="${product.thuonghieu}"></span></p>
+  <p>Đánh giá: <span th:text="${product.ratting}"></span> sao</p>
+</div>
+</body>
+</html>

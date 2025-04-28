@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface managerdataproduct {
     List<Product> getAllProducts() throws IOException;
-    Product getProductById(int id) throws IOException;
+    Product getProductById(String id) throws IOException;
 }

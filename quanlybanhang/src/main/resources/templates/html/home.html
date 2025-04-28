@@ -1,93 +1,117 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Trang Chủ</title>
-  <link rel="stylesheet" href="/css/genaral.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-</head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/genaral.css" /> </head>
 <body>
-  <header class="navtive-bar">
-    <div class="navtive-bar-flex">
-      <div class="logo">
-        <a href="/" style="cursor:pointer;">
-          <img src="/images/logo.png" alt="Logo" />
+<header class="native-bar">
+  <div class="native-bar-flex container">
+    <div class="logo">
+      <a href="/" style="cursor:pointer;">
+        <img src="/images/logo.png" alt="Logo" />
+      </a>
+    </div>
+    <div class="danhmuc">
+      <button class="button-danhmuc"><i class="fas fa-bars"></i> Danh mục</button>
+    </div>
+    <div class="search-container">
+      <input class="search-input" type="text" placeholder="Bạn tìm gì hôm nay?" />
+      <button class="search-button"><i class="fas fa-search"></i></button>
+    </div>
+    <nav class="header-nav">
+      <a href="#" class="nav-item call"><i class="fas fa-phone"></i> <span>Gọi mua hàng</span></a>
+      <a href="#" class="nav-item buymaket"><i class="fas fa-shopping-cart"></i> <span>Giỏ hàng</span></a>
+      <a href="/profile" class="nav-item profile"><i class="fas fa-user"></i> <span>Tài khoản</span></a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero-section">
+    <div class="category-nav">
+      <button class="category-button"><i class="fas fa-mobile-alt"></i> Điện thoại</button>
+      <button class="category-button"><i class="fas fa-laptop"></i> Laptop</button>
+      <button class="category-button"><i class="fas fa-stopwatch"></i> Đồng hồ</button>
+      <button class="category-button"><i class="fas fa-tv"></i> Tivi</button>
+      <button class="category-button"><i class="fas fa-headphones"></i> Phụ kiện</button>
+      <button class="category-button"><i class="fas fa-sim-card"></i> Sim, thẻ</button>
+    </div>
+    <div class="ad-banner">
+      <img src="https://via.placeholder.com/900x300?text=Banner+Quảng+Cáo+Hấp+Dẫn" alt="Quảng cáo" />
+    </div>
+  </section>
+
+  <section class="product-display">
+    <h2 class="section-title">Sản phẩm nổi bật</h2>
+    <div class="products-grid" th:if="${products != null and not #lists.isEmpty(products)}">
+      <div class="tag-product" th:each="product : ${products}">
+        <a th:href="@{'/product?id=' + ${product.id}}" class="product-link">
+          <img class="product-image" th:src="${product.img}" alt="Hình ảnh sản phẩm" />
+          <div class="product-info">
+            <p class="product-name" th:text="${product.name}">Tên sản phẩm mẫu</p>
+            <p class="product-price" th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA')} + '₫'">Giá: 10.000.000₫</p>
+            <p class="product-brand" th:text="'Thương hiệu: ' + ${product.sale}">Thương hiệu: ABC</p>
+          </div>
         </a>
       </div>
-      <div class="danhmuc">
-        <button class="button-danhmuc"><i class="fas fa-bars"></i> Danh mục</button>
-      </div>
-      <input class="search" type="text" placeholder="Bạn cần gì?" />
-      <div class="call"><i class="fas fa-phone"></i> Gọi mua hàng</div>
-      <div class="buymaket"><i class="fas fa-shopping-cart"></i> Giỏ hàng</div>
-      <div class="profile">
-        <a href="/profile"><i class="fas fa-user"></i> Tài khoản</a>
+    </div>
+    <div th:if="${products == null or #lists.isEmpty(products)}">
+      <p>Hiện chưa có sản phẩm nào.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-container container">
+    <div class="footer-column">
+      <h4>Tổng đài hỗ trợ miễn phí</h4>
+      <p><i class="fas fa-phone-alt"></i> Gọi mua hàng: <strong>1800.2097</strong> (7:30 - 22:00)</p>
+      <p><i class="fas fa-headset"></i> Khiếu nại: <strong>1800.2063</strong> (8:00 - 21:30)</p>
+      <p><i class="fas fa-tools"></i> Bảo hành: <strong>1800.2064</strong> (8:00 - 21:00)</p>
+    </div>
+    <div class="footer-column">
+      <h4>Thông tin và chính sách</h4>
+      <ul>
+        <li><a href="#">Chính sách bảo hành</a></li>
+        <li><a href="#">Hướng dẫn mua hàng online</a></li>
+        <li><a href="#">Chính sách đổi trả</a></li>
+        <li><a href="#">Giao hàng & thanh toán</a></li>
+        <li><a href="#">Hướng dẫn mua hàng trả góp</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Dịch vụ và thông tin khác</h4>
+      <ul>
+        <li><a href="#">Khách hàng doanh nghiệp (B2B)</a></li>
+        <li><a href="#">Ưu đãi thanh toán</a></li>
+        <li><a href="#">Quy chế hoạt động</a></li>
+        <li><a href="#">Chính sách xử lý dữ liệu cá nhân</a></li>
+        <li><a href="#">Liên hệ hợp tác kinh doanh</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Kết nối với chúng tôi</h4>
+      <div class="social-icons">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="Tiktok"><i class="fab fa-tiktok"></i></a>
       </div>
     </div>
-  </header>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; <span id="current-year"></span> Bản quyền thuộc về [Tên công ty của bạn].</p>
+  </div>
+</footer>
 
-
-  <main>
-
-    <section class="dieuhuong">
-      <div class="button-dieuhuong">
-        <button class="bt1-dh">Điện thoại</button>
-        <button class="bt1-dh">Laptop</button>
-        <button class="bt1-dh">Đồng hồ</button>
-        <button class="bt1-dh">Tivi</button>
-      </div>
-      <div class="ad">
-
-        <img src="https://via.placeholder.com/600x200" alt="Quảng cáo" />
-      </div>
-    </section>
-
-
-    <p class="title-product">Sản phẩm</p>
-    <section class="products">
-      <div class="tag-product" th:each = "product : ${products}">
-        <img th:src="${product.img}" alt="Sản phẩm 1" />
-        <p th:text="${product.name}">Tên sản phẩm 1</p>
-        <p th:text="${product.price}">Giá: 10.000.000₫</p>
-        <p th:text="${product.sale}">Thương hiệu: ABC</p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-column">
-        <h4>Tổng đài hỗ trợ miễn phí</h4>
-        <p>Gọi mua hàng: <strong>1800.2097</strong> (7:30 - 22:00)</p>
-        <p>Khiếu nại: <strong>1800.2063</strong> (8:00 - 21:30)</p>
-        <p>Bảo hành: <strong>1800.2064</strong> (8:00 - 21:00)</p>
-      </div>
-      <div class="footer-column">
-        <h4>Thông tin và chính sách</h4>
-        <ul>
-          <li>Chính sách bảo hành</li>
-          <li>Hướng dẫn mua hàng online</li>
-          <li>Chính sách đổi trả</li>
-          <li>Giao hàng & thanh toán</li>
-          <li>Hướng dẫn mua hàng trả góp</li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h4>Dịch vụ và thông tin khác</h4>
-        <ul>
-          <li>Khách hàng doanh nghiệp (B2B)</li>
-          <li>Ưu đãi thanh toán</li>
-          <li>Quy chế hoạt động</li>
-          <li>Chính sách xử lý dữ liệu cá nhân</li>
-          <li>Liên hệ hợp tác kinh doanh</li>
-        </ul>
-      </div>
-    </div>
-  </footer>
-
-</body>
 <script>
+  // Script cũ giữ nguyên
   function goHome() {
     if (window.location.pathname === '/') {
       window.location.reload();
@@ -95,5 +119,9 @@
       window.location.href = '/';
     }
   }
+
+  // Thêm script để cập nhật năm hiện tại trong footer
+  document.getElementById('current-year').textContent = new Date().getFullYear();
 </script>
+</body>
 </html>

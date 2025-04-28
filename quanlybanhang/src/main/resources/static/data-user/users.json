@@ -8,4 +8,9 @@
   "password" : "1234",
   "fullname" : "nhan100",
   "email" : "nhunguyenthanhnhu83@gmail.com"
+}, {
+  "username" : "nam",
+  "password" : "1234",
+  "fullname" : "nhan nguyen thanh",
+  "email" : "nthanhnhu44@gmail.com"
 } ]

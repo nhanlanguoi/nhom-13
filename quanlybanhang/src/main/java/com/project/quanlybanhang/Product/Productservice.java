@@ -26,7 +26,7 @@ public class Productservice implements managerdataproduct {
     }
 
     @Override
-    public Product getProductById(int id) throws IOException {
+    public Product getProductById(String id) throws IOException {
         List<Product> products = getAllProducts();
 
         for (Product p : products){

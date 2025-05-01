@@ -16,7 +16,7 @@ public class Productservice implements managerdataproduct {
 
     @Override
     public List<Product> getAllProducts() throws IOException {
-        //InputStream readfile = getClass().getResourceAsStream("/static/data-product/product.json");
+
         File readfile = new File("src/main/resources/static/data-product/product.json");
 
         ObjectMapper mapper = new ObjectMapper();

@@ -25,8 +25,6 @@ public class Home  {
         List<Product> listproduct = productService.getAllProducts();
         model.addAttribute("products",listproduct);
         return "html/home";
-
-
     }
 
     @GetMapping("/product")

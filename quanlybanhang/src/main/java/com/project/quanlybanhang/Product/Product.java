@@ -1,77 +1,106 @@
 package com.project.quanlybanhang.Product;
 
+
+import com.project.quanlybanhang.Product.Variant;
+import java.util.List;
+
 public class Product {
     private String id;
-    private String img;
     private String name;
-    private int price;
-    private int sale;
-    private int ratting;
-    private String thuonghieu;
-    public Product() {}
-    public Product(String id, String img, String name, int price, int sale, int ratting ,String thuonghieu) {
+    private String brand;
+    private String category;
+    private String description;
+    private double rating;
+    private List<Variant> variants;
+    private List<String> tags;
+    private String releaseDate;
+
+    public Product(String id, String name, String brand, String category, String description, double rating, List<Variant> variants, List<String> tags, String releaseDate) {
         this.id = id;
-        this.img = img;
         this.name = name;
-        this.price = price;
-        this.sale = sale;
-        this.ratting = ratting;
-        this.thuonghieu = thuonghieu;
+        this.brand = brand;
+        this.category = category;
+        this.description = description;
+        this.rating = rating;
+        this.variants = variants;
+        this.tags = tags;
+        this.releaseDate = releaseDate;
     }
 
-    public String getThuonghieu() {
-        return thuonghieu;
+    public Product() {
     }
 
     public String getId() {
         return id;
     }
 
-    public String getImg() {
-        return img;
-    }
-
     public String getName() {
         return name;
     }
 
-    public int getPrice() {
-        return price;
+    public String getBrand() {
+        return brand;
     }
 
-    public int getSale() {
-        return sale;
+    public String getCategory() {
+        return category;
     }
 
-    public int getRatting() {
-        return ratting;
+    public String getDescription() {
+        return description;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public List<Variant> getVariants() {
+        return variants;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setImg(String img) {
-        this.img = img;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
-    public void setSale(int sale) {
-        this.sale = sale;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public void setRatting(int ratting) {
-        this.ratting = ratting;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setThuonghieu(String thuonghieu) {
-        this.thuonghieu = thuonghieu;
+    public void setRating(double rating) {
+        this.rating = rating;
     }
+
+    public void setVariants(List<Variant> variants) {
+        this.variants = variants;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+
 }

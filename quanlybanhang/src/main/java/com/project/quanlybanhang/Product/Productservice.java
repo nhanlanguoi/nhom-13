@@ -24,7 +24,7 @@ public class Productservice implements managerdataproduct {
         ObjectMapper mapper = new ObjectMapper();
 
         List<Product> listproduct = mapper.readValue(readfile , new TypeReference<List<Product>>() {});
-        System.out.println("Danh sách sản phẩm: " + listproduct);
+
         return listproduct;
     }
 
@@ -44,24 +44,21 @@ public class Productservice implements managerdataproduct {
     @Override
     public List<Variant> getProductVariantsById(String productId) throws IOException {
         List<Product> productList = getAllProducts();
-        // Tìm sản phẩm theo productId
+
         for (Product product : productList) {
             if (product.getId().equals(productId)) {
-                // Trả về danh sách variants của sản phẩm có id khớp
+
                 return product.getVariants();
             }
         }
-        // Nếu không tìm thấy sản phẩm với productId, trả về danh sách rỗng
+
         return new ArrayList<>();
     }
 
 
     public static long processingprice(long price, int discount){
-
         long tax = (long)(price*(discount/100.0));
-
         long pricechange = price-tax;
-
         return pricechange;
     }
 

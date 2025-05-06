@@ -1,17 +1,16 @@
 package com.project.quanlybanhang.Home;
 
-import com.project.quanlybanhang.Product.Product;
-import com.project.quanlybanhang.Product.Productservice;
-import com.project.quanlybanhang.Product.Variant;
+import com.project.quanlybanhang.Product.*;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.project.quanlybanhang.User.User;
 import com.project.quanlybanhang.Utils.Numberutils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import  com.project.quanlybanhang.Product.managerdataproduct;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -33,36 +32,55 @@ public class Home  {
         return "html/home";
     }
 
-    @GetMapping("/product")
-    public String product(@RequestParam String id, Model model) throws IOException {
-        Product product = productService.getProductById(id);
+    @GetMapping("/product/{productid}/{id}")
+    public String product(
+            @PathVariable String productid,@PathVariable String id,@RequestParam int colorid,
+                          Model model) throws IOException {
 
-        if (product != null) {
-            List<Variant> listvariant = productService.getProductVariantsById(id);
-            model.addAttribute("variant" , listvariant);
-
-
-            model.addAttribute("product", product); // gửi sản phẩm ra giao diện
-            Variant selectedVariant = product.getVariants().get(0);
+        Product product = productService.getProductById(productid);
+        System.out.println("Received productid: " + productid);
+        System.out.println("Received id: " + id);
 
 
-            String pricediscount = Long.toString(processingprice(Long.parseLong(selectedVariant.getPrice()), selectedVariant.getDiscount()));
-            pricediscount = parseSafeLongadddot(pricediscount);
+        List<Variant> variantList = product.getVariants();
 
+        Variant foundvariant = null;
 
-            String price = selectedVariant.getPrice();
-            price = parseSafeLongadddot(price);
-
-            model.addAttribute("price" , price);
-            model.addAttribute("discount" , pricediscount);
-
-
-
-
-            return "html/product"; // trả về giao diện chi tiết sản phẩm
-        } else {
-            return "redirect:/"; // không tìm thấy sản phẩm thì về trang chủ
+        for (Variant variant : variantList){
+            if(variant.getId().equals(id)){
+                foundvariant = variant;
+            }
         }
+
+
+
+        List<colorprice> colorpriceList = foundvariant.getColorprices();
+        colorprice foundcolorprice =null;
+        for(colorprice colorprice : colorpriceList){
+            if(colorprice.getId() == colorid){
+               foundcolorprice = colorprice;
+            }
+        }
+        model.addAttribute("colorprice" ,foundcolorprice);
+        model.addAttribute("variants" , variantList);
+        model.addAttribute("variant" , foundvariant);
+        model.addAttribute("product" , product);
+        model.addAttribute("colorprices", colorpriceList);
+
+
+        String price = foundcolorprice.getPrice();
+        Long pricetopare = processingprice(Long.parseLong(price),foundcolorprice.getDiscount());
+        price = parseSafeLongadddot(price);
+
+        model.addAttribute("price" , price);
+
+
+        model.addAttribute("pricetopare" , parseSafeLongadddot(Long.toString(pricetopare)) );
+
+
+
+        return "html/product";
+
     }
 
 

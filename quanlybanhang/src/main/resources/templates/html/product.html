@@ -36,34 +36,31 @@
     <section class="product-detail-layout">
         <div class="product-gallery">
             <div class="main-image-container">
-                <img id="mainProductImage" th:src="${product.variants[0].image}" alt="Ảnh sản phẩm chính" />
+                <img id="mainProductImage" th:src="${variant.image}" alt="Ảnh sản phẩm chính" />
             </div>
             <div class="thumbnail-images">
-                <div th:each = "variant : ${variant}">
+                <div th:each = "variant : ${variants}">
                     <img th:src="${variant.image}" alt="Ảnh thu nhỏ 1" class="thumbnail">
                 </div>
-
-
             </div>
 
             <div class="product-info-box">
                 <h4>Thông tin sản phẩm</h4>
                 <ul>
                     <li><i class="fas fa-box-open"></i> Mới, đầy đủ phụ kiện từ nhà sản xuất</li>
-                    <li th:text="'Màn hình: ' + ${product.variants[0].screen}"><i class="fas fa-tablet-alt"></i> Màn hình: Dynamic AMOLED 2X 11" 120Hz</li>
-                    <li th:text="'Chip: ' + ${product.variants[0].chip}"><i class="fas fa-microchip"></i> Chip: Snapdragon 8 Gen 2 for Galaxy</li>
-                    <li th:text="'Ram: ' + ${product.variants[0].ram}"><i class="fas fa-sd-card"></i> RAM: 8 GB</li>
-                    <li th:text="'Dung lượng: ' + ${product.variants[0].memory}"><i class="fas fa-memory"></i> Dung lượng: 128 GB</li>
-                    <li th:text="'Camera sau: ' + ${product.variants[0].camera_end}"><i class="fas fa-camera"></i> Camera sau: 13 MP</li>
-                    <li th:text="'Camera trước: ' + ${product.variants[0].camera_start}"><i class="fas fa-camera-retro"></i> Camera trước: 12 MP</li>
-                    <li th:text="'Pin, Sạc: ' + ${product.variants[0].pin} +', '+ ${product.variants[0].power}"><i class="fas fa-battery-full"></i> Pin, Sạc: 8400 mAh, 45 W</li>
+                    <li th:text="'Màn hình: ' + ${variant.screen}"><i class="fas fa-tablet-alt"></i> Màn hình: Dynamic AMOLED 2X 11" 120Hz</li>
+                    <li th:text="'Chip: ' + ${variant.chip}"><i class="fas fa-microchip"></i> Chip: Snapdragon 8 Gen 2 for Galaxy</li>
+                    <li th:text="'Ram: ' + ${variant.ram}"><i class="fas fa-sd-card"></i> RAM: 8 GB</li>
+                    <li th:text="'Dung lượng: ' + ${variant.memory}"><i class="fas fa-memory"></i> Dung lượng: 128 GB</li>
+                    <li th:text="'Camera sau: ' + ${variant.camera_end}"><i class="fas fa-camera"></i> Camera sau: 13 MP</li>
+                    <li th:text="'Camera trước: ' + (${variant.camera_start})"><i class="fas fa-camera-retro"></i> Camera trước: 12 MP</li>
+                    <li th:text="'Pin, Sạc: ' + ${variant.pin} +', '+ ${variant.power}"><i class="fas fa-battery-full"></i> Pin, Sạc: 8400 mAh, 45 W</li>
                 </ul>
             </div>
         </div>
 
         <div class="product-details">
             <h1 class="product-title" th:text="${product.name}">Tên sản phẩm</h1>
-
             <div class="product-rating-compare">
                 <div class="rating">
                     <span class="stars">★★★★★</span>
@@ -72,26 +69,33 @@
             </div>
 
             <div class="variant-options-group">
-                <div th:each = "variant : ${variant}">
-                    <button class="variant-option" th:text="${variant.storage} + ' ' + ${variant.ram} + ' '+${variant.memory} ">5G 12GB 256GB</button>
+                <div th:each = "variant : ${variants}">
+                    <a th:href = "@{/product/{productid}/{id}(productid=${product.id}, id=${variant.id} ,colorid = ${colorprice.id})}">
+                        <button class="variant-option" th:text="${variant.storage} + ' ' + ${variant.ram} + ' '+${variant.memory} ">5G 12GB 256GB</button>
+                    </a>
                 </div>
             </div>
 
             <div class="color-options-group">
                 <p>Chọn màu để xem giá và chi nhánh có hàng:</p>
                 <div class="color-buttons">
-                    <button class="color-option" th:each="variant : ${variant}">
-                        <span th:text="${variant.color}">Xám</span>
-                        <strong th:text="${variant.formattedPrice}">14.990.000₫</strong>
-                    </button>
+
+                        <button class="color-option" th:each="colorprices : ${colorprices}">
+                            <a th:href = "@{/product/{productid}/{id}(productid=${product.id}, id=${variant.id} ,colorid = ${colorprices.id})}">
+                            <div>
+                                <span th:text="${colorprices.color}">Xám</span>
+                                <strong th:text="${colorprices.formattedPrice}">14.990.000₫</strong>
+                            </div>
+                            </a>
+                        </button>
 
                 </div>
             </div>
 
             <div class="price-section">
-                <span class="current-price" th:text="${discount}+'₫'">14.990.000₫</span>
+                <span class="current-price" th:text="${pricetopare}+'₫'">14.990.000₫</span>
                 <span class="old-price" th:text="${price}+'₫'">19.990.000₫</span>
-                <span class="discount-badge" th:text="'-'+${product.variants[0].discount}+'%'">-25%</span>
+                <span class="discount-badge" th:text="'-'+${colorprice.discount}+'%'">-25%</span>
             </div>
 
             <div class="promotions-box">
@@ -171,4 +175,16 @@
 </footer>
 
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const mainImage = document.getElementById("mainProductImage");
+        const thumbnails = document.querySelectorAll(".thumbnail");
+
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener("click", () => {
+                mainImage.src = thumbnail.src;
+            });
+        });
+    });
+</script>
 </html>

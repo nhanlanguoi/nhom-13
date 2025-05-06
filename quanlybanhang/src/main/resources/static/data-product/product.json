@@ -8,11 +8,14 @@
   "variants": [
     {
       "id": "iphone15promax-128gb-black",
-      "color": "Đen",
+      "colorprices" : [{
+        "id": 1,
+        "color": "Đen",
+        "price": "28929000",
+        "discount": 10
+      }],
       "storage": "5G",
       "ram": "8GB",
-      "price": "28990000",
-      "discount": 10,
       "image": "/data-product/image/2_653.webp",
       "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
       "chip" : "Snapdragon 8 Gen 2 for Galaxy",
@@ -23,12 +26,15 @@
       "power" : "45 W"
     },{
       "id": "iphone15promax-128gb-white",
-      "color": "Trắng",
+      "colorprices" : [{
+        "id": 1,
+        "color": "Đen",
+        "price": "2894290000",
+        "discount": 10
+      }],
       "storage": "5G",
       "ram": "8GB",
-      "price": "30000000",
-      "discount": 10,
-      "image": "/data-product/image/2_653.webp",
+      "image": "/data-product/image/op-lung-magsafe-iphone-15-silicone.webp",
       "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
       "chip" : "Snapdragon 8 Gen 2 for Galaxy",
       "memory" : "528GB",
@@ -50,11 +56,14 @@
   "variants": [
     {
       "id": "iphone15promax-128gb-black",
-      "color": "Đen",
+      "colorprices" : [{
+        "id": 1,
+        "color": "Đen",
+        "price": "28923490000",
+        "discount": 10
+      }],
       "storage": "5G",
       "ram": "8GB",
-      "price": "28990000",
-      "discount": 10,
       "image": "/data-product/image/mhlt3_av3.webp",
       "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
       "chip" : "Snapdragon 8 Gen 2 for Galaxy",
@@ -77,11 +86,14 @@
   "variants": [
     {
       "id": "iphone15promax-128gb-black",
-      "color": "Đen",
+      "colorprices" : [{
+        "id": 1,
+        "color": "Đen",
+        "price": "2812990000",
+        "discount": 10
+      }],
       "storage": "6G",
       "ram": "8GB",
-      "price": "28990000",
-      "discount": 10,
       "image": "/data-product/image/op-lung-iphone-14-plus-apple-silicone-case-with-magsafe.webp",
       "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
       "chip" : "Snapdragon 8 Gen 2 for Galaxy",
@@ -92,11 +104,14 @@
       "power" : "45 W"
     },{
       "id": "iphone15promax-128gb-black",
-      "color": "Đen",
+      "colorprices" : [{
+        "id": 1,
+        "color": "Đen",
+        "price": "28990000",
+        "discount": 10
+      }],
       "storage": "5G",
       "ram": "8GB",
-      "price": "28990000",
-      "discount": 10,
       "image": "/data-product/image/op-lung-magsafe-iphone-15-silicone.webp",
       "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
       "chip" : "Snapdragon 8 Gen 2 for Galaxy",
@@ -107,11 +122,14 @@
       "power" : "45 W"
     },{
       "id": "iphone15promax-128gb-black",
-      "color": "Đen",
+      "colorprices" : [{
+        "id": 1,
+        "color": "Đen",
+        "price": "28990000",
+        "discount": 10
+      }],
       "storage": "5G",
       "ram": "8GB",
-      "price": "28990000",
-      "discount": 10,
       "image": "/data-product/image/mhlt3_av3.webp",
       "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
       "chip" : "Snapdragon 8 Gen 2 for Galaxy",
@@ -131,23 +149,30 @@
   "category": "Điện thoại",
   "description": "Điện thoại cao cấp với thiết kế titan và chip A17 Pro.",
   "rating": 4.5,
-  "variants": [
-    {
-      "id": "iphone15promax-128gb-black",
+  "variants": [{
+    "id": "iphone15promax-128gb-black",
+    "colorprices" : [{
+      "id": 1,
       "color": "Đen",
-      "storage": "5G",
-      "ram": "8GB",
       "price": "28990000",
-      "discount": 10,
-      "image": "/data-product/image/op-lung-magsafe-iphone-15-silicone.webp",
-      "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
-      "chip" : "Snapdragon 8 Gen 2 for Galaxy",
-      "memory" : "128GB",
-      "camera_end" : "13 MP",
-      "camera_start" : "12 MP",
-      "pin": "8400 mAh",
-      "power" : "45 W"
-    }
+      "discount": 10
+    },{
+      "id": 2,
+      "color": "Trắng",
+      "price": "38990000",
+      "discount": 10
+    }],
+    "storage": "5G",
+    "ram": "8GB",
+    "image": "/data-product/image/op-lung-magsafe-iphone-15-silicone.webp",
+    "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
+    "chip" : "Snapdragon 8 Gen 2 for Galaxy",
+    "memory" : "128GB",
+    "camera_end" : "13 MP",
+    "camera_start" : "12 MP",
+    "pin": "8400 mAh",
+    "power" : "45 W"
+  }
   ],
   "tags": ["iphone", "mới", "giảm giá", "cao cấp"]
 }]

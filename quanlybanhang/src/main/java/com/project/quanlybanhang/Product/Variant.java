@@ -1,50 +1,46 @@
 package com.project.quanlybanhang.Product;
 
+import java.util.List;
+
 import static com.project.quanlybanhang.Product.Productservice.processingprice;
 import static com.project.quanlybanhang.Utils.Numberutils.parseSafeLongadddot;
 
 public class Variant {
     private String id;
-    private String color;
+
     private  String storage;
     private  String ram;
-    private String price;
-    private  int discount;
+    private List<colorprice> colorprices;
+
     private String image;
     private String screen;
-    private String Chip;
-    private String Memory;
-    private String Camera_end;
-    private String Camera_start;
-    private String Pin;
-    private String Power;
+    private String chip;
+    private String memory;
+    private String camera_end;
+    private String camera_start;
+    private String pin;
+    private String power;
 
     public Variant() {
     }
 
-    public Variant(String id, String color, String storage, String ram, String price, int discount, String image, String screen, String chip, String memory, String camera_end, String camera_start, String pin, String power) {
+    public Variant(String id, String storage, String ram, List<colorprice> colorprices, String image, String screen, String chip, String memory, String camera_end, String camera_start, String pin, String power) {
         this.id = id;
-        this.color = color;
         this.storage = storage;
         this.ram = ram;
-        this.price = price;
-        this.discount = discount;
+        this.colorprices = colorprices;
         this.image = image;
         this.screen = screen;
-        this.Chip = chip;
-        this.Memory = memory;
-        this.Camera_end = camera_end;
-        this.Camera_start = camera_start;
-        this.Pin = pin;
-        this.Power = power;
+        this.chip = chip;
+        this.memory = memory;
+        this.camera_end = camera_end;
+        this.camera_start = camera_start;
+        this.pin = pin;
+        this.power = power;
     }
 
     public String getId() {
         return id;
-    }
-
-    public String getColor() {
-        return color;
     }
 
     public String getStorage() {
@@ -55,12 +51,8 @@ public class Variant {
         return ram;
     }
 
-    public String getPrice() {
-        return price;
-    }
-
-    public int getDiscount() {
-        return discount;
+    public List<colorprice> getColorprices() {
+        return colorprices;
     }
 
     public String getImage() {
@@ -72,35 +64,31 @@ public class Variant {
     }
 
     public String getChip() {
-        return Chip;
+        return chip;
     }
 
     public String getMemory() {
-        return Memory;
+        return memory;
     }
 
     public String getCamera_end() {
-        return Camera_end;
+        return camera_end;
     }
 
     public String getCamera_start() {
-        return Camera_start;
+        return camera_start;
     }
 
     public String getPin() {
-        return Pin;
+        return pin;
     }
 
     public String getPower() {
-        return Power;
+        return power;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 
     public void setStorage(String storage) {
@@ -111,12 +99,8 @@ public class Variant {
         this.ram = ram;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
+    public void setColorprices(List<colorprice> colorprices) {
+        this.colorprices = colorprices;
     }
 
     public void setImage(String image) {
@@ -128,33 +112,26 @@ public class Variant {
     }
 
     public void setChip(String chip) {
-        this.Chip = chip;
+        this.chip = chip;
     }
 
     public void setMemory(String memory) {
-        this.Memory = memory;
+        this.memory = memory;
     }
 
     public void setCamera_end(String camera_end) {
-        this.Camera_end = camera_end;
+        this.camera_end = camera_end;
     }
 
     public void setCamera_start(String camera_start) {
-        this.Camera_start = camera_start;
+        this.camera_start = camera_start;
     }
 
     public void setPin(String pin) {
-        this.Pin = pin;
+        this.pin = pin;
     }
 
     public void setPower(String power) {
-        this.Power = power;
+        this.power = power;
     }
-
-
-    public String getFormattedPrice() {
-        String pricediscount = Long.toString(processingprice(Long.parseLong(price), discount));
-        return parseSafeLongadddot(pricediscount);
-    }
-
 }

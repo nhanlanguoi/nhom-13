@@ -1,13 +1,17 @@
 package com.project.quanlybanhang.Product;
 
-import static com.project.quanlybanhang.Product.Productservice.processingprice;
-import static com.project.quanlybanhang.Utils.Numberutils.parseSafeLongadddot;
+import com.fasterxml.jackson.annotation.JsonIgnore; // THÊM IMPORT NÀY
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+// ... (các import khác nếu có)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class colorprice {
     private int id;
     private String color;
     private String price;
-    private  int discount;
+    private int discount;
+
     public colorprice() {
     }
 
@@ -18,6 +22,7 @@ public class colorprice {
         this.discount = discount;
     }
 
+    // Getters
     public int getId() {
         return id;
     }
@@ -34,6 +39,7 @@ public class colorprice {
         return discount;
     }
 
+    // Setters
     public void setId(int id) {
         this.id = id;
     }
@@ -50,8 +56,19 @@ public class colorprice {
         this.discount = discount;
     }
 
+    @JsonIgnore // ĐẢM BẢO ANNOTATION NÀY CÓ Ở ĐÂY
     public String getFormattedPrice() {
-        String pricediscount = Long.toString(processingprice(Long.parseLong(price), discount));
-        return parseSafeLongadddot(pricediscount);
+        // ... (logic của bạn)
+        if (this.price == null || this.price.trim().isEmpty()) {
+            return "0.";
+        }
+        try {
+            long priceValue = Long.parseLong(this.price);
+            long discountedPriceValue = Productservice.processingprice(priceValue, this.discount); // Chú ý: Productservice.processingprice có thể cần instance nếu không phải static
+            return com.project.quanlybanhang.Utils.Numberutils.parseSafeLongadddot(Long.toString(discountedPriceValue));
+        } catch (NumberFormatException e) {
+            System.err.println("Lỗi NumberFormatException trong getFormattedPrice cho price: '" + this.price + "' - Lỗi: " + e.getMessage());
+            return "Lỗi giá.";
+        }
     }
 }

@@ -5,15 +5,19 @@ public class User {
     private String password;
     private String fullname;
     private String email;
+    private String ban;
 
-
-    public User(String username, String password, String fullname, String email) {
+    public User(String username, String password, String fullname, String email,String ban) {
         this.username = username;
         this.password = password;
         this.fullname = fullname;
         this.email = email;
+        this.ban = ban;
     }
 
+    public String getBan() {
+        return ban;
+    }
 
     public String getUsername() {
         return username;
@@ -25,6 +29,10 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setBan(String ban) {
+        this.ban = ban;
     }
 
     public void setPassword(String password) {

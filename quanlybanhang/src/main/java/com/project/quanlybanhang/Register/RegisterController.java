@@ -67,6 +67,7 @@ public class RegisterController {
             newUser.put("password", password);
             newUser.put("fullname", fullname );
             newUser.put("email", email );
+            newUser.put("ban" , "true");
 
             // Thêm vào danh sách
             users.add(newUser);

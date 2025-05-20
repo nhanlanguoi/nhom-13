@@ -1,0 +1,318 @@
+/* Reset CSS cơ bản */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* Font chữ hiện đại, dễ đọc */
+    background-color: #F5F5F7; /* Màu nền xám nhạt cho toàn trang */
+    color: #333333;
+    display: flex;
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    display: flex;
+    width: 100%;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 260px; /* Độ rộng của sidebar */
+    background-color: #FFFFFF; /* Nền trắng cho sidebar */
+    color: #222222; /* Màu chữ chính trong sidebar */
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #E0E0E0; /* Viền phân cách nhẹ */
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ cho sidebar */
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.sidebar-header .logo {
+    color: #D70018; /* Màu đỏ CellphoneS cho logo */
+    font-size: 1.8em;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.sidebar-header .logo-img {
+    max-width: 150px; /* Điều chỉnh kích thước logo nếu dùng ảnh */
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+    padding-top: 15px;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    color: #4A4A4A; /* Màu chữ cho các nút */
+    border: none;
+    width: 100%;
+    padding: 15px 25px; /* Khoảng đệm cho nút */
+    text-align: left;
+    font-size: 1em; /* Cỡ chữ nút */
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-left-color 0.2s ease;
+    border-left: 4px solid transparent; /* Viền trái cho trạng thái active */
+}
+
+.nav-button i {
+    margin-right: 12px; /* Khoảng cách giữa icon và chữ */
+    font-size: 1.1em;
+    width: 20px; /* Đảm bảo icon thẳng hàng */
+    text-align: center;
+    color: #777777; /* Màu cho icon */
+}
+
+.nav-button:hover {
+    background-color: #FFF0F1; /* Màu nền hồng nhạt khi hover, tương tự CellphoneS */
+    color: #D70018; /* Màu chữ đỏ khi hover */
+}
+
+.nav-button:hover i {
+    color: #D70018; /* Màu icon đỏ khi hover */
+}
+
+.nav-button.active {
+    background-color: #FDE7EA; /* Màu nền hồng nhạt hơn cho nút active */
+    color: #D70018; /* Màu chữ đỏ cho nút active */
+    font-weight: 600; /* Chữ đậm hơn cho nút active */
+    border-left: 4px solid #D70018; /* Viền đỏ bên trái cho nút active */
+}
+
+.nav-button.active i {
+    color: #D70018; /* Màu icon đỏ cho nút active */
+}
+
+.sidebar-footer {
+    padding: 20px;
+    text-align: center;
+    font-size: 0.85em;
+    color: #888888;
+    border-top: 1px solid #EEEEEE;
+}
+
+/* --- Main Content --- */
+.main-content {
+    flex-grow: 1;
+    padding: 0; /* Xóa padding mặc định để header chiếm toàn bộ chiều rộng */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
+}
+
+.main-header {
+    background-color: #FFFFFF;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #E0E0E0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    position: sticky; /* Giữ header ở trên cùng khi cuộn */
+    top: 0;
+    z-index: 100;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #F5F5F7;
+    padding: 8px 15px;
+    border-radius: 20px;
+    width: 300px; /* Có thể điều chỉnh */
+}
+
+.search-bar i {
+    color: #777777;
+    margin-right: 8px;
+}
+
+.search-bar input {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    font-size: 0.95em;
+    width: 100%;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Khoảng cách giữa các item */
+}
+
+.user-profile .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #E0E0E0;
+}
+
+.user-profile span {
+    font-weight: 500;
+}
+
+.user-profile .notification-icon {
+    font-size: 1.3em;
+    color: #555555;
+    cursor: pointer;
+}
+
+.user-profile .fa-chevron-down {
+    color: #777777;
+    cursor: pointer;
+}
+
+.content-section {
+    padding: 30px; /* Padding cho các mục nội dung */
+    display: none; /* Ẩn tất cả các section ban đầu */
+    animation: fadeInContent 0.4s ease-in-out;
+}
+
+.content-section.active {
+    display: block; /* Hiện section đang active */
+}
+
+.content-section h1 {
+    font-size: 1.8em;
+    color: #D70018; /* Màu đỏ cho tiêu đề chính của section */
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #F0F0F0;
+}
+
+/* Ví dụ styling cho card (có thể tùy chỉnh) */
+.card {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    color: #333333;
+}
+
+.btn-primary {
+    background-color: #D70018;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #B30014; /* Màu đỏ đậm hơn khi hover */
+}
+
+/* Animation cho nội dung */
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive (điều chỉnh cho màn hình nhỏ hơn) */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #E0E0E0;
+        /* Có thể bạn muốn sidebar-nav hiển thị theo hàng ngang trên mobile */
+    }
+    .sidebar-nav {
+        display: flex;
+        overflow-x: auto; /* Cho phép cuộn ngang các nút nếu quá nhiều */
+        padding-top: 0;
+    }
+    .nav-button {
+        padding: 12px 15px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        flex-shrink: 0; /* Ngăn các nút bị co lại */
+    }
+    .nav-button.active {
+        border-left: none;
+        border-bottom: 3px solid #D70018;
+    }
+    .main-header {
+        padding: 10px 15px;
+    }
+    .search-bar {
+        width: auto; /* Cho phép thanh tìm kiếm co giãn */
+        flex-grow: 1;
+        margin-right: 10px;
+    }
+    .user-profile span {
+        display: none; /* Ẩn tên người dùng trên mobile để tiết kiệm không gian */
+    }
+    .content-section {
+        padding: 20px;
+    }
+    .content-section h1 {
+        font-size: 1.5em;
+    }
+}
+
+
+/* index.css */
+
+/* ... (các CSS khác của bạn) ... */
+
+.main-content .content-section {
+    display: none; /* Ẩn tất cả các section theo mặc định */
+    animation: fadeInContent 0.4s ease-in-out; /* Thêm hiệu ứng mờ dần khi xuất hiện */
+}
+
+.main-content .content-section.active {
+    display: block; /* Chỉ hiển thị section có class 'active' */
+}
+
+/* Animation cho nội dung (tùy chọn) */
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(10px); /* Hơi trượt lên từ dưới */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* CSS cho nút active trong sidebar (bạn có thể đã có phần này) */
+.sidebar .nav-button.active {
+    background-color: #FDE7EA; /* Ví dụ: Màu nền CellphoneS nhạt cho nút active */
+    color: #D70018; /* Ví dụ: Màu chữ đỏ CellphoneS cho nút active */
+    font-weight: 600;
+    border-left: 4px solid #D70018; /* Ví dụ: Viền trái đỏ */
+}
+
+.sidebar .nav-button.active i {
+    color: #D70018; /* Màu icon cho nút active */
+}

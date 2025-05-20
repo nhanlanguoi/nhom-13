@@ -1,178 +1,180 @@
-[{
-  "id": "iphone15promax",
-  "name": "iPhone 15 Pro Max",
-  "brand": "Apple",
-  "category": "Điện thoại",
-  "description": "Điện thoại cao cấp với thiết kế titan và chip A17 Pro.",
-  "rating": 4.5,
-  "variants": [
-    {
-      "id": "iphone15promax-128gb-black",
-      "colorprices" : [{
-        "id": 1,
-        "color": "Đen",
-        "price": "28929000",
-        "discount": 10
-      }],
-      "storage": "5G",
-      "ram": "8GB",
-      "image": "/data-product/image/2_653.webp",
-      "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
-      "chip" : "Snapdragon 8 Gen 2 for Galaxy",
-      "memory" : "128GB",
-      "camera_end" : "13 MP",
-      "camera_start" : "12 MP",
-      "pin": "8400 mAh",
-      "power" : "45 W"
-    },{
-      "id": "iphone15promax-128gb-white",
-      "colorprices" : [{
-        "id": 1,
-        "color": "Đen",
-        "price": "2894290000",
-        "discount": 10
-      }],
-      "storage": "5G",
-      "ram": "8GB",
-      "image": "/data-product/image/op-lung-magsafe-iphone-15-silicone.webp",
-      "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
-      "chip" : "Snapdragon 8 Gen 2 for Galaxy",
-      "memory" : "528GB",
-      "camera_end" : "13 MP",
-      "camera_start" : "12 MP",
-      "pin": "8400 mAh",
-      "power" : "45 W"
-    }
-  ],
-  "tags": ["iphone", "mới", "giảm giá", "cao cấp"]
-
-},{
-  "id": "iphone15pro",
-  "name": "iPhone 15 Pro Max",
-  "brand": "Apple",
-  "category": "Điện thoại",
-  "description": "Điện thoại cao cấp với thiết kế titan và chip A17 Pro.",
-  "rating": 4.5,
-  "variants": [
-    {
-      "id": "iphone15promax-128gb-black",
-      "colorprices" : [{
-        "id": 1,
-        "color": "Đen",
-        "price": "28923490000",
-        "discount": 10
-      }],
-      "storage": "5G",
-      "ram": "8GB",
-      "image": "/data-product/image/mhlt3_av3.webp",
-      "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
-      "chip" : "Snapdragon 8 Gen 2 for Galaxy",
-      "memory" : "128GB",
-      "camera_end" : "13 MP",
-      "camera_start" : "12 MP",
-      "pin": "8400 mAh",
-      "power" : "45 W"
-    }
-  ],
-  "tags": ["iphone", "mới", "giảm giá", "cao cấp"]
-
-},{
-  "id": "iphone15proplus",
-  "name": "iPhone 15 Pro Max",
-  "brand": "Apple",
-  "category": "Điện thoại",
-  "description": "Điện thoại cao cấp với thiết kế titan và chip A17 Pro.",
-  "rating": 4.5,
-  "variants": [
-    {
-      "id": "iphone15promax-128gb-black",
-      "colorprices" : [{
-        "id": 1,
-        "color": "Đen",
-        "price": "2812990000",
-        "discount": 10
-      }],
-      "storage": "6G",
-      "ram": "8GB",
-      "image": "/data-product/image/op-lung-iphone-14-plus-apple-silicone-case-with-magsafe.webp",
-      "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
-      "chip" : "Snapdragon 8 Gen 2 for Galaxy",
-      "memory" : "128GB",
-      "camera_end" : "13 MP",
-      "camera_start" : "12 MP",
-      "pin": "8400 mAh",
-      "power" : "45 W"
-    },{
-      "id": "iphone15promax-128gb-black",
-      "colorprices" : [{
-        "id": 1,
-        "color": "Đen",
-        "price": "28990000",
-        "discount": 10
-      }],
-      "storage": "5G",
-      "ram": "8GB",
-      "image": "/data-product/image/op-lung-magsafe-iphone-15-silicone.webp",
-      "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
-      "chip" : "Snapdragon 8 Gen 2 for Galaxy",
-      "memory" : "128GB",
-      "camera_end" : "13 MP",
-      "camera_start" : "12 MP",
-      "pin": "8400 mAh",
-      "power" : "45 W"
-    },{
-      "id": "iphone15promax-128gb-black",
-      "colorprices" : [{
-        "id": 1,
-        "color": "Đen",
-        "price": "28990000",
-        "discount": 10
-      }],
-      "storage": "5G",
-      "ram": "8GB",
-      "image": "/data-product/image/mhlt3_av3.webp",
-      "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
-      "chip" : "Snapdragon 8 Gen 2 for Galaxy",
-      "memory" : "128GB",
-      "camera_end" : "13 MP",
-      "camera_start" : "12 MP",
-      "pin": "8400 mAh",
-      "power" : "45 W"
-    }
-  ],
-  "tags": ["iphone", "mới", "giảm giá", "cao cấp"]
-
-},{
-  "id": "iphone15proxs",
-  "name": "iPhone 15 Pro Max",
-  "brand": "Apple",
-  "category": "Điện thoại",
-  "description": "Điện thoại cao cấp với thiết kế titan và chip A17 Pro.",
-  "rating": 4.5,
-  "variants": [{
-    "id": "iphone15promax-128gb-black",
-    "colorprices" : [{
-      "id": 1,
-      "color": "Đen",
-      "price": "28990000",
-      "discount": 10
-    },{
-      "id": 2,
-      "color": "Trắng",
-      "price": "38990000",
-      "discount": 10
-    }],
-    "storage": "5G",
-    "ram": "8GB",
-    "image": "/data-product/image/op-lung-magsafe-iphone-15-silicone.webp",
+[ {
+  "id" : "iphone15promax",
+  "name" : "iPhone 15 Pro Max",
+  "brand" : "Apple",
+  "category" : "Điện thoại",
+  "description" : "Điện thoại cao cấp với thiết kế titan và chip A17 Pro.",
+  "rating" : 4.5,
+  "variants" : [ {
+    "id" : "iphone15promax-128gb-black",
+    "storage" : "5G",
+    "ram" : "8GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Đen",
+      "price" : "28929000",
+      "discount" : 10,
+      "formattedPrice" : "26.036.100."
+    } ],
+    "image" : "/data-product/image/2_653.webp",
+    "screen" : "Dynamic AMOLED 2X 11",
+    "chip" : "Snapdragon 8 Gen 2 for Galaxy",
+    "memory" : "128GB",
+    "camera_end" : "13 MP",
+    "camera_start" : "12 MP",
+    "pin" : "8400 mAh",
+    "power" : "45 W"
+  }, {
+    "id" : "iphone15promax-128gb-white",
+    "storage" : "5G",
+    "ram" : "8GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Đen",
+      "price" : "2894290000",
+      "discount" : 20,
+      "formattedPrice" : "2.315.432.000."
+    } ],
+    "image" : "/data-product/image/op-lung-magsafe-iphone-15-silicone.webp",
+    "screen" : "Dynamic AMOLED 2X 11",
+    "chip" : "Snapdragon 8 Gen 2 for Galaxy",
+    "memory" : "528GB",
+    "camera_end" : "13 MP",
+    "camera_start" : "12 MP",
+    "pin" : "8400 mAh",
+    "power" : "45 W"
+  } ],
+  "tags" : [ "iphone", "mới", "giảm giá", "cao cấp", "Apple" ],
+  "releaseDate" : null
+}, {
+  "id" : "iphone15pro",
+  "name" : "iPhone 15 Pro Max",
+  "brand" : "Apple",
+  "category" : "Điện thoại",
+  "description" : "Điện thoại cao cấp với thiết kế titan và chip A17 Pro.",
+  "rating" : 4.5,
+  "variants" : [ {
+    "id" : "iphone17promax-128gb-black",
+    "storage" : "5G",
+    "ram" : "8GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Đen",
+      "price" : "28923490000",
+      "discount" : 10,
+      "formattedPrice" : "26.031.141.000."
+    } ],
+    "image" : "/data-product/image/mhlt3_av3.webp",
     "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
     "chip" : "Snapdragon 8 Gen 2 for Galaxy",
     "memory" : "128GB",
     "camera_end" : "13 MP",
     "camera_start" : "12 MP",
-    "pin": "8400 mAh",
+    "pin" : "8400 mAh",
     "power" : "45 W"
-  }
-  ],
-  "tags": ["iphone", "mới", "giảm giá", "cao cấp"]
-}]
+  } ],
+  "tags" : [ "iphone", "mới", "giảm giá", "cao cấp" ],
+  "releaseDate" : null
+}, {
+  "id" : "iphone15proplus",
+  "name" : "iPhone 15 Pro Max",
+  "brand" : "Apple",
+  "category" : "Điện thoại",
+  "description" : "Điện thoại cao cấp với thiết kế titan và chip A17 Pro.",
+  "rating" : 4.5,
+  "variants" : [ {
+    "id" : "iphone16promax-128gb-black",
+    "storage" : "6G",
+    "ram" : "8GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Đen",
+      "price" : "2812990000",
+      "discount" : 10,
+      "formattedPrice" : "2.531.691.000."
+    } ],
+    "image" : "/data-product/image/op-lung-iphone-14-plus-apple-silicone-case-with-magsafe.webp",
+    "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
+    "chip" : "Snapdragon 8 Gen 2 for Galaxy",
+    "memory" : "128GB",
+    "camera_end" : "13 MP",
+    "camera_start" : "12 MP",
+    "pin" : "8400 mAh",
+    "power" : "45 W"
+  }, {
+    "id" : "iphone16promax-128gb-black",
+    "storage" : "5G",
+    "ram" : "8GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Đen",
+      "price" : "28990000",
+      "discount" : 10,
+      "formattedPrice" : "26.091.000."
+    } ],
+    "image" : "/data-product/image/op-lung-magsafe-iphone-15-silicone.webp",
+    "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
+    "chip" : "Snapdragon 8 Gen 2 for Galaxy",
+    "memory" : "128GB",
+    "camera_end" : "13 MP",
+    "camera_start" : "12 MP",
+    "pin" : "8400 mAh",
+    "power" : "45 W"
+  }, {
+    "id" : "iphone16promax-528gb-black",
+    "storage" : "5G",
+    "ram" : "8GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Đen",
+      "price" : "28990000",
+      "discount" : 10,
+      "formattedPrice" : "26.091.000."
+    } ],
+    "image" : "/data-product/image/mhlt3_av3.webp",
+    "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
+    "chip" : "Snapdragon 8 Gen 2 for Galaxy",
+    "memory" : "128GB",
+    "camera_end" : "13 MP",
+    "camera_start" : "12 MP",
+    "pin" : "8400 mAh",
+    "power" : "45 W"
+  } ],
+  "tags" : [ "iphone", "mới", "giảm giá", "cao cấp" ],
+  "releaseDate" : null
+}, {
+  "id" : "iphone15proxs",
+  "name" : "iPhone 15 Pro Max",
+  "brand" : "Apple",
+  "category" : "Điện thoại",
+  "description" : "Điện thoại cao cấp với thiết kế titan và chip A17 Pro.",
+  "rating" : 4.5,
+  "variants" : [ {
+    "id" : "iphone19promax-128gb-black",
+    "storage" : "5G",
+    "ram" : "8GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Đen",
+      "price" : "28990000",
+      "discount" : 10,
+      "formattedPrice" : "26.091.000."
+    }, {
+      "id" : 2,
+      "color" : "Trắng",
+      "price" : "38990000",
+      "discount" : 10,
+      "formattedPrice" : "35.091.000."
+    } ],
+    "image" : "/data-product/image/op-lung-magsafe-iphone-15-silicone.webp",
+    "screen" : "Dynamic AMOLED 2X 11\" 120Hz",
+    "chip" : "Snapdragon 8 Gen 2 for Galaxy",
+    "memory" : "128GB",
+    "camera_end" : "13 MP",
+    "camera_start" : "12 MP",
+    "pin" : "8400 mAh",
+    "power" : "45 W"
+  } ],
+  "tags" : [ "iphone", "mới", "giảm giá", "cao cấp" ],
+  "releaseDate" : null
+} ]

@@ -1,1 +1,7 @@
-[{"username":"hello","password":"12345","fullname":"nhan100","email":"nthanhnhu44@gmail.com"},{"username":"kkk","password":"1234","fullname":"nhan100","email":"nhunguyenthanhnhu83@gmail.com"},{"username":"nam","password":"1234","fullname":"nhan nguyen thanh","email":"nthanhnhu44@gmail.com"},{"username":"trung","password":"1234","fullname":"Cao Duc Trung","email":"trungcaoduc2005@gmail.com"},{"username":"nhan2","password":"123456 ","fullname":"thanhnhan","email":"nguyenthanhnhan2005n@gmail.com"}]
+[ {
+  "username" : "zepphi11",
+  "password" : "1234",
+  "fullname" : "Nguyễn Thành Nhân",
+  "email" : "nthanhnhu44@gmail.com",
+  "ban" : "true"
+} ]

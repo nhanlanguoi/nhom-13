@@ -20,16 +20,7 @@ import java.util.Map;
 @Controller
 public class UserController {
 
-//    @GetMapping("/profile")
-//    public String profile(HttpSession session, Model model) {
-//
-//        Object userObj = session.getAttribute("user");
-//        if (userObj instanceof User user) {
-//            model.addAttribute("user", user);
-//            return "html/user-info";
-//        }
-//        return "redirect:/login";
-//    }
+
 
 
     Productservice productService = new Productservice();
@@ -47,7 +38,7 @@ public class UserController {
             return "html/user-info";
         }
 
-        // fallback
+
         return "redirect:/login";
     }
 
@@ -94,7 +85,6 @@ public class UserController {
                 break;
             }
         }
-
         return "redirect:/profile";
     }
 }

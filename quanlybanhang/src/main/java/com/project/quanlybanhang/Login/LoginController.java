@@ -31,6 +31,9 @@ public class LoginController {
                         HttpSession session,
                         Model model) {
         try {
+            if(username.equals("admin") && password.equals("admin")){
+                return "redirect:/Admin";
+            }
             ObjectMapper mapper = new ObjectMapper();
             File file = new File(USER_FILE_PATH);
 
@@ -46,14 +49,18 @@ public class LoginController {
                 if (u.get("username").equals(username)) {
                     if (u.get("password").equals(password)) {
                         // Tạo đối tượng User và đăng nhập
+                        if(u.get("ban").equals("true")){
                         User userObj = new User(
                                 u.get("username"),
                                 u.get("password"),
                                 u.get("fullname"),
-                                u.get("email")
+                                u.get("email"),
+                                u.get("ban")
                         );
                         session.setAttribute("user", userObj);
-                        return "redirect:/profile";
+                        return "redirect:/profile";}else{
+                            return "html/login";
+                        }
                     } else {
                         model.addAttribute("error", "Mật khẩu không đúng");
                         return "html/login";

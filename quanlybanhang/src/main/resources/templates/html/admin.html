@@ -288,21 +288,32 @@
         <h3>Sửa thông tin người dùng: <span th:text="${userToEdit.username}" style="color: #D70018;"></span></h3>
         <form th:action="@{/admin/products/users/update}" th:object="${userToEdit}" method="post">
           <input type="hidden" th:field="*{username}" />
+
           <div class="field-group">
             <label for="editUserFullname">Họ và tên:</label>
-            <input type="text" id="editUserFullname" th:field="*{fullname}" />
+            <input type="text" id="editUserFullname" th:field="*{fullname}" class="form-control" />
           </div>
           <div class="field-group">
             <label for="editUserEmail">Email:</label>
-            <input type="email" id="editUserEmail" th:field="*{email}" />
+            <input type="email" id="editUserEmail" th:field="*{email}" class="form-control" />
           </div>
+
           <div class="field-group">
             <label for="editUserBanStatus">Trạng thái tài khoản:</label>
-            <select id="editUserBanStatus" th:field="*{ban}">
+            <select id="editUserBanStatus" th:field="*{ban}" class="form-control">
               <option value="true">Không cấm</option>
               <option value="false">Cấm tài khoản</option>
             </select>
           </div>
+
+          <div class="field-group">
+            <label for="editUserRole">Vai trò:</label>
+            <select id="editUserRole" th:field="*{role}" class="form-control">
+              <option value="CUSTOMER">Khách hàng (CUSTOMER)</option>
+              <option value="EMPLOYEE">Nhân viên (EMPLOYEE)</option>
+            </select>
+          </div>
+
           <div class="form-actions">
             <button type="submit" class="btn-save">Lưu thay đổi</button>
             <a th:href="@{/admin/products/users}" class="btn-cancel">Hủy</a>
@@ -320,6 +331,7 @@
           <th>Username</th>
           <th>Họ tên</th>
           <th>Email</th>
+          <th>Vai trò</th>
           <th>Trạng thái cấm</th>
           <th>Hành động</th>
         </tr>
@@ -329,6 +341,7 @@
           <td th:text="${user.username}"></td>
           <td th:text="${user.fullname}"></td>
           <td th:text="${user.email}"></td>
+          <td th:text="${user.role}"></td>
           <td th:text="${user.ban == 'true' ? 'Không cấm' : (user.ban == 'false' ? 'Bị cấm' : user.ban)}"></td>
           <td>
             <a th:href="@{/admin/products/users(username=${user.username})}" class="btn-edit">Sửa</a>
@@ -339,8 +352,7 @@
           </td>
         </tr>
         <tr th:if="${#lists.isEmpty(allUsers)}">
-          <td colspan="5" style="text-align: center;">Không có người dùng nào.</td>
-        </tr>
+          <td colspan="8" style="text-align: center;">Không có người dùng nào.</td> </tr>
         </tbody>
       </table>
     </section>

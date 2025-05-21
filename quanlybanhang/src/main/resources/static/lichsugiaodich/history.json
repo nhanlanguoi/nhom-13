@@ -1,0 +1,18 @@
+[ {
+  "id" : "b76b5312-4050-433a-9c3d-534c5ad41892",
+  "orderData" : {
+    "variantId" : "iphone15promax-128gb-black",
+    "action" : "confirmed_purchase",
+    "quantity" : 2,
+    "productId" : "iphone15promax",
+    "color" : "Đen",
+    "username" : "hello",
+    "orderTimestamp" : "2025-05-12T15:35:27.830740",
+    "address" : "thon 2",
+    "phone" : "0917571916"
+  },
+  "employeeUsername" : "zepphi11",
+  "employeeFullname" : "phuclociphone",
+  "acceptedTimestamp" : "2025-05-21T23:58:26.436111",
+  "completedTimestamp" : "2025-05-21T23:58:29.558804"
+} ]

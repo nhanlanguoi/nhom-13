@@ -2,7 +2,7 @@ package com.project.quanlybanhang.Login;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.quanlybanhang.User.User;
+import com.project.quanlybanhang.User.User; //
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class LoginController {
         return "html/login";
     }
     // Đường dẫn file JSON trùng với RegisterController
-    private static final String USER_FILE_PATH = "src/main/resources/static/data-user/users.json";
+    private static final String USER_FILE_PATH = "src/main/resources/static/data-user/users.json"; //
 
     @PostMapping("/login")
     public String login(@RequestParam String username,
@@ -31,34 +31,48 @@ public class LoginController {
                         HttpSession session,
                         Model model) {
         try {
-            if(username.equals("admin") && password.equals("admin")){
+            if("admin".equals(username) && "admin".equals(password)){ // Sử dụng .equals() cho String
+                // Cân nhắc tạo đối tượng User cho admin và lưu vào session nếu cần
+                // session.setAttribute("user", new User("admin", "admin", "Admin", "admin@example.com", "true", "ADMIN"));
                 return "redirect:/Admin";
             }
+
             ObjectMapper mapper = new ObjectMapper();
-            File file = new File(USER_FILE_PATH);
+            File file = new File(USER_FILE_PATH); //
 
             if (!file.exists()) {
                 model.addAttribute("error", "Không thể tải dữ liệu người dùng");
                 return "html/login";
             }
 
-            List<Map<String, String>> users = mapper.readValue(file, new TypeReference<>() {});
+            List<Map<String, String>> users = mapper.readValue(file, new TypeReference<>() {}); //
 
             // Tìm kiếm user
             for (Map<String, String> u : users) {
                 if (u.get("username").equals(username)) {
                     if (u.get("password").equals(password)) {
-                        // Tạo đối tượng User và đăng nhập
-                        if(u.get("ban").equals("true")){
-                        User userObj = new User(
-                                u.get("username"),
-                                u.get("password"),
-                                u.get("fullname"),
-                                u.get("email"),
-                                u.get("ban")
-                        );
-                        session.setAttribute("user", userObj);
-                        return "redirect:/profile";}else{
+                        // Kiểm tra tài khoản có bị khóa không
+                        if ("true".equals(u.get("ban"))) { // Giả sử "true" nghĩa là không bị khóa
+                            User userObj = new User(
+                                    u.get("username"),
+                                    u.get("password"),
+                                    u.get("fullname"),
+                                    u.get("email"),
+                                    u.get("ban"),
+                                    u.get("role")
+                            ); //
+
+                            // **Sửa lỗi ở đây: Đặt user vào session TRƯỚC KHI chuyển hướng**
+                            session.setAttribute("user", userObj);
+
+                            if ("EMPLOYEE".equals(u.get("role"))) { //
+                                return "redirect:/Employee";
+                            }
+                            // Giả sử các vai trò khác (nếu có) sẽ vào trang profile
+                            return "redirect:/profile";
+                        } else {
+                            // Tài khoản bị khóa (ban không phải là "true")
+                            model.addAttribute("error", "Tài khoản của bạn đã bị khóa.");
                             return "html/login";
                         }
                     } else {
@@ -67,14 +81,12 @@ public class LoginController {
                     }
                 }
             }
-            model.addAttribute("error", "Không có tài khoản");
+            model.addAttribute("error", "Tài khoản không tồn tại"); // Sửa lại thông báo lỗi
             return "html/login";
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Lỗi hệ thống, vui lòng thử lại");
             return "html/login";
         }
-
     }
-
 }

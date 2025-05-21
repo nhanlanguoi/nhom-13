@@ -6,17 +6,26 @@ public class User {
     private String fullname;
     private String email;
     private String ban;
-
+    private String role;
 
     public User() {
     }
 
-    public User(String username, String password, String fullname, String email,String ban) {
+    public User(String username, String password, String fullname, String email,String ban,String role) {
         this.username = username;
         this.password = password;
         this.fullname = fullname;
         this.email = email;
         this.ban = ban;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getBan() {

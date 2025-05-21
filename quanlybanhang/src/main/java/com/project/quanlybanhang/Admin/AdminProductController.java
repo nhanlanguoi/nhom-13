@@ -420,28 +420,36 @@ public class AdminProductController {
     }
 
     @PostMapping("/users/update")
-    public String handleUpdateUser(@ModelAttribute("userToEdit") User user, RedirectAttributes redirectAttributes) {
-        System.out.println("[AdminProductController] POST /users/update - Updating user: " + user.getUsername());
+    public String handleUpdateUser(@ModelAttribute("userToEdit") User userFromForm, RedirectAttributes redirectAttributes) {
+        System.out.println("[AdminProductController] POST /users/update - Updating user: " + userFromForm.getUsername());
+        System.out.println("[AdminProductController] Role from form received by controller: " + userFromForm.getRole()); // Log để kiểm tra
         try {
-            User existingUser = userService.getUserByUsername(user.getUsername());
+            User existingUser = userService.getUserByUsername(userFromForm.getUsername());
             if (existingUser != null) {
-                existingUser.setFullname(user.getFullname());
-                existingUser.setEmail(user.getEmail());
-                existingUser.setBan(user.getBan());
+                // Cập nhật các trường từ userFromForm (dữ liệu từ form) vào existingUser (đối tượng sẽ được lưu)
+                existingUser.setFullname(userFromForm.getFullname());
+                existingUser.setEmail(userFromForm.getEmail());
+                existingUser.setBan(userFromForm.getBan()); // Giả sử getBan() trả về String "true"/"false"
 
-                boolean success = userService.updateUser(existingUser);
+                // === THÊM DÒNG NÀY ĐỂ CẬP NHẬT ROLE ===
+                existingUser.setRole(userFromForm.getRole());
+
+
+
+                boolean success = userService.updateUser(existingUser); // Truyền existingUser đã được cập nhật đầy đủ
                 if (success) {
-                    redirectAttributes.addFlashAttribute("userManagementSuccessMessage", "Cập nhật người dùng '" + user.getUsername() + "' thành công!");
+                    redirectAttributes.addFlashAttribute("userManagementSuccessMessage", "Cập nhật người dùng '" + userFromForm.getUsername() + "' thành công!");
                 } else {
-                    redirectAttributes.addFlashAttribute("userManagementErrorMessage", "Lỗi khi cập nhật người dùng.");
+                    redirectAttributes.addFlashAttribute("userManagementErrorMessage", "Lỗi khi cập nhật người dùng '" + userFromForm.getUsername() + "'.");
                 }
             } else {
-                redirectAttributes.addFlashAttribute("userManagementErrorMessage", "Không tìm thấy người dùng để cập nhật.");
+                redirectAttributes.addFlashAttribute("userManagementErrorMessage", "Không tìm thấy người dùng '" + userFromForm.getUsername() + "' để cập nhật.");
             }
         } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("userManagementErrorMessage", "Lỗi hệ thống: " + e.getMessage());
+            e.printStackTrace(); // In lỗi ra console server để dễ debug
+            redirectAttributes.addFlashAttribute("userManagementErrorMessage", "Lỗi hệ thống khi cập nhật người dùng: " + e.getMessage());
         }
-        return "redirect:/admin/products/users";
+        return "redirect:/admin/products/users"; // Redirect về trang danh sách người dùng
     }
 
     @PostMapping("/users/delete")

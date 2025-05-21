@@ -1,0 +1,39 @@
+[ {
+  "reportId" : "0d9d1e9d-6e2b-4223-a3af-99582e580d0b",
+  "reportTimestamp" : "2025-05-22T00:37:50.608261",
+  "employeeUsername" : "zepphi11",
+  "employeeFullname" : "phuclociphone",
+  "reportReason" : "không nhận hàng",
+  "reportedOrderData" : {
+    "variantId" : "iphone17promax-128gb-black",
+    "action" : "confirmed_purchase",
+    "quantity" : 1,
+    "productId" : "iphone15pro",
+    "color" : "Đen",
+    "username" : "hello",
+    "orderTimestamp" : "2025-05-12T15:39:35.895143",
+    "address" : "thon 2",
+    "phone" : "0917571916"
+  },
+  "originalDangGiaoId" : null,
+  "originalAcceptingEmployee" : null
+}, {
+  "reportId" : "ea70d255-4a0c-4bf1-856d-b3fcabdee83d",
+  "reportTimestamp" : "2025-05-22T00:41:58.697471",
+  "employeeUsername" : "zepphi11",
+  "employeeFullname" : "phuclociphone",
+  "reportReason" : "không nhận hàng",
+  "reportedOrderData" : {
+    "variantId" : "iphone15promax-128gb-black",
+    "action" : "confirmed_purchase",
+    "quantity" : 1,
+    "productId" : "iphone15promax",
+    "color" : "Đen",
+    "username" : "hello",
+    "orderTimestamp" : "2025-05-12T15:39:43.251327",
+    "address" : "thon 2",
+    "phone" : "0917571916"
+  },
+  "originalDangGiaoId" : null,
+  "originalAcceptingEmployee" : null
+} ]

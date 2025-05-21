@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class BuyData {
     private String variantId;
@@ -125,5 +126,25 @@ public class BuyData {
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BuyData buyData = (BuyData) o;
+        return quantity == buyData.quantity &&
+                Objects.equals(variantId, buyData.variantId) &&
+                Objects.equals(productId, buyData.productId) &&
+                Objects.equals(color, buyData.color) &&
+                Objects.equals(username, buyData.username) &&
+                // So sánh LocalDateTime chính xác, cần đảm bảo orderTimestamp không null
+                (orderTimestamp == buyData.orderTimestamp || (orderTimestamp != null && orderTimestamp.isEqual(buyData.orderTimestamp)));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(variantId, productId, color, username, orderTimestamp, quantity);
     }
 }

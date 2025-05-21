@@ -167,32 +167,40 @@ public class UserService {
                 .orElse(null);
     }
 
-    public boolean updateUser(User updatedUser) throws IOException {
-        if (updatedUser == null || updatedUser.getUsername() == null || updatedUser.getUsername().trim().isEmpty()) {
+    public boolean updateUser(User updatedUserFromForm) throws IOException {
+        if (updatedUserFromForm == null || updatedUserFromForm.getUsername() == null || updatedUserFromForm.getUsername().trim().isEmpty()) {
             System.err.println("[UserService] Cannot update user with null or empty username.");
             return false;
         }
-        List<User> users = getAllUsers();
+        List<User> users = getAllUsers(); // getAllUsers đã ưu tiên đọc từ src
         boolean found = false;
         for (int i = 0; i < users.size(); i++) {
-            if (updatedUser.getUsername().equals(users.get(i).getUsername())) {
-                User existingUser = users.get(i);
-                existingUser.setFullname(updatedUser.getFullname());
-                existingUser.setEmail(updatedUser.getEmail());
-                // Giả sử User class đã có getPhoneNumber và setPhoneNumber
-                // Nếu không, bạn cần thêm vào User.java
-                // existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
-                // existingUser.setAddress(updatedUser.getAddress());
-                existingUser.setBan(updatedUser.getBan());
+            User existingUser = users.get(i);
+            if (updatedUserFromForm.getUsername().equals(existingUser.getUsername())) {
+                // Cập nhật các trường từ form (ngoại trừ username không đổi)
+                existingUser.setFullname(updatedUserFromForm.getFullname());
+                existingUser.setEmail(updatedUserFromForm.getEmail());
+
+
+                if (updatedUserFromForm.getBan() != null) { // `ban` là String "true" hoặc "false"
+                    existingUser.setBan(updatedUserFromForm.getBan());
+                }
+                if (updatedUserFromForm.getRole() != null) { // Cập nhật role
+                    existingUser.setRole(updatedUserFromForm.getRole());
+                }
+
+
+
                 users.set(i, existingUser);
                 found = true;
+                System.out.println("[UserService] User " + existingUser.getUsername() + " data prepared for update.");
                 break;
             }
         }
         if (found) {
-            return saveUsersToFile(users, "updateUser");
+            return saveUsersToFile(users, "updateUser"); // saveUsersToFile đã ghi cả src và target
         }
-        System.out.println("[UserService] User with username: " + updatedUser.getUsername() + " not found for update.");
+        System.out.println("[UserService] User with username: " + updatedUserFromForm.getUsername() + " not found for update.");
         return false;
     }
 

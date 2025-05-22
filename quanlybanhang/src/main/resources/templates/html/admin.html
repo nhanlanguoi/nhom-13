@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trang Quản Trị</title>
-  <link rel="stylesheet" href="/css/admin.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     /* --- CSS của bạn --- */
     body { font-family: Arial, sans-serif; margin: 0; background-color: #f4f6f9; color: #333; }
@@ -95,13 +97,62 @@
     }
     table td button[type="submit"]:hover { background-color: #c82333; }
     table td button[type="submit"]:disabled { background-color: #ccc; cursor: not-allowed; }
+
+
+    .revenue-summary {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .revenue-summary h3 {
+        color: #D70018;
+        margin-top: 0;
+    }
+    .revenue-summary p {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: #28a745; /* Màu xanh lá cho doanh thu */
+        margin: 10px 0 0 0;
+    }
+    .chart-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    .year-selector-form {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .year-selector-form label {
+        font-weight: bold;
+    }
+    .year-selector-form select, .year-selector-form button {
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+    .year-selector-form button {
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+    .year-selector-form button:hover {
+        background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
 <div class="dashboard-container">
   <aside class="sidebar">
     <div class="sidebar-header">
-      <a href="/" class="logo-link"><img th:src="@{/images/logo-cps.png}" alt="Logo CellphoneS" class="logo-img"/></a>
+      <a href="/" class="logo-link"><img th:src="@{/images/logo.png}" alt="Logo CellphoneS" class="logo-img"/></a>
     </div>
     <nav class="sidebar-nav">
       <a th:href="@{/admin/products/edit}" class="nav-button" data-target="chinh-sua-san-pham" th:classappend="${activeTab == 'chinh-sua-san-pham' ? 'active' : ''}">
@@ -116,19 +167,22 @@
       <a th:href="@{/admin/products/orders}" class="nav-button" data-target="hang-dang-dat" th:classappend="${activeTab == 'hang-dang-dat' ? 'active' : ''}">
         <i class="fas fa-shopping-cart"></i> Hàng đang đặt
       </a>
-      <button type="button" class="nav-button" data-target="doanh-thu" th:classappend="${activeTab == 'doanh-thu' ? 'active' : ''}"><i class="fas fa-chart-line"></i> Doanh thu</button>
-      <button type="button" class="nav-button" data-target="thong-bao-report" th:classappend="${activeTab == 'thong-bao-report' ? 'active' : ''}"><i class="fas fa-flag"></i> Thông báo report</button>
+      <a th:href="@{/admin/products/revenue}" class="nav-button" data-target="doanh-thu" th:classappend="${activeTab == 'doanh-thu' ? 'active' : ''}">
+        <i class="fas fa-chart-line"></i> Doanh thu
+      </a>
+      <a th:href="@{/admin/products/reports}" class="nav-button" data-target="thong-bao-report" th:classappend="${activeTab == 'thong-bao-report' ? 'active' : ''}">
+        <i class="fas fa-flag"></i> Thông báo report
+      </a>
     </nav>
     <div class="sidebar-footer">
-      <p>&copy; <span id="currentYear"></span> CellphoneS</p>
+      <p>&copy; <span id="currentYear"></span> TMV</p>
     </div>
   </aside>
 
   <main class="main-content">
     <header class="main-header">
       <div class="user-profile">
-        <i class="fas fa-bell notification-icon"></i>
-        <img th:src="@{/images/logo-cps.png}" alt="User Avatar" class="avatar"> <span>Admin</span>
+        <img th:src="@{/images/logo.png}" alt="User Avatar" class="avatar"> <span>Admin</span>
         <a th:href="@{/logout}" style="margin-left: 15px;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
       </div>
     </header>
@@ -398,78 +452,190 @@
         <p th:unless="${orderManagementErrorMessage}">Hiện không có đơn hàng nào.</p>
       </div>
     </section>
-    <section id="doanh-thu" class="content-section" th:classappend="${activeTab == 'doanh-thu' ? 'active' : ''}"><p>Doanh thu sẽ ở đây.</p></section>
-    <section id="thong-bao-report" class="content-section" th:classappend="${activeTab == 'thong-bao-report' ? 'active' : ''}"><p>Thông báo report sẽ ở đây.</p></section>
+
+
+    <section id="doanh-thu" class="content-section card" th:classappend="${activeTab == 'doanh-thu' ? 'active' : ''}">
+      <h2>Báo cáo Doanh Thu</h2>
+
+      <div th:if="${revenueErrorMessage}" class="alert alert-danger" th:text="${revenueErrorMessage}"></div>
+      <div th:if="${revenueMessage}" class="alert alert-info" th:text="${revenueMessage}"></div>
+
+      <div class="revenue-summary">
+        <h3>Tổng Doanh Thu (Tất cả thời gian)</h3>
+        <p th:text="${totalRevenueAllTime != null ? totalRevenueAllTime : '0 VNĐ'}"></p>
+      </div>
+
+      <form th:action="@{/admin/products/revenue}" method="get" class="year-selector-form">
+        <label for="yearSelect">Chọn năm:</label>
+        <select id="yearSelect" name="year" onchange="this.form.submit()">
+          <option th:each="y : ${availableYears}"
+                  th:value="${y}"
+                  th:text="${y}"
+                  th:selected="${y == selectedYear}">
+          </option>
+        </select>
+      </form>
+
+      <div class="chart-container" th:if="${monthLabels != null and not #lists.isEmpty(monthLabels)}">
+        <h3 th:text="'Biểu đồ Doanh Thu Theo Tháng - Năm ' + ${selectedYear}"></h3>
+        <canvas id="monthlyRevenueChart"></canvas>
+      </div>
+      <div th:unless="${monthLabels != null and not #lists.isEmpty(monthLabels)}"
+           th:if="${(revenueErrorMessage == null or #strings.isEmpty(revenueErrorMessage)) and (revenueMessage == null or #strings.isEmpty(revenueMessage))}">
+        <p th:text="'Không có dữ liệu doanh thu cho năm ' + ${selectedYear} + '.'"></p>
+      </div>
+
+    </section>
+
+
+    <section id="thong-bao-report" class="content-section card" th:classappend="${activeTab == 'thong-bao-report' ? 'active' : ''}">
+      <h2>Danh sách Report</h2>
+
+      <div th:if="${reportManagementErrorMessage}" class="alert alert-danger" th:text="${reportManagementErrorMessage}"></div>
+      <div th:if="${reportManagementMessage}" class="alert"
+           th:classappend="${reportManagementMessage.contains('thành công') ? 'alert-success' : 'alert-info'}"
+           th:text="${reportManagementMessage}"></div>
+
+      <div th:if="${allReports != null and not #lists.isEmpty(allReports)}">
+        <form th:action="@{/admin/products/reports/clear}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tất cả report không? Hành động này không thể hoàn tác.');" style="margin-bottom: 20px;">
+          <button type="submit" class="btn-clear-reports">
+            <i class="fas fa-trash-alt"></i> Xóa tất cả Report
+          </button>
+        </form>
+
+        <table>
+          <thead>
+          <tr>
+            <th>Thời gian Report</th>
+            <th>Nhân viên Username</th>
+            <th>Nhân viên Họ Tên</th>
+            <th>Lý do Report</th>
+            <th>Chi tiết Đơn hàng Report</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="report, iterStat : ${allReports}">
+            <td th:text="${#temporals.format(report.reportTimestamp, 'dd/MM/yyyy HH:mm:ss')}"></td>
+            <td th:text="${report.employeeUsername}"></td>
+            <td th:text="${report.employeeFullname}"></td>
+            <td th:text="${report.reportReason}"></td>
+            <td>
+              <span th:attr="onclick=|toggleReportDetails('report-details-${iterStat.index}')|" class="report-details-toggle">Xem chi tiết</span>
+              <div th:id="'report-details-' + ${iterStat.index}" style="display:none;" class="report-details-content">
+                <p><strong>Sản phẩm ID:</strong> <span th:text="${report.reportedOrderData.productId}"></span></p>
+                <p><strong>Variant ID:</strong> <span th:text="${report.reportedOrderData.variantId}"></span></p>
+                <p><strong>Màu:</strong> <span th:text="${report.reportedOrderData.color}"></span></p>
+                <p><strong>Số lượng:</strong> <span th:text="${report.reportedOrderData.quantity}"></span></p>
+                <p><strong>Khách hàng:</strong> <span th:text="${report.reportedOrderData.username}"></span></p>
+                <p><strong>Thời gian đặt hàng:</strong> <span th:text="${#temporals.format(report.reportedOrderData.orderTimestamp, 'dd/MM/yyyy HH:mm:ss')}"></span></p>
+                <p><strong>Địa chỉ:</strong> <span th:text="${report.reportedOrderData.address}"></span></p>
+                <p><strong>Điện thoại:</strong> <span th:text="${report.reportedOrderData.phone}"></span></p>
+                <p><strong>Action:</strong> <span th:text="${report.reportedOrderData.action}"></span></p>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div th:if="${allReports == null or #lists.isEmpty(allReports)}">
+        <p th:unless="${(reportManagementErrorMessage != null and !#strings.isEmpty(reportManagementErrorMessage)) or (reportManagementMessage != null and !#strings.isEmpty(reportManagementMessage))}">Hiện không có report nào.</p>
+      </div>
+    </section>
+
+
+
   </main>
 </div>
 
 <script th:inline="javascript">
   /*<![CDATA[*/
   document.addEventListener('DOMContentLoaded', function() {
+      // --- PHẦN 1: KHỞI TẠO CHUNG & XỬ LÝ TAB ---
       const currentYearSpan = document.getElementById('currentYear');
       if (currentYearSpan) {
           currentYearSpan.textContent = new Date().getFullYear();
       }
 
       const navButtons = document.querySelectorAll('.sidebar-nav .nav-button');
-      const contentSections = document.querySelectorAll('.main-content .content-section, .main-content .tab-content-admin');
+      const contentSections = document.querySelectorAll('.main-content .content-section');
 
       function updateActiveState(targetId) {
           navButtons.forEach(btn => {
               btn.classList.toggle('active', btn.getAttribute('data-target') === targetId);
           });
           contentSections.forEach(section => {
-              section.classList.toggle('active', section.id === targetId);
+              if (section) { // Kiểm tra section tồn tại
+                  section.classList.toggle('active', section.id === targetId);
+              }
           });
       }
 
       function determineInitialTab() {
-          let targetId = /*[[${activeTab}]]*/ null;
-          if (!targetId || targetId === '') {
-              const path = window.location.pathname;
-              if (path.includes('/admin/products/users')) {
+          let targetId = /*[[${activeTab}]]*/ null; // Ưu tiên activeTab từ server
+          const path = window.location.pathname;
+
+          if (targetId && document.getElementById(targetId)) {
+              // Tab đã được xác định bởi server và element tồn tại
+          } else {
+              // Nếu không có activeTab từ server hoặc element không tồn tại, xác định từ URL
+              if (path.includes('/admin/products/revenue')) {
+                  targetId = 'doanh-thu';
+              } else if (path.includes('/admin/products/reports')) {
+                  targetId = 'thong-bao-report';
+              } else if (path.includes('/admin/products/users')) {
                   targetId = 'thong-tin-nguoi-dung';
               } else if (path.includes('/admin/products/add')) {
                   targetId = 'them-san-pham';
-              } else if (path.includes('/admin/products/orders')) { // Đã sửa ở sidebar nav
+              } else if (path.includes('/admin/products/orders')) {
                   targetId = 'hang-dang-dat';
               } else if (path.includes('/admin/products/edit') || path.endsWith('/admin/products') || path.endsWith('/admin/products/')) {
                   targetId = 'chinh-sua-san-pham';
               } else {
-                  targetId = 'chinh-sua-san-pham';
+                  // Mặc định nếu không có điều kiện nào khớp
+                  const firstNavButton = document.querySelector('.sidebar-nav .nav-button[data-target]');
+                  targetId = firstNavButton ? firstNavButton.getAttribute('data-target') : 'chinh-sua-san-pham';
               }
           }
 
-          if (!document.getElementById(targetId) && navButtons.length > 0) {
-              const defaultNavButton = document.querySelector('.sidebar-nav .nav-button[data-target]');
-              targetId = defaultNavButton ? defaultNavButton.getAttribute('data-target') : 'chinh-sua-san-pham';
+          // Đảm bảo targetId cuối cùng trỏ đến một element tồn tại
+          if (!document.getElementById(targetId)) {
+              const firstNavButton = document.querySelector('.sidebar-nav .nav-button[data-target]');
+              targetId = firstNavButton ? firstNavButton.getAttribute('data-target') : 'chinh-sua-san-pham';
           }
+
           updateActiveState(targetId);
+
+          // Gọi hàm vẽ biểu đồ nếu tab doanh thu được active
+          if (targetId === 'doanh-thu') {
+              renderRevenueChart();
+          }
       }
 
+      // Gọi hàm xử lý active tab ban đầu (sẽ gọi renderRevenueChart nếu cần)
       determineInitialTab();
 
       navButtons.forEach(button => {
           button.addEventListener('click', function(event) {
-              if (this.tagName === 'BUTTON') {
-                  event.preventDefault();
-                  const targetSectionId = this.getAttribute('data-target');
-                  updateActiveState(targetSectionId);
-              } else if (this.tagName === 'A' && this.hasAttribute('data-target')) {
-                  // Cho phép điều hướng tự nhiên của thẻ <a>,
-                  // activeTab sẽ được set bởi controller và determineInitialTab() sẽ xử lý khi trang tải lại
-                  // Nếu muốn SPA-like behavior cho thẻ <a> có data-target:
-                  // event.preventDefault();
-                  // const targetSectionId = this.getAttribute('data-target');
-                  // updateActiveState(targetSectionId);
-                  // history.pushState({tab: targetSectionId}, "", this.href);
+              // Đối với thẻ <a>, trình duyệt sẽ tự điều hướng.
+              // `determineInitialTab` sẽ được gọi lại khi trang tải xong để active đúng tab và vẽ biểu đồ.
+              // Nếu bạn sử dụng <button> và muốn chuyển tab mà không tải lại trang (SPA-like),
+              // bạn cần gọi updateActiveState và renderRevenueChart ở đây.
+              // Hiện tại, các link Doanh thu, Report đã là <a> nên không cần xử lý click đặc biệt ở đây.
+              if (this.tagName === 'BUTTON' && this.hasAttribute('data-target')) {
+                   event.preventDefault();
+                   const targetSectionId = this.getAttribute('data-target');
+                   updateActiveState(targetSectionId);
+                   if (targetSectionId === 'doanh-thu') { // Nếu button này mở tab doanh thu (ít khả năng)
+                       renderRevenueChart();
+                   }
               }
           });
       });
 
+      // --- PHẦN 2: LOGIC CHO FORM THÊM/SỬA SẢN PHẨM ---
+      // (Giữ nguyên toàn bộ code JavaScript cho form sản phẩm của bạn ở đây)
       const addProductForm = document.getElementById('addProductForm');
       const editProductForm = document.getElementById('editProductForm');
-
       let variantTemplateNode = null;
       const addFormVariantsContainer = addProductForm ? addProductForm.querySelector('#variantsContainer') : null;
       if (addFormVariantsContainer) {
@@ -507,7 +673,7 @@
                   }
                   const initialCpRemoveBtn = firstCpSample.querySelector('button.btn-remove-item[onclick^="removeColorPrice"]');
                   if(initialCpRemoveBtn) initialCpRemoveBtn.style.display = 'none';
-              } else {
+              } else if (typeof createColorPriceElementForTemplate === 'function') { // Kiểm tra hàm tồn tại
                   cpContainer.innerHTML = '';
                   cpContainer.appendChild(createColorPriceElementForTemplate(0, 0, formTypePrefix));
               }
@@ -534,206 +700,148 @@
               cleanTemplateNodeForCloning(clonedNode, formIdPrefix);
               return clonedNode;
           }
-          const tempDiv = document.createElement('div');
-          tempDiv.innerHTML = fallbackVariantHTMLTemplate("VAR_IDX_PLACEHOLDER", "VAR_NUM_PLACEHOLDER", formIdPrefix).trim();
-          const fallbackNode = tempDiv.firstChild;
-          cleanTemplateNodeForCloning(fallbackNode, formIdPrefix);
-          return fallbackNode;
+          // Kiểm tra hàm fallbackVariantHTMLTemplate tồn tại trước khi gọi
+          if (typeof fallbackVariantHTMLTemplate === 'function') {
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = fallbackVariantHTMLTemplate("VAR_IDX_PLACEHOLDER", "VAR_NUM_PLACEHOLDER", formIdPrefix).trim();
+              if (tempDiv.firstChild) {
+                   const fallbackNode = tempDiv.firstChild;
+                  cleanTemplateNodeForCloning(fallbackNode, formIdPrefix);
+                  return fallbackNode;
+              }
+          }
+          console.error("Không thể tạo variant template: variantTemplateNode và fallbackVariantHTMLTemplate đều không hợp lệ.");
+          return document.createElement('div'); // Trả về div rỗng để tránh lỗi null
       }
 
-      const addVariantBtnForAddForm = document.getElementById('addVariantButton');
-      if (addVariantBtnForAddForm && addProductForm) {
-          const container = addProductForm.querySelector('#variantsContainer');
-          addVariantBtnForAddForm.addEventListener('click', function() {
-              if (!container) return;
-              const newVariantNode = getOrCreateVariantTemplate('add');
-              if (!newVariantNode) { console.error("Không thể tạo variant mới cho form Thêm."); return; }
-              container.appendChild(newVariantNode);
+      if (typeof updateAllVariantIndexes === 'function') { // Kiểm tra các hàm này có tồn tại không
+          const addVariantBtnForAddForm = document.getElementById('addVariantButton');
+          if (addVariantBtnForAddForm && addProductForm) {
+              const container = addProductForm.querySelector('#variantsContainer');
+              addVariantBtnForAddForm.addEventListener('click', function() {
+                  if (!container) return;
+                  const newVariantNode = getOrCreateVariantTemplate('add');
+                  if (!newVariantNode) { console.error("Không thể tạo variant mới cho form Thêm."); return; }
+                  container.appendChild(newVariantNode);
+                  updateAllVariantIndexes(addProductForm, 'add');
+              });
+          }
+
+          const addVariantBtnForEditForm = document.getElementById('addVariantButtonForEditForm');
+          if (addVariantBtnForEditForm && editProductForm) {
+              const container = editProductForm.querySelector('#edit-variants-container');
+              addVariantBtnForEditForm.addEventListener('click', function() {
+                  if (!container) return;
+                  const newVariantNode = getOrCreateVariantTemplate('edit');
+                  if (!newVariantNode) { console.error("Không thể tạo variant mới cho form Sửa."); return; }
+                  container.appendChild(newVariantNode);
+                  updateAllVariantIndexes(editProductForm, 'edit');
+              });
+          }
+           if (addProductForm) {
               updateAllVariantIndexes(addProductForm, 'add');
-          });
-      }
-
-      const addVariantBtnForEditForm = document.getElementById('addVariantButtonForEditForm');
-      if (addVariantBtnForEditForm && editProductForm) {
-          const container = editProductForm.querySelector('#edit-variants-container');
-           addVariantBtnForEditForm.addEventListener('click', function() {
-              if (!container) return;
-              const newVariantNode = getOrCreateVariantTemplate('edit');
-              if (!newVariantNode) { console.error("Không thể tạo variant mới cho form Sửa."); return; }
-              container.appendChild(newVariantNode);
+          }
+          if (editProductForm) {
               updateAllVariantIndexes(editProductForm, 'edit');
-          });
-      }
-
-      window.removeVariant = function(button, formType) {
-          const formElement = button.closest('form');
-          const variantsContainerInForm = formElement.querySelector(formType === 'add' ? '#variantsContainer' : '#edit-variants-container');
-          const variantSection = button.closest('.variant-section');
-          if (variantsContainerInForm.querySelectorAll('.variant-section').length > 1) {
-              variantSection.remove();
-              updateAllVariantIndexes(formElement, formType);
-          } else {
-              alert("Sản phẩm phải có ít nhất một phiên bản.");
           }
+      } else {
+          console.warn("Các hàm quản lý variant (ví dụ: updateAllVariantIndexes) chưa được định nghĩa.");
       }
 
-      function updateAllVariantIndexes(formElement, formTypePrefix) {
-          if (!formElement) return;
-          const variantsContainerInForm = formElement.querySelector(formTypePrefix === 'add' ? '#variantsContainer' : '#edit-variants-container');
-          if (!variantsContainerInForm) return;
+      // Đảm bảo các hàm window.* được định nghĩa nếu chúng được gọi từ HTML
+      if (typeof removeVariant !== 'function') { window.removeVariant = function(button, formType) { /*...*/ }; }
+      if (typeof addColorPrice !== 'function') { window.addColorPrice = function(button, formType) { /*...*/ }; }
+      if (typeof removeColorPrice !== 'function') { window.removeColorPrice = function(button, formType) { /*...*/ }; }
+      // Các hàm này cần được định nghĩa đầy đủ như trong file của bạn
+      // Ví dụ (đảm bảo bạn có định nghĩa đầy đủ):
+      // window.removeVariant = function(button, formType) { /* Định nghĩa đầy đủ của bạn */ };
+      // function updateAllVariantIndexes(formElement, formTypePrefix) { /* Định nghĩa đầy đủ của bạn */ }
+      // window.addColorPrice = function(button, formType) { /* Định nghĩa đầy đủ của bạn */ }
+      // function createColorPriceElementForTemplate(variantIndex, cpIndex, idPrefix) { /* Định nghĩa đầy đủ của bạn */ return document.createElement('div'); }
+      // function fallbackVariantHTMLTemplate(variantIndex, variantNumber, idPrefix = "add-") { /* Định nghĩa đầy đủ của bạn */ return ''; }
+      // function fallbackColorPriceHTMLTemplate(variantIndex, cpIndex, idPrefix = "add-") { /* Định nghĩa đầy đủ của bạn */ return ''; }
+      // window.removeColorPrice = function(button, formType) { /* Định nghĩa đầy đủ của bạn */ }
+      // function updateColorPriceIndexes(cpContainer, variantIndex, formTypePrefix) { /* Định nghĩa đầy đủ của bạn */ }
+      // function updateElementIndexes(element, variantIdx, cpIdx, formTypePrefix) { /* Định nghĩa đầy đủ của bạn */ }
 
-          const allVariantSections = variantsContainerInForm.querySelectorAll('.variant-section');
-          allVariantSections.forEach((variantNode, newVariantIndex) => {
-              variantNode.setAttribute('data-variant-index', newVariantIndex);
-              const variantNumberSpan = variantNode.querySelector('.variant-number');
-              if(variantNumberSpan) variantNumberSpan.textContent = newVariantIndex + 1;
 
-              variantNode.querySelectorAll('input, textarea, select, label, button[onclick^="addColorPrice"]').forEach(el => {
-                  updateElementIndexes(el, newVariantIndex, -1, formTypePrefix);
-              });
 
-              const cpContainer = variantNode.querySelector('.colorpricesContainer');
-              if (cpContainer) {
-                  cpContainer.id = `${formTypePrefix}cpContainer-${newVariantIndex}`;
-                  updateColorPriceIndexes(cpContainer, newVariantIndex, formTypePrefix);
-              }
-              const removeBtn = variantNode.querySelector('button.btn-remove-item[onclick^="removeVariant"]');
-              if (removeBtn) {
-                  removeBtn.style.display = allVariantSections.length > 1 ? 'inline-block' : 'none';
-                  removeBtn.setAttribute('onclick', `removeVariant(this, '${formTypePrefix}')`);
-              }
-          });
-      }
-
-      window.addColorPrice = function(button, formType) {
-          const variantSection = button.closest('.variant-section');
-          const cpContainer = variantSection.querySelector('.colorpricesContainer');
-          const variantIndex = parseInt(variantSection.getAttribute('data-variant-index'));
-          const newCpIndex = cpContainer.querySelectorAll('.colorprice-section').length;
-
-          const newCpElement = createColorPriceElementForTemplate(variantIndex, newCpIndex, formType);
-          cpContainer.appendChild(newCpElement);
-          updateColorPriceIndexes(cpContainer, variantIndex, formType);
-      }
-
-      function createColorPriceElementForTemplate(variantIndex, cpIndex, idPrefix) {
-          const cpSection = document.createElement('div');
-          cpSection.className = 'colorprice-section';
-          cpSection.setAttribute('data-cp-index', cpIndex);
-
-          cpSection.innerHTML = `
-              <input type="hidden" name="variants[${variantIndex}].colorprices[${cpIndex}].id" value=""/>
-              <h5>Màu/Giá <span class="cp-number">${cpIndex + 1}</span>
-                  <button type="button" class="btn-remove-item" onclick="removeColorPrice(this, '${idPrefix}')" style="display:none;">×</button>
-              </h5>
-              <div class="field-group"><label for="${idPrefix}cp-color-${variantIndex}-${cpIndex}">Màu:</label><input type="text" id="${idPrefix}cp-color-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].color" /></div>
-              <div class="field-group"><label for="${idPrefix}cp-price-${variantIndex}-${cpIndex}">Giá (số nguyên):</label><input type="text" id="${idPrefix}cp-price-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].price" /></div>
-              <div class="field-group"><label for="${idPrefix}cp-discount-${variantIndex}-${cpIndex}">Giảm giá (%):</label><input type="number" id="${idPrefix}cp-discount-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].discount" value="0" /></div>
-          `;
-          return cpSection;
-      }
-
-      function fallbackVariantHTMLTemplate(variantIndex, variantNumber, idPrefix = "add-") {
-        return `
-           <div class="variant-section" data-variant-index="${variantIndex}">
-               <input type="hidden" name="variants[${variantIndex}].id" value=""/>
-               <h5>Phiên bản <span class="variant-number">${variantNumber}</span>
-                   <button type="button" class="btn-remove-item" onclick="removeVariant(this, '${idPrefix}')" style="display:none;">×</button>
-               </h5>
-               <div class="field-group"><label for="${idPrefix}variant-image-file-${variantIndex}">Ảnh phiên bản:</label><input type="file" name="variantImageFiles" id="${idPrefix}variant-image-file-${variantIndex}" accept="image/*" /> <input type="hidden" name="variants[${variantIndex}].image" value="" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-storage-${variantIndex}">Bộ nhớ (Storage):</label><input type="text" id="${idPrefix}variant-storage-${variantIndex}" name="variants[${variantIndex}].storage" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-ram-${variantIndex}">RAM:</label><input type="text" id="${idPrefix}variant-ram-${variantIndex}" name="variants[${variantIndex}].ram" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-memory-${variantIndex}">Bộ nhớ trong (Memory):</label><input type="text" id="${idPrefix}variant-memory-${variantIndex}" name="variants[${variantIndex}].memory" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-screen-${variantIndex}">Màn hình:</label><input type="text" id="${idPrefix}variant-screen-${variantIndex}" name="variants[${variantIndex}].screen" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-chip-${variantIndex}">Chip:</label><input type="text" id="${idPrefix}variant-chip-${variantIndex}" name="variants[${variantIndex}].chip" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-camera_end-${variantIndex}">Camera sau:</label><input type="text" id="${idPrefix}variant-camera_end-${variantIndex}" name="variants[${variantIndex}].camera_end" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-camera_start-${variantIndex}">Camera trước:</label><input type="text" id="${idPrefix}variant-camera_start-${variantIndex}" name="variants[${variantIndex}].camera_start" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-pin-${variantIndex}">Pin:</label><input type="text" id="${idPrefix}variant-pin-${variantIndex}" name="variants[${variantIndex}].pin" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-power-${variantIndex}">Sạc (Power):</label><input type="text" id="${idPrefix}variant-power-${variantIndex}" name="variants[${variantIndex}].power" /></div>
-               <h6>Màu sắc & Giá:</h6>
-               <div class="colorpricesContainer" id="${idPrefix}cpContainer-${variantIndex}">
-                   ${fallbackColorPriceHTMLTemplate(variantIndex, 0, idPrefix)}
-               </div>
-               <button type="button" class="btn-add-item" onclick="addColorPrice(this, '${idPrefix}')">Thêm Màu/Giá</button>
-           </div>`;
-      }
-      function fallbackColorPriceHTMLTemplate(variantIndex, cpIndex, idPrefix = "add-") {
-           return `
-               <div class="colorprice-section" data-cp-index="${cpIndex}">
-                   <input type="hidden" name="variants[${variantIndex}].colorprices[${cpIndex}].id" value=""/>
-                   <h5>Màu/Giá <span class="cp-number">${cpIndex + 1}</span>
-                       <button type="button" class="btn-remove-item" onclick="removeColorPrice(this, '${idPrefix}')" style="display:none;">×</button>
-                   </h5>
-                   <div class="field-group"><label for="${idPrefix}cp-color-${variantIndex}-${cpIndex}">Màu:</label><input type="text" id="${idPrefix}cp-color-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].color" /></div>
-                   <div class="field-group"><label for="${idPrefix}cp-price-${variantIndex}-${cpIndex}">Giá (số nguyên):</label><input type="text" id="${idPrefix}cp-price-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].price" /></div>
-                   <div class="field-group"><label for="${idPrefix}cp-discount-${variantIndex}-${cpIndex}">Giảm giá (%):</label><input type="number" id="${idPrefix}cp-discount-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].discount" value="0"/></div>
-               </div>`;
-      }
-
-      window.removeColorPrice = function(button, formType) {
-          const cpSection = button.closest('.colorprice-section');
-          const cpContainer = cpSection.parentElement;
-          const variantSection = cpContainer.closest('.variant-section');
-          const variantIndex = parseInt(variantSection.getAttribute('data-variant-index'));
-
-          if (cpContainer.querySelectorAll('.colorprice-section').length > 1) {
-              cpSection.remove();
-              updateColorPriceIndexes(cpContainer, variantIndex, formType);
-          } else {
-              alert("Mỗi phiên bản phải có ít nhất một màu/giá.");
+      // --- PHẦN 3: HÀM VẼ BIỂU ĐỒ DOANH THU ---
+      function renderRevenueChart() {
+          const doanhThuSection = document.getElementById('doanh-thu');
+          if (!doanhThuSection || !doanhThuSection.classList.contains('active')) {
+              // console.log("Biểu đồ: Tab 'doanh-thu' không active, không vẽ.");
+              return;
           }
-      }
 
-      function updateColorPriceIndexes(cpContainer, variantIndex, formTypePrefix) {
-          if(!cpContainer) return;
-          const allCpSections = cpContainer.querySelectorAll('.colorprice-section');
-          allCpSections.forEach((cpNode, newCpIndex) => {
-              cpNode.setAttribute('data-cp-index', newCpIndex);
-              const cpNumberSpan = cpNode.querySelector('.cp-number');
-              if(cpNumberSpan) cpNumberSpan.textContent = newCpIndex + 1;
-              cpNode.querySelectorAll('input, label, select').forEach(el => {
-                  updateElementIndexes(el, variantIndex, newCpIndex, formTypePrefix);
-              });
-              const removeBtn = cpNode.querySelector('button.btn-remove-item[onclick^="removeColorPrice"]');
-              if (removeBtn) {
-                  removeBtn.style.display = allCpSections.length > 1 ? 'inline-block' : 'none';
-                  removeBtn.setAttribute('onclick', `removeColorPrice(this, '${formTypePrefix}')`);
+          const monthLabels = /*[[${monthLabels}]]*/ [];
+          const revenueValues = /*[[${revenueValues}]]*/ [];
+          const selectedYearForChart = /*[[${selectedYear}]]*/ null;
+          const canvasCtx = document.getElementById('monthlyRevenueChart');
+
+          console.log("Attempting to render chart. Active Tab (from model):", /*[[${activeTab}]]*/ null);
+          console.log("Data for chart - Year:", selectedYearForChart, "Labels:", monthLabels, "Values:", revenueValues);
+
+          if (canvasCtx) {
+              let existingChart = Chart.getChart(canvasCtx);
+              if (existingChart) {
+                  existingChart.destroy();
               }
-          });
-      }
 
-      function updateElementIndexes(element, variantIdx, cpIdx, formTypePrefix) {
-          const attrsToUpdate = ['name', 'id', 'for'];
-          attrsToUpdate.forEach(attr => {
-              let oldVal = element.getAttribute(attr);
-              if (oldVal) {
-                  let newVal = oldVal.replace(/variants\[(\d+|VAR_IDX_PLACEHOLDER)\]/g, `variants[${variantIdx}]`);
-                  if (cpIdx !== -1) {
-                      newVal = newVal.replace(/colorprices\[(\d+|CP_IDX_PLACEHOLDER)\]/g, `colorprices[${cpIdx}]`);
-                      newVal = newVal.replace(new RegExp(`(add-|edit-|gen-)(cp-(?:color|price|discount)-)(\\d+|VAR_IDX_PLACEHOLDER)-(\\d+|CP_IDX_PLACEHOLDER)`, 'g'), `${formTypePrefix}$2${variantIdx}-${cpIdx}`);
-                  } else {
-                      newVal = newVal.replace(new RegExp(`(add-|edit-|gen-)(variant-(?:image|storage|ram|memory|screen|chip|camera_end|camera_start|pin|power|image-file)-)(\\d+|VAR_IDX_PLACEHOLDER)`, 'g'), `${formTypePrefix}$2${variantIdx}`);
+              if (monthLabels && monthLabels.length > 0 && revenueValues && revenueValues.length > 0 && monthLabels.length === revenueValues.length) {
+                  console.log("Đang vẽ biểu đồ với dữ liệu:", monthLabels, revenueValues);
+                  new Chart(canvasCtx, {
+                      type: 'bar',
+                      data: {
+                          labels: monthLabels,
+                          datasets: [{
+                              label: 'Doanh thu (VNĐ) năm ' + selectedYearForChart,
+                              data: revenueValues,
+                              backgroundColor: 'rgba(215, 0, 24, 0.5)',
+                              borderColor: 'rgba(215, 0, 24, 1)',
+                              borderWidth: 1
+                          }]
+                      },
+                      options: { /* ... options của bạn ... */ } // Giữ nguyên options
+                  });
+              } else {
+                  console.log("Biểu đồ: Dữ liệu không hợp lệ hoặc không đủ để vẽ. Labels:", monthLabels, "Values:", revenueValues);
+                  // Xóa canvas nếu không có dữ liệu hợp lệ
+                  const context = canvasCtx.getContext('2d');
+                  context.clearRect(0, 0, canvasCtx.width, canvasCtx.height);
+                  // Hoặc hiển thị thông báo trực tiếp trên canvas
+                   if (monthLabels && monthLabels.length === 0 && (!revenueValues || revenueValues.length === 0)){
+                      context.font = "16px Arial";
+                      context.textAlign = "center";
+                      context.fillText("Không có dữ liệu doanh thu cho năm " + selectedYearForChart, canvasCtx.width/2, canvasCtx.height/2);
                   }
-                  element.setAttribute(attr, newVal);
               }
-          });
+          } else {
+              console.log("Biểu đồ: Không tìm thấy thẻ canvas với ID 'monthlyRevenueChart'.");
+          }
       }
+      // --- KẾT THÚC LOGIC BIỂU ĐỒ DOANH THU ---
 
-      if (addProductForm) {
-        updateAllVariantIndexes(addProductForm, 'add');
-      }
-      if (editProductForm) {
-          updateAllVariantIndexes(editProductForm, 'edit');
-      }
-  });
+  }); // Kết thúc của document.addEventListener('DOMContentLoaded')
 
+  // Các hàm helper toàn cục: toggleOrderDetails, toggleReportDetails
+  // Đặt các định nghĩa hàm này ở đây nếu chúng được gọi từ HTML (onclick)
+  // hoặc nếu bạn đã có chúng ở đây từ trước.
   function toggleOrderDetails(detailsId) {
     const detailsDiv = document.getElementById(detailsId);
     if (detailsDiv) {
         detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
     }
   }
-  /*]]>*/
+
+  function toggleReportDetails(detailsId) {
+    const detailsDiv = document.getElementById(detailsId);
+    if (detailsDiv) {
+        detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+    }
+  }
+  console.log("Attempting to render chart. Active Tab (from model):", /*[[${activeTab}]]*/ null);
+console.log("Data for chart - Year:", selectedYearForChart, "Labels:", monthLabels, "Values:", revenueValues);
 </script>
 </body>
 </html>

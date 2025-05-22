@@ -68,7 +68,7 @@ public class RegisterController {
             newUser.put("fullname", fullname );
             newUser.put("email", email );
             newUser.put("ban" , "true");
-            newUser.put("role" , "EMPLOYEE");
+            newUser.put("role" , "CUSTOMER");
 
             // Thêm vào danh sách
             users.add(newUser);

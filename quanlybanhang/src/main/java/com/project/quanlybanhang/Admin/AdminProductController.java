@@ -1,12 +1,16 @@
 package com.project.quanlybanhang.Admin;
 
 import com.project.quanlybanhang.Buy.BuyData;
+import com.project.quanlybanhang.Employee.ReportData;
+import com.project.quanlybanhang.Employee.ReportService;
 import com.project.quanlybanhang.Order.OrderService;
 import com.project.quanlybanhang.Product.Product;
 import com.project.quanlybanhang.Product.Productservice;
 import com.project.quanlybanhang.Product.Variant;
 import com.project.quanlybanhang.Product.colorprice;
 
+import com.project.quanlybanhang.SalesHistory.HistoryEntry;
+import com.project.quanlybanhang.SalesHistory.RevenueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,10 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 import com.project.quanlybanhang.User.User;
 import com.project.quanlybanhang.User.UserService;
@@ -43,12 +45,16 @@ public class AdminProductController {
     private static final String UPLOAD_DIR_RELATIVE_TO_RESOURCES = "static/data-product/image/";
     private final Path rootLocation; // Sẽ là .../src/main/resources/static/data-product/image/
     private final UserService userService;
+    private final ReportService reportService;
+    private final RevenueService revenueService;
 
     @Autowired
-    public AdminProductController(Productservice productService, OrderService orderService, UserService userService) {
+    public AdminProductController(Productservice productService, OrderService orderService, UserService userService, ReportService reportService, RevenueService revenueService) {
         this.productService = productService;
         this.orderService = orderService;
         this.userService = userService;
+        this.reportService = reportService;
+        this.revenueService = revenueService;
         String projectPath = System.getProperty("user.dir");
         // rootLocation trỏ đến thư mục lưu ảnh trong src/main/resources
         this.rootLocation = Paths.get(projectPath, "src", "main", "resources", UPLOAD_DIR_RELATIVE_TO_RESOURCES);
@@ -507,6 +513,111 @@ public class AdminProductController {
             try { model.addAttribute("allUsers", userService.getAllUsers()); }
             catch (IOException e) { model.addAttribute("allUsers", new ArrayList<>()); }
         }
+
+        return "html/admin";
+    }
+
+    @GetMapping("/reports") // Tạo một GetMapping mới cho trang report
+    public String showReportManagementPage(Model model) {
+        System.out.println("[AdminProductController] GET /reports - Loading report management page.");
+        model.addAttribute("activeTab", "thong-bao-report"); // Để active đúng tab trên sidebar
+        try {
+            List<ReportData> allReports = reportService.getAllReports(); //
+            model.addAttribute("allReports", allReports);
+            if (allReports.isEmpty()) {
+                model.addAttribute("reportManagementMessage", "Không có báo cáo nào.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("reportManagementErrorMessage", "Lỗi khi tải danh sách báo cáo: " + e.getMessage());
+            model.addAttribute("allReports", new ArrayList<>());
+        }
+
+        // Thêm các model attributes cần thiết khác cho trang admin.html nếu nó dùng chung template
+        // (Giữ nguyên logic thêm products, newProduct, allUsers của bạn nếu cần)
+        if (!model.containsAttribute("products")) {
+            try { model.addAttribute("products", productService.getAllProducts()); } catch (IOException e) { model.addAttribute("products", new ArrayList<>());}
+        }
+        // ... (các model attributes khác) ...
+
+        return "html/admin"; // Trả về template admin.html (nơi bạn sẽ thêm tab report)
+    }
+
+    @PostMapping("/reports/clear") // Endpoint mới để xóa report
+    public String clearAllReports(RedirectAttributes redirectAttributes) {
+        System.out.println("[AdminProductController] POST /reports/clear - Clearing all reports.");
+        try {
+            reportService.clearAllReports();
+            redirectAttributes.addFlashAttribute("reportManagementMessage", "Đã xóa tất cả report thành công!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("reportManagementErrorMessage", "Lỗi khi xóa report: " + e.getMessage());
+        }
+        return "redirect:/admin/products/reports"; // Chuyển hướng về trang report
+    }
+
+
+    @GetMapping("/revenue")
+    public String showRevenuePage(Model model, @RequestParam(name = "year", required = false) Integer year) {
+        model.addAttribute("activeTab", "doanh-thu");
+        System.out.println("[AdminProductController] GET /revenue - Loading revenue page.");
+
+        if (year == null) {
+            year = LocalDate.now().getYear(); // Mặc định là năm hiện tại
+        }
+
+        try {
+            List<HistoryEntry> processedHistory = revenueService.getProcessedHistoryWithRevenue();
+            double totalRevenueAllTime = revenueService.getTotalRevenue(processedHistory);
+            Map<String, Double> monthlyRevenue = revenueService.getMonthlyRevenue(processedHistory, year);
+
+            // Chuẩn bị danh sách các năm có dữ liệu để hiển thị trong dropdown
+            List<Integer> availableYears = processedHistory.stream()
+                    .filter(h -> h.getCompletedTimestamp() != null)
+                    .map(h -> h.getCompletedTimestamp().getYear())
+                    .distinct()
+                    .sorted()
+                    .collect(Collectors.toList());
+
+            if (availableYears.isEmpty() && !processedHistory.isEmpty()) { // Nếu có history nhưng không có completedTimestamp
+                availableYears.add(LocalDate.now().getYear()); // Thêm năm hiện tại nếu chưa có
+            } else if (availableYears.isEmpty()) {
+                availableYears.add(LocalDate.now().getYear());
+            }
+
+
+            model.addAttribute("totalRevenueAllTime", String.format("%,.0f VNĐ", totalRevenueAllTime));
+            model.addAttribute("monthlyRevenueData", monthlyRevenue); // Dữ liệu cho biểu đồ (Tên tháng -> Doanh thu)
+            model.addAttribute("selectedYear", year);
+            model.addAttribute("availableYears", availableYears);
+
+            // Chuyển đổi Map sang hai List để Chart.js dễ sử dụng
+            List<String> monthLabels = new ArrayList<>(monthlyRevenue.keySet());
+            List<Double> revenueValues = new ArrayList<>(monthlyRevenue.values());
+
+            model.addAttribute("monthLabels", monthLabels);
+            model.addAttribute("revenueValues", revenueValues);
+
+            if (processedHistory.isEmpty()) {
+                model.addAttribute("revenueMessage", "Không có dữ liệu lịch sử giao dịch.");
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("revenueErrorMessage", "Lỗi khi tải dữ liệu doanh thu: " + e.getMessage());
+            model.addAttribute("totalRevenueAllTime", "0 VNĐ");
+            model.addAttribute("monthlyRevenueData", new LinkedHashMap<>());
+            model.addAttribute("monthLabels", new ArrayList<>());
+            model.addAttribute("revenueValues", new ArrayList<>());
+            model.addAttribute("availableYears", List.of(LocalDate.now().getYear()));
+        }
+
+        // Thêm các model attributes cần thiết khác cho trang admin.html nếu nó dùng chung template
+        if (!model.containsAttribute("products")) {
+            try { model.addAttribute("products", productService.getAllProducts()); } catch (IOException e) { model.addAttribute("products", new ArrayList<>());}
+        }
+
 
         return "html/admin";
     }

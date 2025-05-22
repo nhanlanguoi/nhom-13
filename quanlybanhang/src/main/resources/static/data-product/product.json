@@ -123,4 +123,32 @@
   } ],
   "tags" : [ "iphone", "mới", "giảm giá", "cao cấp" ],
   "releaseDate" : null
+}, {
+  "id" : "878d0a48-ae4c-49d2-8e30-fd08a52fec8d",
+  "name" : "macbook",
+  "brand" : "Apple",
+  "category" : "Máy tính",
+  "description" : "máy tính",
+  "rating" : 5.0,
+  "variants" : [ {
+    "id" : "878d0a48-ae4c-49d2-8e30-fd08a52fec8d-variant-26ce",
+    "storage" : "5G",
+    "ram" : "16GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Trắng",
+      "price" : "30000000",
+      "discount" : 10
+    } ],
+    "image" : "/data-product/image/prod_97a1_newvar0_7301531a.jpeg",
+    "screen" : "Dynamic AMOLED 2X 11",
+    "chip" : "Snapdragon 8 Gen 2 for Galaxy",
+    "memory" : "228GB",
+    "camera_end" : "13 MP",
+    "camera_start" : "12 MP",
+    "pin" : "8400 mAh",
+    "power" : "45 W"
+  } ],
+  "tags" : [ "macbook", "mới", "giảm giá", "cao cấp", "Apple" ],
+  "releaseDate" : null
 } ]

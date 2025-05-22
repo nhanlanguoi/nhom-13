@@ -18,15 +18,14 @@ public class ReportData {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime reportTimestamp;
 
-    private String employeeUsername; // Nhân viên thực hiện report
-    private String employeeFullname; // Tên đầy đủ của nhân viên report
-    private String reportReason;     // Lý do report từ textarea
+    private String employeeUsername;
+    private String employeeFullname;
+    private String reportReason;
 
-    private BuyData reportedOrderData; // Thông tin đầy đủ của đơn hàng gốc bị report
+    private BuyData reportedOrderData; 
 
-    // Thông tin bổ sung nếu đơn hàng đã được nhận giao
-    private String originalDangGiaoId; // ID của đơn hàng trong danggiao.json (nếu có)
-    private String originalAcceptingEmployee; // Username của nhân viên đã nhận đơn (nếu có)
+    private String originalDangGiaoId;
+    private String originalAcceptingEmployee;
 
     public ReportData() {
         this.reportId = UUID.randomUUID().toString();
@@ -34,7 +33,8 @@ public class ReportData {
     }
 
     // Constructor tiện lợi
-    public ReportData(String employeeUsername, String employeeFullname, String reportReason, BuyData reportedOrderData, String originalDangGiaoId, String originalAcceptingEmployee) {
+    public ReportData(String employeeUsername, String employeeFullname, String reportReason, BuyData reportedOrderData,
+            String originalDangGiaoId, String originalAcceptingEmployee) {
         this();
         this.employeeUsername = employeeUsername;
         this.employeeFullname = employeeFullname;
@@ -45,20 +45,67 @@ public class ReportData {
     }
 
     // Getters and Setters
-    public String getReportId() { return reportId; }
-    public void setReportId(String reportId) { this.reportId = reportId; }
-    public LocalDateTime getReportTimestamp() { return reportTimestamp; }
-    public void setReportTimestamp(LocalDateTime reportTimestamp) { this.reportTimestamp = reportTimestamp; }
-    public String getEmployeeUsername() { return employeeUsername; }
-    public void setEmployeeUsername(String employeeUsername) { this.employeeUsername = employeeUsername; }
-    public String getEmployeeFullname() { return employeeFullname; }
-    public void setEmployeeFullname(String employeeFullname) { this.employeeFullname = employeeFullname; }
-    public String getReportReason() { return reportReason; }
-    public void setReportReason(String reportReason) { this.reportReason = reportReason; }
-    public BuyData getReportedOrderData() { return reportedOrderData; }
-    public void setReportedOrderData(BuyData reportedOrderData) { this.reportedOrderData = reportedOrderData; }
-    public String getOriginalDangGiaoId() { return originalDangGiaoId; }
-    public void setOriginalDangGiaoId(String originalDangGiaoId) { this.originalDangGiaoId = originalDangGiaoId; }
-    public String getOriginalAcceptingEmployee() { return originalAcceptingEmployee; }
-    public void setOriginalAcceptingEmployee(String originalAcceptingEmployee) { this.originalAcceptingEmployee = originalAcceptingEmployee; }
+    public String getReportId() {
+        return reportId;
+    }
+
+    public void setReportId(String reportId) {
+        this.reportId = reportId;
+    }
+
+    public LocalDateTime getReportTimestamp() {
+        return reportTimestamp;
+    }
+
+    public void setReportTimestamp(LocalDateTime reportTimestamp) {
+        this.reportTimestamp = reportTimestamp;
+    }
+
+    public String getEmployeeUsername() {
+        return employeeUsername;
+    }
+
+    public void setEmployeeUsername(String employeeUsername) {
+        this.employeeUsername = employeeUsername;
+    }
+
+    public String getEmployeeFullname() {
+        return employeeFullname;
+    }
+
+    public void setEmployeeFullname(String employeeFullname) {
+        this.employeeFullname = employeeFullname;
+    }
+
+    public String getReportReason() {
+        return reportReason;
+    }
+
+    public void setReportReason(String reportReason) {
+        this.reportReason = reportReason;
+    }
+
+    public BuyData getReportedOrderData() {
+        return reportedOrderData;
+    }
+
+    public void setReportedOrderData(BuyData reportedOrderData) {
+        this.reportedOrderData = reportedOrderData;
+    }
+
+    public String getOriginalDangGiaoId() {
+        return originalDangGiaoId;
+    }
+
+    public void setOriginalDangGiaoId(String originalDangGiaoId) {
+        this.originalDangGiaoId = originalDangGiaoId;
+    }
+
+    public String getOriginalAcceptingEmployee() {
+        return originalAcceptingEmployee;
+    }
+
+    public void setOriginalAcceptingEmployee(String originalAcceptingEmployee) {
+        this.originalAcceptingEmployee = originalAcceptingEmployee;
+    }
 }

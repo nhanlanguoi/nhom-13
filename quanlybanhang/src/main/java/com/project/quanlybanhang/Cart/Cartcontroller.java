@@ -30,7 +30,7 @@ import java.util.*;
 
 @Controller
 public class Cartcontroller {
-    // private Boolean showLoginPopup = false; // We'll replace this logic
+   
     private String URL = "src/main/resources/static/data-cart/cart.json";
     Productservice productService = new Productservice();
     private String URL_BUY = "src/main/resources/static/data-buy/buy.json";
@@ -67,16 +67,14 @@ public class Cartcontroller {
         if (userCartOpt.isPresent()) {
             cartobject = userCartOpt.get();
         } else {
-            // If user has no cart entry yet, create one (though typically done on add-to-cart)
+          
             cartobject.setUsername(user.getUsername());
             cartobject.setIteam(new ArrayList<>()); // Initialize with empty item list
-            // cartList.add(cartobject); // Don't add here, only display. Adding happens elsewhere.
+           
         }
 
         model.addAttribute("cart", cartobject.getIteam() != null ? cartobject.getIteam() : new ArrayList<>());
-        // model.addAttribute("showLoginPopup", showLoginPopup); // We manage popups differently now
-        // showLoginPopup = false; // Reset if needed
-
+       
         return "html/cart";
     }
 
@@ -136,33 +134,29 @@ public class Cartcontroller {
             return "redirect:/cart?error=variantNotFound";
         }
 
-        Cartutils.addToCart(cartToUpdate, iteamsobject); // Ensure Cartutils handles adding/updating correctly
+        Cartutils.addToCart(cartToUpdate, iteamsobject); 
         return "redirect:/cart";
     }
 
     @PostMapping("/add-to-cart-and-buy")
     public String addtocartandbuy(@RequestParam String productId,
                                   @RequestParam String variantid,
-                                  @RequestParam int colorpriceid, // Đảm bảo kiểu dữ liệu khớp
+                                  @RequestParam int colorpriceid, 
                                   HttpSession session,
                                   Model model,
-                                  RedirectAttributes redirectAttributes) throws IOException { // Thêm RedirectAttributes
+                                  RedirectAttributes redirectAttributes) throws IOException { 
 
         Object userObj = session.getAttribute("user");
-        // URL để redirect lại trang sản phẩm. Cần đảm bảo các tham số này luôn có sẵn.
+       
         String productPageUrl = "/product/" + productId + "/" + variantid;
-        // Thêm colorpriceid vào URL nếu nó hợp lệ và cần thiết cho việc hiển thị đúng sản phẩm
-        // Giả sử colorpriceid = 0 hoặc không có nghĩa là không có màu cụ thể nào được chọn từ URL ban đầu
-        // hoặc colorpriceid luôn được truyền và là một phần của định danh trạng thái trang sản phẩm
-        if (colorpriceid > 0) { // Hoặc một điều kiện kiểm tra tính hợp lệ khác cho colorpriceid
+       
+        if (colorpriceid > 0) { 
             productPageUrl += "?colorid=" + colorpriceid;
         }
 
 
         if (userObj == null) {
-            // model.addAttribute("showLoginPopupFromCart", true); // Không hiệu quả khi redirect
-            // model.addAttribute("products", productService.getAllProducts());
-            // return "html/home";
+          
             model.addAttribute("showLoginPopup", true); // Specific flag for login popup from cart
             model.addAttribute("products", productService.getAllProducts());
             return "html/home";
@@ -226,9 +220,7 @@ public class Cartcontroller {
         return "redirect:" + productPageUrl;
     }
 
-    // Bạn cần có phương thức updateCartFile (hoặc tương tự Cartutils.addToCart đã được điều chỉnh)
-    // để xử lý việc đọc/ghi vào file cart.json một cách an toàn.
-    // Ví dụ:
+   
     private synchronized void updateCartFile(String username, iteams newItem, LocalDateTime updateTime) throws IOException {
         File cartFile = new File(URL);
         List<cart> allCarts;
@@ -320,31 +312,27 @@ public class Cartcontroller {
                 currentUserCart.getIteam().removeIf(item -> item.getVariantId().equals(variantid) && item.getColor().equals(color));
                 cartUpdated = true;
             }
-        } else if ("add".equals(action)) { // "add" here means initiate buy process
-            // We need to pass item details to the popup.
-            // The parameters (variantid, quantity, productid, color) are already the item details.
+        } else if ("add".equals(action)) { 
+            
             Map<String, Object> itemToBuyDetails = new HashMap<>();
             itemToBuyDetails.put("productId", productid);
             itemToBuyDetails.put("variantId", variantid);
             itemToBuyDetails.put("color", color);
             itemToBuyDetails.put("quantity", quantity);
-            // You might want to fetch the product and variant objects to pass more info if needed by the popup
-            // or for display, but for saving to buy.json, IDs and basic info are usually enough.
-
+           
             model.addAttribute("itemToBuyDetails", itemToBuyDetails);
             model.addAttribute("showAddressPopup", true); // Flag to show the new popup
 
-            // Also need to reload current cart items for the main page display
+           
             model.addAttribute("cart", currentUserCart.getIteam() != null ? currentUserCart.getIteam() : new ArrayList<>());
-            // No file writing here for "add", just setting up for popup
-            return "html/cart"; // Re-render cart page with popup
+           
+            return "html/cart"; 
         }
-        // No else needed, as other actions are not defined
-
+      
         if (cartUpdated) {
             if (!cartFile.exists()) {
                 cartFile.getParentFile().mkdirs();
-                cartFile.createNewFile(); // Should not be needed if cartList was read successfully
+                cartFile.createNewFile(); 
             }
             mapper.writeValue(cartFile, cartList);
         }

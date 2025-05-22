@@ -1,10 +1,232 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <style>
+        /* ... CSS của bạn tương tự home.html cho search-results-box ... */
+        .search-container {
+            position: relative;
+        }
+
+        .search-results-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1001;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-result-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .search-result-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .popup-overlay {
+            /* ... */
+        }
+
+        .popup-box {
+            /* ... */
+        }
+
+        .no-products-found-message {
+            text-align: center;
+            font-size: 1.1em;
+            color: #555;
+            padding: 40px 0;
+        }
+
+        .back-to-home-link {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${searchQuery != null and searchQuery != '' ? 'Kết quả cho: ' + searchQuery : 'Sản phẩm'}">Sản phẩm
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/genaral.css" />
 </head>
+
 <body>
 
+    <div th:if="${showLoginPopup}" class="popup-overlay">
+    </div>
+
+    <header th:replace="~{html/home :: mainHeader}"></header>
+
+    <main class="container">
+        <section class="product-display">
+            <h2 class="section-title"
+                th:text="${searchQuery != null and searchQuery != '' ? 'Kết quả tìm kiếm cho: ' + searchQuery : 'Tất cả sản phẩm'}">
+                Sản phẩm</h2>
+
+            <div th:if="${noProductsMessage != null}" class="no-products-found-message">
+                <p th:text="${noProductsMessage}"></p>
+                <a href="/" class="back-to-home-link">Quay lại trang chủ</a>
+            </div>
+
+            <div th:if="${searchErrorMessage != null}" class="no-products-found-message" style="color: red;">
+                <p th:text="${searchErrorMessage}"></p>
+                <a href="/" class="back-to-home-link">Thử lại trang chủ</a>
+            </div>
+
+            <div class="products-grid" th:if="${products != null and not #lists.isEmpty(products)}">
+                <div class="tag-product" th:each="product : ${products}">
+                    <a th:href="@{/product/{productid}/{id}(productid=${product.id}, id=${product.variants[0].id}, colorid =${product.variants[0].colorprices[0].id})}"
+                        class="product-link">
+                        <img class="product-image"
+                            th:src="${product.variants[0].image != null ? product.variants[0].image : '/images/placeholder.png'}"
+                            th:alt="'Hình ảnh ' + ${product.name}"
+                            onerror="this.onerror=null;this.src='/images/placeholder.png';" />
+                        <div class="product-info">
+                            <p class="product-name" th:text="${product.name}">Tên sản phẩm mẫu</p>
+                            <p class="product-price"
+                                th:text="${product.variants[0].colorprices[0].formattedPrice} + '₫'">Giá: 10.000.000₫
+                            </p>
+                            <p class="product-brand" th:text="'Thương hiệu: ' + ${product.brand}">Thương hiệu: ABC</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div
+                th:if="${(products == null or #lists.isEmpty(products)) and noProductsMessage == null and searchErrorMessage == null and (searchQuery != null and searchQuery != '')}">
+                <p class="no-products-found-message" th:text="'Không tìm thấy sản phẩm nào cho tag: ' + ${searchQuery}">
+                </p>
+                <a href="/" class="back-to-home-link">Quay lại trang chủ</a>
+            </div>
+        </section>
+    </main>
+
+    <br><br><br><br><br>
+
+    <footer th:replace="~{html/home :: mainFooter}"></footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const currentYearSpan = document.getElementById('current-year');
+            if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
+
+
+            const searchInput = document.getElementById('search-input-main');
+            const searchResultsBox = document.getElementById('search-results-main');
+            const searchForm = document.getElementById('search-form');
+
+            if (searchInput && searchResultsBox && searchForm) {
+                let debounceSearchTimeout;
+
+                searchInput.addEventListener('input', function () {
+                    const query = this.value.trim();
+                    clearTimeout(debounceSearchTimeout);
+                    if (query.length > 0) {
+                        debounceSearchTimeout = setTimeout(() => fetchTagSuggestions(query), 300);
+                    } else {
+                        searchResultsBox.style.display = 'none';
+                        searchResultsBox.innerHTML = '';
+                    }
+                });
+
+                searchInput.addEventListener('keydown', function (event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        if (searchInput.value.trim() !== '') {
+                            searchForm.submit();
+                        }
+                    }
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (e.target !== searchInput && !searchResultsBox.contains(e.target) && !searchInput.contains(e.target)) {
+                        if (searchResultsBox.style.display !== 'none') {
+                            searchResultsBox.style.display = 'none';
+                        }
+                    }
+                });
+
+                searchInput.addEventListener('focus', function () {
+                    if (this.value.trim().length > 0 && searchResultsBox.children.length > 0) {
+                        searchResultsBox.style.display = 'block';
+                    } else if (this.value.trim().length > 0) {
+                        fetchTagSuggestions(this.value.trim());
+                    }
+                });
+
+                function fetchTagSuggestions(query) {
+                    fetch(`/api/products/tags/suggest?q=${encodeURIComponent(query)}`)
+                        .then(response => {
+                            if (response.status === 204) return [];
+                            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                            return response.json();
+                        })
+                        .then(tags => displayTagSuggestions(tags, query))
+                        .catch(error => {
+                            console.error('Error fetching tag suggestions:', error);
+                            if (searchResultsBox) {
+                                searchResultsBox.style.display = 'none';
+                                searchResultsBox.innerHTML = '';
+                            }
+                        });
+                }
+
+                function displayTagSuggestions(tags, originalQuery) {
+                    if (!searchResultsBox) return;
+                    searchResultsBox.innerHTML = '';
+                    if (tags && tags.length > 0) {
+                        tags.forEach(tag => {
+                            const item = document.createElement('div');
+                            item.classList.add('search-result-item');
+                            item.textContent = tag;
+                            item.addEventListener('click', function () {
+                                if (searchInput) searchInput.value = this.textContent;
+                                searchResultsBox.style.display = 'none';
+                                if (searchForm) searchForm.submit();
+                            });
+                            searchResultsBox.appendChild(item);
+                        });
+                        searchResultsBox.style.display = 'block';
+                    } else {
+                        if (originalQuery && originalQuery.length > 0) {
+                            const noResultItem = document.createElement('div');
+                            noResultItem.classList.add('search-result-item');
+                            noResultItem.style.color = '#777';
+                            noResultItem.textContent = `Không có gợi ý cho "${originalQuery}"`;
+                            searchResultsBox.appendChild(noResultItem);
+                            searchResultsBox.style.display = 'block';
+                        } else {
+                            searchResultsBox.style.display = 'none';
+                        }
+                    }
+                }
+            }
+
+
+
+
+        });
+    </script>
 </body>
+
 </html>

@@ -6,8 +6,10 @@
 }
 
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif; /* Font chữ hiện đại, dễ đọc */
-    background-color: #F5F5F7; /* Màu nền xám nhạt cho toàn trang */
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    /* Font chữ hiện đại, dễ đọc */
+    background-color: #F5F5F7;
+    /* Màu nền xám nhạt cho toàn trang */
     color: #333333;
     display: flex;
     min-height: 100vh;
@@ -20,13 +22,18 @@ body {
 
 /* --- Sidebar --- */
 .sidebar {
-    width: 260px; /* Độ rộng của sidebar */
-    background-color: #FFFFFF; /* Nền trắng cho sidebar */
-    color: #222222; /* Màu chữ chính trong sidebar */
+    width: 260px;
+    /* Độ rộng của sidebar */
+    background-color: #FFFFFF;
+    /* Nền trắng cho sidebar */
+    color: #222222;
+    /* Màu chữ chính trong sidebar */
     display: flex;
     flex-direction: column;
-    border-right: 1px solid #E0E0E0; /* Viền phân cách nhẹ */
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ cho sidebar */
+    border-right: 1px solid #E0E0E0;
+    /* Viền phân cách nhẹ */
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+    /* Đổ bóng nhẹ cho sidebar */
 }
 
 .sidebar-header {
@@ -36,14 +43,16 @@ body {
 }
 
 .sidebar-header .logo {
-    color: #D70018; /* Màu đỏ CellphoneS cho logo */
+    color: #D70018;
+    /* Màu đỏ CellphoneS cho logo */
     font-size: 1.8em;
     font-weight: bold;
     text-decoration: none;
 }
 
 .sidebar-header .logo-img {
-    max-width: 150px; /* Điều chỉnh kích thước logo nếu dùng ảnh */
+    max-width: 150px;
+    /* Điều chỉnh kích thước logo nếu dùng ảnh */
 }
 
 .sidebar-nav {
@@ -55,43 +64,58 @@ body {
     display: flex;
     align-items: center;
     background-color: transparent;
-    color: #4A4A4A; /* Màu chữ cho các nút */
+    color: #4A4A4A;
+    /* Màu chữ cho các nút */
     border: none;
     width: 100%;
-    padding: 15px 25px; /* Khoảng đệm cho nút */
+    padding: 15px 25px;
+    /* Khoảng đệm cho nút */
     text-align: left;
-    font-size: 1em; /* Cỡ chữ nút */
+    font-size: 1em;
+    /* Cỡ chữ nút */
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease, border-left-color 0.2s ease;
-    border-left: 4px solid transparent; /* Viền trái cho trạng thái active */
+    border-left: 4px solid transparent;
+    /* Viền trái cho trạng thái active */
 }
 
 .nav-button i {
-    margin-right: 12px; /* Khoảng cách giữa icon và chữ */
+    margin-right: 12px;
+    /* Khoảng cách giữa icon và chữ */
     font-size: 1.1em;
-    width: 20px; /* Đảm bảo icon thẳng hàng */
+    width: 20px;
+    /* Đảm bảo icon thẳng hàng */
     text-align: center;
-    color: #777777; /* Màu cho icon */
+    color: #777777;
+    /* Màu cho icon */
 }
 
 .nav-button:hover {
-    background-color: #FFF0F1; /* Màu nền hồng nhạt khi hover, tương tự CellphoneS */
-    color: #D70018; /* Màu chữ đỏ khi hover */
+    background-color: #FFF0F1;
+    /* Màu nền hồng nhạt khi hover, tương tự CellphoneS */
+    color: #D70018;
+    /* Màu chữ đỏ khi hover */
 }
 
 .nav-button:hover i {
-    color: #D70018; /* Màu icon đỏ khi hover */
+    color: #D70018;
+    /* Màu icon đỏ khi hover */
 }
 
 .nav-button.active {
-    background-color: #FDE7EA; /* Màu nền hồng nhạt hơn cho nút active */
-    color: #D70018; /* Màu chữ đỏ cho nút active */
-    font-weight: 600; /* Chữ đậm hơn cho nút active */
-    border-left: 4px solid #D70018; /* Viền đỏ bên trái cho nút active */
+    background-color: #FDE7EA;
+    /* Màu nền hồng nhạt hơn cho nút active */
+    color: #D70018;
+    /* Màu chữ đỏ cho nút active */
+    font-weight: 600;
+    /* Chữ đậm hơn cho nút active */
+    border-left: 4px solid #D70018;
+    /* Viền đỏ bên trái cho nút active */
 }
 
 .nav-button.active i {
-    color: #D70018; /* Màu icon đỏ cho nút active */
+    color: #D70018;
+    /* Màu icon đỏ cho nút active */
 }
 
 .sidebar-footer {
@@ -105,10 +129,12 @@ body {
 /* --- Main Content --- */
 .main-content {
     flex-grow: 1;
-    padding: 0; /* Xóa padding mặc định để header chiếm toàn bộ chiều rộng */
+    padding: 0;
+    /* Xóa padding mặc định để header chiếm toàn bộ chiều rộng */
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
+    overflow-y: auto;
+    /* Cho phép cuộn nếu nội dung dài */
 }
 
 .main-header {
@@ -118,8 +144,9 @@ body {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #E0E0E0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-    position: sticky; /* Giữ header ở trên cùng khi cuộn */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    /* Giữ header ở trên cùng khi cuộn */
     top: 0;
     z-index: 100;
 }
@@ -130,7 +157,8 @@ body {
     background-color: #F5F5F7;
     padding: 8px 15px;
     border-radius: 20px;
-    width: 300px; /* Có thể điều chỉnh */
+    width: 300px;
+    /* Có thể điều chỉnh */
 }
 
 .search-bar i {
@@ -149,7 +177,8 @@ body {
 .user-profile {
     display: flex;
     align-items: center;
-    gap: 15px; /* Khoảng cách giữa các item */
+    gap: 15px;
+    /* Khoảng cách giữa các item */
 }
 
 .user-profile .avatar {
@@ -176,18 +205,22 @@ body {
 }
 
 .content-section {
-    padding: 30px; /* Padding cho các mục nội dung */
-    display: none; /* Ẩn tất cả các section ban đầu */
+    padding: 30px;
+    /* Padding cho các mục nội dung */
+    display: none;
+    /* Ẩn tất cả các section ban đầu */
     animation: fadeInContent 0.4s ease-in-out;
 }
 
 .content-section.active {
-    display: block; /* Hiện section đang active */
+    display: block;
+    /* Hiện section đang active */
 }
 
 .content-section h1 {
     font-size: 1.8em;
-    color: #D70018; /* Màu đỏ cho tiêu đề chính của section */
+    color: #D70018;
+    /* Màu đỏ cho tiêu đề chính của section */
     margin-bottom: 25px;
     padding-bottom: 10px;
     border-bottom: 2px solid #F0F0F0;
@@ -218,7 +251,8 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #B30014; /* Màu đỏ đậm hơn khi hover */
+    background-color: #B30014;
+    /* Màu đỏ đậm hơn khi hover */
 }
 
 /* Animation cho nội dung */
@@ -227,6 +261,7 @@ body {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -238,6 +273,7 @@ body {
     .dashboard-container {
         flex-direction: column;
     }
+
     .sidebar {
         width: 100%;
         height: auto;
@@ -245,35 +281,47 @@ body {
         border-bottom: 1px solid #E0E0E0;
         /* Có thể bạn muốn sidebar-nav hiển thị theo hàng ngang trên mobile */
     }
+
     .sidebar-nav {
         display: flex;
-        overflow-x: auto; /* Cho phép cuộn ngang các nút nếu quá nhiều */
+        overflow-x: auto;
+        /* Cho phép cuộn ngang các nút nếu quá nhiều */
         padding-top: 0;
     }
+
     .nav-button {
         padding: 12px 15px;
         border-left: none;
         border-bottom: 3px solid transparent;
-        flex-shrink: 0; /* Ngăn các nút bị co lại */
+        flex-shrink: 0;
+        /* Ngăn các nút bị co lại */
     }
+
     .nav-button.active {
         border-left: none;
         border-bottom: 3px solid #D70018;
     }
+
     .main-header {
         padding: 10px 15px;
     }
+
     .search-bar {
-        width: auto; /* Cho phép thanh tìm kiếm co giãn */
+        width: auto;
+        /* Cho phép thanh tìm kiếm co giãn */
         flex-grow: 1;
         margin-right: 10px;
     }
+
     .user-profile span {
-        display: none; /* Ẩn tên người dùng trên mobile để tiết kiệm không gian */
+        display: none;
+        /* Ẩn tên người dùng trên mobile để tiết kiệm không gian */
     }
+
     .content-section {
         padding: 20px;
     }
+
     .content-section h1 {
         font-size: 1.5em;
     }
@@ -285,20 +333,25 @@ body {
 /* ... (các CSS khác của bạn) ... */
 
 .main-content .content-section {
-    display: none; /* Ẩn tất cả các section theo mặc định */
-    animation: fadeInContent 0.4s ease-in-out; /* Thêm hiệu ứng mờ dần khi xuất hiện */
+    display: none;
+    /* Ẩn tất cả các section theo mặc định */
+    animation: fadeInContent 0.4s ease-in-out;
+    /* Thêm hiệu ứng mờ dần khi xuất hiện */
 }
 
 .main-content .content-section.active {
-    display: block; /* Chỉ hiển thị section có class 'active' */
+    display: block;
+    /* Chỉ hiển thị section có class 'active' */
 }
 
 /* Animation cho nội dung (tùy chọn) */
 @keyframes fadeInContent {
     from {
         opacity: 0;
-        transform: translateY(10px); /* Hơi trượt lên từ dưới */
+        transform: translateY(10px);
+        /* Hơi trượt lên từ dưới */
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -307,12 +360,527 @@ body {
 
 /* CSS cho nút active trong sidebar (bạn có thể đã có phần này) */
 .sidebar .nav-button.active {
-    background-color: #FDE7EA; /* Ví dụ: Màu nền CellphoneS nhạt cho nút active */
-    color: #D70018; /* Ví dụ: Màu chữ đỏ CellphoneS cho nút active */
+    background-color: #FDE7EA;
+    /* Ví dụ: Màu nền CellphoneS nhạt cho nút active */
+    color: #D70018;
+    /* Ví dụ: Màu chữ đỏ CellphoneS cho nút active */
     font-weight: 600;
-    border-left: 4px solid #D70018; /* Ví dụ: Viền trái đỏ */
+    border-left: 4px solid #D70018;
+    /* Ví dụ: Viền trái đỏ */
 }
 
 .sidebar .nav-button.active i {
-    color: #D70018; /* Màu icon cho nút active */
+    color: #D70018;
+    /* Màu icon cho nút active */
+}
+
+
+/* --- CSS của bạn --- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar-header .logo-img {
+    max-width: 180px;
+    height: auto;
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+}
+
+.sidebar-nav .nav-button {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    color: #495057;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 15px;
+}
+
+.sidebar-nav .nav-button i {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-nav .nav-button:hover,
+.sidebar-nav .nav-button.active {
+    background-color: #D70018;
+    color: #fff;
+}
+
+.sidebar-footer {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    font-size: 0.9em;
+    color: #777;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-header {
+    background-color: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.user-profile .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.user-profile span {
+    font-weight: 500;
+    margin-right: 20px;
+}
+
+.user-profile .notification-icon {
+    font-size: 1.2em;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.user-profile a {
+    color: #D70018;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.user-profile a i {
+    margin-right: 5px;
+}
+
+.content-section {
+    display: none;
+    padding: 30px;
+    background-color: #fff;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+.content-section.active {
+    display: block;
+}
+
+.content-section h1,
+.content-section h2,
+.content-section h3 {
+    color: #D70018;
+    margin-top: 0;
+}
+
+.content-section h1 {
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+.content-section h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.content-section h3 {
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.product-list-container {
+    padding: 20px;
+}
+
+.product-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-item h4 {
+    margin: 0;
+}
+
+.edit-form-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-form-container label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #555;
+}
+
+.edit-form-container input[type="text"],
+.edit-form-container input[type="email"],
+.edit-form-container input[type="number"],
+.edit-form-container select,
+.edit-form-container textarea {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.edit-form-container textarea {
+    min-height: 80px;
+}
+
+.edit-form-container .form-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-edit,
+.btn-save,
+.btn-cancel,
+.btn-remove-user {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-edit {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #0056b3;
+}
+
+.btn-save {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-save:hover {
+    background-color: #1e7e34;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    line-height: normal;
+}
+
+.btn-cancel:hover {
+    background-color: #545b62;
+}
+
+.btn-remove-user {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-remove-user:hover {
+    background-color: #c82333;
+}
+
+.variant-section {
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    background-color: #fff;
+    position: relative;
+}
+
+.variant-section h5 {
+    margin-top: 0;
+    color: #D70018;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.colorprice-section {
+    border: 1px dashed #ced4da;
+    padding: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: #fdfdfd;
+    position: relative;
+}
+
+.colorprice-section h5 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 0.95em;
+    color: #495057;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.field-group {
+    margin-bottom: 10px;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success,
+.success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+.alert-danger,
+.error-message {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+.btn-add-item {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+#addVariantButton {
+    background-color: #007bff;
+}
+
+.btn-add-item:hover {
+    opacity: 0.8;
+}
+
+.btn-remove-item {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8em;
+    line-height: 1.5;
+    text-align: center;
+    cursor: pointer;
+    padding: 3px 8px;
+}
+
+.btn-remove-item:hover {
+    background-color: #c0392b;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95em;
+}
+
+table th,
+table td {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: 600;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table td a.btn-edit {
+    margin-right: 5px;
+    padding: 6px 12px;
+    font-size: 0.9em;
+}
+
+table td form {
+    display: inline-block;
+    margin: 0;
+}
+
+/* Nút xóa người dùng trong bảng */
+table td button[type="submit"] {
+    background-color: #dc3545;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+table td button[type="submit"]:hover {
+    background-color: #c82333;
+}
+
+table td button[type="submit"]:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
+.revenue-summary {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.revenue-summary h3 {
+    color: #D70018;
+    margin-top: 0;
+}
+
+.revenue-summary p {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #28a745;
+    /* Màu xanh lá cho doanh thu */
+    margin: 10px 0 0 0;
+}
+
+.chart-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.year-selector-form {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.year-selector-form label {
+    font-weight: bold;
+}
+
+.year-selector-form select,
+.year-selector-form button {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.year-selector-form button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.year-selector-form button:hover {
+    background-color: #0056b3;
 }

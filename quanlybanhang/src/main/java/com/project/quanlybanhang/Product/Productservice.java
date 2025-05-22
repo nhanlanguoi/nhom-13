@@ -130,6 +130,27 @@ public class Productservice implements managerdataproduct {
 
 
     /**
+     * Lấy danh sách sản phẩm dựa trên tên danh mục.
+     * Nếu categoryName là null hoặc rỗng, trả về tất cả sản phẩm.
+     * So sánh không phân biệt hoa thường.
+     * @param categoryName Tên danh mục cần lọc.
+     * @return Danh sách sản phẩm thuộc danh mục đã cho.
+     * @throws IOException Nếu có lỗi khi tải tất cả sản phẩm.
+     */
+    public List<Product> getProductsByCategory(String categoryName) throws IOException {
+        List<Product> allProducts = getAllProducts(); // Lấy tất cả sản phẩm hiện có
+        if (categoryName == null || categoryName.trim().isEmpty()) {
+            // Nếu không có tên danh mục hoặc tên danh mục rỗng, trả về tất cả sản phẩm
+            return allProducts;
+        }
+        // Lọc danh sách sản phẩm dựa trên categoryName (không phân biệt hoa thường)
+        return allProducts.stream()
+                .filter(product -> categoryName.equalsIgnoreCase(product.getCategory()))
+                .collect(Collectors.toList());
+    }
+
+
+    /**
      * Lưu danh sách sản phẩm vào file.
      * Ghi vào src/main/resources trước, sau đó ghi vào target/classes.
      * @param products Danh sách sản phẩm cần lưu.
@@ -431,5 +452,51 @@ public class Productservice implements managerdataproduct {
             System.err.println("[ProductService] Unexpected error deleting image file for web path '" + imageWebPath + "' (filename: "+filename+"): " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * Lấy danh sách tất cả các tag duy nhất từ tất cả sản phẩm.
+     * @return Danh sách các tag duy nhất.
+     * @throws IOException Nếu có lỗi khi tải sản phẩm.
+     */
+    public List<String> getAllUniqueTags() throws IOException {
+        List<Product> allProducts = getAllProducts();
+        System.out.println("[ProductService DEBUG] Tổng số sản phẩm đọc được: " + (allProducts != null ? allProducts.size() : "null"));
+
+        if (allProducts != null && !allProducts.isEmpty()) {
+            System.out.println("[ProductService DEBUG] Tags của sản phẩm đầu tiên (nếu có): " + allProducts.get(0).getTags());
+        }
+
+        List<String> uniqueTags = allProducts.stream()
+                .filter(product -> product.getTags() != null)
+                .flatMap(product -> product.getTags().stream())
+                .filter(tag -> tag != null && !tag.trim().isEmpty())
+                .map(String::toLowerCase)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+        System.out.println("[ProductService DEBUG] Danh sách tags duy nhất tìm thấy: " + uniqueTags);
+        return uniqueTags;
+    }
+
+    /**
+     * Lấy danh sách sản phẩm dựa trên một tag cụ thể.
+     * So sánh tag không phân biệt hoa thường.
+     * @param tagName Tên tag cần tìm.
+     * @return Danh sách sản phẩm chứa tag đó.
+     * @throws IOException Nếu có lỗi khi tải sản phẩm.
+     */
+    public List<Product> getProductsByTag(String tagName) throws IOException {
+        if (tagName == null || tagName.trim().isEmpty()) {
+            return new ArrayList<>(); // Trả về danh sách rỗng nếu tag rỗng
+        }
+        String finalTagName = tagName.trim().toLowerCase(); // Chuẩn hóa tag tìm kiếm
+        List<Product> allProducts = getAllProducts();
+        return allProducts.stream()
+                .filter(product -> product.getTags() != null &&
+                        product.getTags().stream()
+                                .anyMatch(tag -> tag.trim().equalsIgnoreCase(finalTagName)))
+                .collect(Collectors.toList());
     }
 }

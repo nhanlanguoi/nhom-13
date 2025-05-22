@@ -39,11 +39,10 @@ import com.project.quanlybanhang.User.UserService;
 public class AdminProductController {
 
     private final Productservice productService;
-    // UPLOAD_DIR_RELATIVE_TO_RESOURCES là đường dẫn tương đối từ thư mục resources
-    // ví dụ: "static/data-product/image/"
+    
     private final OrderService orderService;
     private static final String UPLOAD_DIR_RELATIVE_TO_RESOURCES = "static/data-product/image/";
-    private final Path rootLocation; // Sẽ là .../src/main/resources/static/data-product/image/
+    private final Path rootLocation; 
     private final UserService userService;
     private final ReportService reportService;
     private final RevenueService revenueService;
@@ -56,7 +55,7 @@ public class AdminProductController {
         this.reportService = reportService;
         this.revenueService = revenueService;
         String projectPath = System.getProperty("user.dir");
-        // rootLocation trỏ đến thư mục lưu ảnh trong src/main/resources
+       
         this.rootLocation = Paths.get(projectPath, "src", "main", "resources", UPLOAD_DIR_RELATIVE_TO_RESOURCES);
         try {
             Files.createDirectories(rootLocation);
@@ -432,12 +431,12 @@ public class AdminProductController {
         try {
             User existingUser = userService.getUserByUsername(userFromForm.getUsername());
             if (existingUser != null) {
-                // Cập nhật các trường từ userFromForm (dữ liệu từ form) vào existingUser (đối tượng sẽ được lưu)
+               
                 existingUser.setFullname(userFromForm.getFullname());
                 existingUser.setEmail(userFromForm.getEmail());
-                existingUser.setBan(userFromForm.getBan()); // Giả sử getBan() trả về String "true"/"false"
+                existingUser.setBan(userFromForm.getBan()); 
 
-                // === THÊM DÒNG NÀY ĐỂ CẬP NHẬT ROLE ===
+               
                 existingUser.setRole(userFromForm.getRole());
 
 
@@ -533,12 +532,11 @@ public class AdminProductController {
             model.addAttribute("allReports", new ArrayList<>());
         }
 
-        // Thêm các model attributes cần thiết khác cho trang admin.html nếu nó dùng chung template
-        // (Giữ nguyên logic thêm products, newProduct, allUsers của bạn nếu cần)
+        
         if (!model.containsAttribute("products")) {
             try { model.addAttribute("products", productService.getAllProducts()); } catch (IOException e) { model.addAttribute("products", new ArrayList<>());}
         }
-        // ... (các model attributes khác) ...
+        
 
         return "html/admin"; // Trả về template admin.html (nơi bạn sẽ thêm tab report)
     }
@@ -579,8 +577,8 @@ public class AdminProductController {
                     .sorted()
                     .collect(Collectors.toList());
 
-            if (availableYears.isEmpty() && !processedHistory.isEmpty()) { // Nếu có history nhưng không có completedTimestamp
-                availableYears.add(LocalDate.now().getYear()); // Thêm năm hiện tại nếu chưa có
+            if (availableYears.isEmpty() && !processedHistory.isEmpty()) { 
+                availableYears.add(LocalDate.now().getYear()); 
             } else if (availableYears.isEmpty()) {
                 availableYears.add(LocalDate.now().getYear());
             }

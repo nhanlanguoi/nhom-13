@@ -4,106 +4,109 @@
 <head>
   <style>
     .popup-overlay {
-       position: fixed;
-       top: 0;
-       left: 0;
-       width: 100%;
-       height: 100%;
-       background: rgba(0, 0, 0, 0.65);
-       display: flex;
-       justify-content: center;
-       align-items: center;
-       z-index: 2000;
-       padding: 15px;
-       box-sizing: border-box;
-     }
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      padding: 15px;
+      box-sizing: border-box;
+    }
 
-     .popup-box {
-       background: var(--white-color, white);
-       padding: 25px 30px 30px 30px;
-       border-radius: var(--border-radius, 8px);
-       text-align: center;
-       box-shadow: var(--shadow-medium, 0 5px 15px rgba(0,0,0,0.2));
-       width: 100%;
-       max-width: 420px;
-       position: relative;
-     }
+    .popup-box {
+      background: var(--white-color, white);
+      padding: 25px 30px 30px 30px;
+      border-radius: var(--border-radius, 8px);
+      text-align: center;
+      box-shadow: var(--shadow-medium, 0 5px 15px rgba(0, 0, 0, 0.2));
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+    }
 
-     .popup-box form[method="get"][action="/cart"] { /* This is for closing the popup */
-       text-align: right;
-       margin: -15px -15px 10px 0;
-     }
+    .popup-box form[method="get"][action="/cart"] {
+      /* This is for closing the popup */
+      text-align: right;
+      margin: -15px -15px 10px 0;
+    }
 
-     .popup-box form[method="get"][action="/cart"] button {
-       background: none;
-       border: none;
-       font-size: 28px;
-       color: var(--text-color-light, #888);
-       cursor: pointer;
-       padding: 0 5px;
-       line-height: 1;
-     }
-      .popup-box form[method="get"][action="/cart"] button:hover {
-         color: var(--text-color, #333);
-      }
+    .popup-box form[method="get"][action="/cart"] button {
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: var(--text-color-light, #888);
+      cursor: pointer;
+      padding: 0 5px;
+      line-height: 1;
+    }
 
-
-     .popup-box h2 {
-       font-size: 1.5em;
-       color: var(--text-color, #333);
-       margin-bottom: 25px;
-       font-weight: 600;
-     }
-
-     .popup-box input[type="text"] {
-       width: 100%;
-       padding: 12px 15px;
-       margin-bottom: 15px;
-       border: 1px solid var(--border-color, #ccc);
-       border-radius: var(--border-radius, 8px);
-       font-size: 1rem;
-       box-sizing: border-box;
-       color: var(--text-color, #333);
-       font-family: inherit;
-     }
-
-     .popup-box input[type="text"]::placeholder {
-       color: var(--text-color-light, #999);
-     }
+    .popup-box form[method="get"][action="/cart"] button:hover {
+      color: var(--text-color, #333);
+    }
 
 
-     /* Style for the submit button of the address form */
-     .popup-box form[method="post"] button[type="submit"] {
-       background-color: var(--primary-color, rgb(210, 40, 38));
-       color: var(--white-color, white);
-       padding: 12px 20px;
-       border-radius: var(--border-radius, 8px);
-       font-size: 1rem;
-       font-weight: 500;
-       width: 100%;
-       margin-top: 10px;
-       border: none;
-       cursor: pointer;
-       transition: background-color var(--transition-fast, 0.2s ease-in-out);
-       font-family: inherit;
-     }
+    .popup-box h2 {
+      font-size: 1.5em;
+      color: var(--text-color, #333);
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
 
-     .popup-box form[method="post"] button[type="submit"]:hover {
-       background-color: var(--primary-color-dark, rgb(180, 30, 28));
-     }
+    .popup-box input[type="text"] {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      border: 1px solid var(--border-color, #ccc);
+      border-radius: var(--border-radius, 8px);
+      font-size: 1rem;
+      box-sizing: border-box;
+      color: var(--text-color, #333);
+      font-family: inherit;
+    }
 
-     .custom-error-message{
-       color: red;
-       text-align: left; /* Align error message to the left under the input */
-       font-size: 0.9em;
-       margin-top: -10px; /* Adjust to bring closer to input */
-       margin-bottom: 10px;
-     }
-     .input-error-highlight {
-        border-color: red !important;
-     }
+    .popup-box input[type="text"]::placeholder {
+      color: var(--text-color-light, #999);
+    }
 
 
+    /* Style for the submit button of the address form */
+    .popup-box form[method="post"] button[type="submit"] {
+      background-color: var(--primary-color, rgb(210, 40, 38));
+      color: var(--white-color, white);
+      padding: 12px 20px;
+      border-radius: var(--border-radius, 8px);
+      font-size: 1rem;
+      font-weight: 500;
+      width: 100%;
+      margin-top: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background-color var(--transition-fast, 0.2s ease-in-out);
+      font-family: inherit;
+    }
+
+    .popup-box form[method="post"] button[type="submit"]:hover {
+      background-color: var(--primary-color-dark, rgb(180, 30, 28));
+    }
+
+    .custom-error-message {
+      color: red;
+      text-align: left;
+      /* Align error message to the left under the input */
+      font-size: 0.9em;
+      margin-top: -10px;
+      /* Adjust to bring closer to input */
+      margin-bottom: 10px;
+    }
+
+    .input-error-highlight {
+      border-color: red !important;
+    }
   </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -114,255 +117,267 @@
 
 <body>
 
-<header class="native-bar">
-  <div class="native-bar-flex container">
-    <div class="logo">
-      <a href="/" style="cursor:pointer;">
-        <img src="/images/logo.png" alt="Logo" />
-      </a>
+  <header class="native-bar">
+    <div class="native-bar-flex container">
+      <div class="logo">
+        <a href="/" style="cursor:pointer;">
+          <img src="/images/logo.png" alt="Logo" />
+        </a>
+      </div>
+
+      <div class="search-container">
+        <input class="search-input" type="text" placeholder="Bạn tìm gì hôm nay?" />
+        <button class="search-button"><i class="fas fa-search"></i></button>
+      </div>
+      <nav class="header-nav">
+        <a href="#" class="nav-item call"><i class="fas fa-phone"></i> <span>Gọi mua hàng</span></a>
+        <a href="/cart" class="nav-item buymaket"><i class="fas fa-shopping-cart"></i> <span>Giỏ hàng</span></a>
+        <a href="/profile" class="nav-item profile"><i class="fas fa-user"></i> <span>Tài khoản</span></a>
+      </nav>
     </div>
+  </header>
 
-    <div class="search-container">
-      <input class="search-input" type="text" placeholder="Bạn tìm gì hôm nay?" />
-      <button class="search-button"><i class="fas fa-search"></i></button>
-    </div>
-    <nav class="header-nav">
-      <a href="#" class="nav-item call"><i class="fas fa-phone"></i> <span>Gọi mua hàng</span></a>
-      <a href="/cart" class="nav-item buymaket"><i class="fas fa-shopping-cart"></i> <span>Giỏ hàng</span></a>
-      <a href="/profile" class="nav-item profile"><i class="fas fa-user"></i> <span>Tài khoản</span></a>
-    </nav>
-  </div>
-</header>
+  <div>
+    <main class="cart-container">
+      <div class="cart-header">
+        <a href="/" class="back-link"><i class="fas fa-arrow-left"></i></a>
+        <h1>Giỏ hàng của bạn</h1>
+      </div>
 
-<div>
-  <main class="cart-container">
-    <div class="cart-header">
-      <a href="/" class="back-link"><i class="fas fa-arrow-left"></i></a>
-      <h1>Giỏ hàng của bạn</h1>
-    </div>
-
-    <div th:if="${param.error != null}" class="error-message-global" style="color: red; text-align: center; margin-bottom: 15px;">
-      <p th:if="${param.error == 'productNotFound'}">Lỗi: Sản phẩm không tồn tại.</p>
-      <p th:if="${param.error == 'variantNotFound'}">Lỗi: Biến thể sản phẩm không tồn tại.</p>
-      <p th:if="${param.error == 'colorPriceNotFound'}">Lỗi: Màu sắc/Giá không tồn tại.</p>
-      <p th:if="${param.error == 'noCartFound'}">Lỗi: Không tìm thấy giỏ hàng của bạn.</p>
-    </div>
+      <div th:if="${param.error != null}" class="error-message-global"
+        style="color: red; text-align: center; margin-bottom: 15px;">
+        <p th:if="${param.error == 'productNotFound'}">Lỗi: Sản phẩm không tồn tại.</p>
+        <p th:if="${param.error == 'variantNotFound'}">Lỗi: Biến thể sản phẩm không tồn tại.</p>
+        <p th:if="${param.error == 'colorPriceNotFound'}">Lỗi: Màu sắc/Giá không tồn tại.</p>
+        <p th:if="${param.error == 'noCartFound'}">Lỗi: Không tìm thấy giỏ hàng của bạn.</p>
+      </div>
 
 
-    <div th:if="${cart == null or #lists.isEmpty(cart)}" style="text-align: center; padding: 20px;">
-      <p>Giỏ hàng của bạn đang trống.</p>
-      <a href="/" class="button-primary" style="text-decoration: none; padding: 10px 20px; background-color: #d70018; color: white; border-radius: 5px;">Tiếp tục mua sắm</a>
-    </div>
+      <div th:if="${cart == null or #lists.isEmpty(cart)}" style="text-align: center; padding: 20px;">
+        <p>Giỏ hàng của bạn đang trống.</p>
+        <a href="/" class="button-primary"
+          style="text-decoration: none; padding: 10px 20px; background-color: #d70018; color: white; border-radius: 5px;">Tiếp
+          tục mua sắm</a>
+      </div>
 
-    <div th:each="cartItem : ${cart}" th:unless="${#lists.isEmpty(cart)}"> <div class="cart-items">
-      <div class="cart-item" th:attr="data-product-id=${cartItem.product.id}, data-variant-id=${cartItem.variantId}, data-color=${cartItem.color}">
+      <div th:each="cartItem : ${cart}" th:unless="${#lists.isEmpty(cart)}">
+        <div class="cart-items">
+          <div class="cart-item"
+            th:attr="data-product-id=${cartItem.product.id}, data-variant-id=${cartItem.variantId}, data-color=${cartItem.color}">
 
-        <div class="item-image">
-          <img th:src="${cartItem.image}" alt="Product image">
-        </div>
-        <div class="item-details">
-          <h3 class="item-name" th:text="${cartItem.product.name}+' '+ ${cartItem.variant.screen} + ' ' + ${cartItem.variant.chip} + ' ' + ${cartItem.variant.memory} + ' ' +${cartItem.color} + ' '+ ${cartItem.product.brand}">Product Details</h3>
-          <div class="item-price">
-            <span class="current-price" th:text="${cartItem.formattedPrice}">25.990.000₫</span>
-            <span class="original-price" th:text="${cartItem.formattedPricewas}">26.990.000₫</span>
-          </div>
-          <p class="item-discount" th:text="'Đã giảm ' + ${cartItem.formattedPricesale} + '₫'">Đã giảm 500.000₫</p>
-        </div>
-        <form action="/cart/confirm" method="post">
-          <div style="display: flex; flex-direction: column;">
-            <div style="display: flex; flex-direction: row; align-items: center;">
-              <input type="hidden" name="color" th:value="${cartItem.color}" readonly>
-              <input type="hidden" name="productid" th:value="${cartItem.product.id}" readonly>
-              <input type="hidden" name="variantid" th:value="${cartItem.variantId}" readonly>
-
-              <div class="item-quantity">
-                <button type="button" class="quantity-btn minus-btn">-</button>
-                <input type="text" name="quantity" th:value="${cartItem.quantity}" class="quantity-input" readonly> <button type="button" class="quantity-btn plus-btn">+</button>
-              </div>
-              <div class="item-remove">
-                <button type="submit" name="action" value="remove" class="remove-btn"><i class="fas fa-trash-alt"></i></button>
-              </div>
+            <div class="item-image">
+              <img th:src="${cartItem.image}" alt="Product image">
             </div>
-            <div style="display: flex; justify-content: space-around;">
-              <button type="submit" name="action" value="add" style="margin-top: 20px; width: 70%;background-color: #d70018;
+            <div class="item-details">
+              <h3 class="item-name"
+                th:text="${cartItem.product.name}+' '+ ${cartItem.variant.screen} + ' ' + ${cartItem.variant.chip} + ' ' + ${cartItem.variant.memory} + ' ' +${cartItem.color} + ' '+ ${cartItem.product.brand}">
+                Product Details</h3>
+              <div class="item-price">
+                <span class="current-price" th:text="${cartItem.formattedPrice}">25.990.000₫</span>
+                <span class="original-price" th:text="${cartItem.formattedPricewas}">26.990.000₫</span>
+              </div>
+              <p class="item-discount" th:text="'Đã giảm ' + ${cartItem.formattedPricesale} + '₫'">Đã giảm 500.000₫</p>
+            </div>
+            <form action="/cart/confirm" method="post">
+              <div style="display: flex; flex-direction: column;">
+                <div style="display: flex; flex-direction: row; align-items: center;">
+                  <input type="hidden" name="color" th:value="${cartItem.color}" readonly>
+                  <input type="hidden" name="productid" th:value="${cartItem.product.id}" readonly>
+                  <input type="hidden" name="variantid" th:value="${cartItem.variantId}" readonly>
+
+                  <div class="item-quantity">
+                    <button type="button" class="quantity-btn minus-btn">-</button>
+                    <input type="text" name="quantity" th:value="${cartItem.quantity}" class="quantity-input" readonly>
+                    <button type="button" class="quantity-btn plus-btn">+</button>
+                  </div>
+                  <div class="item-remove">
+                    <button type="submit" name="action" value="remove" class="remove-btn"><i
+                        class="fas fa-trash-alt"></i></button>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-around;">
+                  <button type="submit" name="action" value="add" style="margin-top: 20px; width: 70%;background-color: #d70018;
                     color: white;
                     border: none;
                     padding: 10px 20px;
                     border-radius: 5px;
                     cursor: pointer;
                     font-size: 1em;">Xác nhận</button>
-            </div>
+                </div>
+              </div>
+            </form>
+
           </div>
-        </form>
-
+          <div class="cart-protection">
+            <i class="fas fa-shield-alt"></i>
+            <span>Bảo vệ toàn diện với <strong>Bảo hành giao hàng (Đảm bảo an toàn cho từng sản phẩm)</strong></span>
+          </div>
+        </div>
       </div>
-      <div class="cart-protection">
-        <i class="fas fa-shield-alt"></i>
-        <span>Bảo vệ toàn diện với <strong>Bảo hành giao hàng (Đảm bảo an toàn cho từng sản phẩm)</strong></span>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container container">
+      <div class="footer-column">
+        <h4>Tổng đài hỗ trợ miễn phí</h4>
+        <p><i class="fas fa-phone-alt"></i> Gọi mua hàng: <strong>1800.2097</strong> (7:30 - 22:00)</p>
+        <p><i class="fas fa-headset"></i> Khiếu nại: <strong>1800.2063</strong> (8:00 - 21:30)</p>
+        <p><i class="fas fa-tools"></i> Bảo hành: <strong>1800.2064</strong> (8:00 - 21:00)</p>
       </div>
-    </div>
-    </div>
-
-  </main>
-</div>
-
-<footer class="footer">
-  <div class="footer-container container">
-    <div class="footer-column">
-      <h4>Tổng đài hỗ trợ miễn phí</h4>
-      <p><i class="fas fa-phone-alt"></i> Gọi mua hàng: <strong>1800.2097</strong> (7:30 - 22:00)</p>
-      <p><i class="fas fa-headset"></i> Khiếu nại: <strong>1800.2063</strong> (8:00 - 21:30)</p>
-      <p><i class="fas fa-tools"></i> Bảo hành: <strong>1800.2064</strong> (8:00 - 21:00)</p>
-    </div>
-    <div class="footer-column">
-      <h4>Thông tin và chính sách</h4>
-      <ul>
-        <li><a href="#">Chính sách bảo hành</a></li>
-        <li><a href="#">Hướng dẫn mua hàng online</a></li>
-        <li><a href="#">Chính sách đổi trả</a></li>
-        <li><a href="#">Giao hàng & thanh toán</a></li>
-        <li><a href="#">Hướng dẫn mua hàng trả góp</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>Dịch vụ và thông tin khác</h4>
-      <ul>
-        <li><a href="#">Khách hàng doanh nghiệp (B2B)</a></li>
-        <li><a href="#">Ưu đãi thanh toán</a></li>
-        <li><a href="#">Quy chế hoạt động</a></li>
-        <li><a href="#">Chính sách xử lý dữ liệu cá nhân</a></li>
-        <li><a href="#">Liên hệ hợp tác kinh doanh</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>Kết nối với chúng tôi</h4>
-      <div class="social-icons">
-        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
-        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="#" aria-label="Tiktok"><i class="fab fa-tiktok"></i></a>
+      <div class="footer-column">
+        <h4>Thông tin và chính sách</h4>
+        <ul>
+          <li><a href="#">Chính sách bảo hành</a></li>
+          <li><a href="#">Hướng dẫn mua hàng online</a></li>
+          <li><a href="#">Chính sách đổi trả</a></li>
+          <li><a href="#">Giao hàng & thanh toán</a></li>
+          <li><a href="#">Hướng dẫn mua hàng trả góp</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Dịch vụ và thông tin khác</h4>
+        <ul>
+          <li><a href="#">Khách hàng doanh nghiệp (B2B)</a></li>
+          <li><a href="#">Ưu đãi thanh toán</a></li>
+          <li><a href="#">Quy chế hoạt động</a></li>
+          <li><a href="#">Chính sách xử lý dữ liệu cá nhân</a></li>
+          <li><a href="#">Liên hệ hợp tác kinh doanh</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Kết nối với chúng tôi</h4>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Tiktok"><i class="fab fa-tiktok"></i></a>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <p>&copy; <span id="current-year"></span> Bản quyền thuộc về [Tên công ty của bạn].</p>
-  </div>
-</footer>
+    <div class="footer-bottom">
+      <p>&copy; <span id="current-year"></span> Bản quyền thuộc về [Tên công ty của bạn].</p>
+    </div>
+  </footer>
 
-<div th:if="${showAddressPopup == true AND itemToBuyDetails != null}" class="popup-overlay" id="addressPopup">
-  <div class="popup-box">
-    <form method="get" action="/cart" style="text-align: right;"> <button type="submit" title="Đóng" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
-    </form>
-    <form method="post" th:action="@{/save-buy}" id="buyForm"> <h2>Nhập thông tin nhận hàng</h2>
+  <div th:if="${showAddressPopup == true AND itemToBuyDetails != null}" class="popup-overlay" id="addressPopup">
+    <div class="popup-box">
+      <form method="get" action="/cart" style="text-align: right;"> <button type="submit" title="Đóng"
+          style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+      </form>
+      <form method="post" th:action="@{/save-buy}" id="buyForm">
+        <h2>Nhập thông tin nhận hàng</h2>
 
-      <input type="hidden" name="productId" th:value="${itemToBuyDetails.productId}" />
-      <input type="hidden" name="variantId" th:value="${itemToBuyDetails.variantId}" />
-      <input type="hidden" name="color" th:value="${itemToBuyDetails.color}" />
-      <input type="hidden" name="quantity" th:value="${itemToBuyDetails.quantity}" />
-      <input type="text" name="address" id="popupAddress" placeholder="Nhập địa chỉ" required>
-      <input type="text" name="phone" id="popupPhone" placeholder="Nhập số điện thoại" required pattern="\d{10,11}">
-      <button type="submit">Xác nhận</button>
-    </form>
-  </div>
-</div>
-
-<div th:if="${showLoginPopupFromCart == true}" class="popup-overlay">
-  <div class="popup-box">
-    <form method="get" action="/" style="text-align: right;"> <button type="submit" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
-    </form>
-    <h2>Vui lòng đăng nhập</h2>
-    <p>Bạn cần đăng nhập để xem giỏ hàng hoặc thêm sản phẩm vào giỏ.</p>
-    <div style="margin-top: 20px;">
-      <a href="/login" style="padding: 10px 20px; background-color: #d70018; color: white; text-decoration: none; border-radius: 5px; margin-right: 10px;">Đăng nhập</a>
-      <a href="/register" style="padding: 10px 20px; background-color: #f0f0f0; color: #333; text-decoration: none; border-radius: 5px;">Đăng ký</a>
+        <input type="hidden" name="productId" th:value="${itemToBuyDetails.productId}" />
+        <input type="hidden" name="variantId" th:value="${itemToBuyDetails.variantId}" />
+        <input type="hidden" name="color" th:value="${itemToBuyDetails.color}" />
+        <input type="hidden" name="quantity" th:value="${itemToBuyDetails.quantity}" />
+        <input type="text" name="address" id="popupAddress" placeholder="Nhập địa chỉ" required>
+        <input type="text" name="phone" id="popupPhone" placeholder="Nhập số điện thoại" required pattern="\d{10,11}">
+        <button type="submit">Xác nhận</button>
+      </form>
     </div>
   </div>
-</div>
+
+  <div th:if="${showLoginPopupFromCart == true}" class="popup-overlay">
+    <div class="popup-box">
+      <form method="get" action="/" style="text-align: right;"> <button type="submit"
+          style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+      </form>
+      <h2>Vui lòng đăng nhập</h2>
+      <p>Bạn cần đăng nhập để xem giỏ hàng hoặc thêm sản phẩm vào giỏ.</p>
+      <div style="margin-top: 20px;">
+        <a href="/login"
+          style="padding: 10px 20px; background-color: #d70018; color: white; text-decoration: none; border-radius: 5px; margin-right: 10px;">Đăng
+          nhập</a>
+        <a href="/register"
+          style="padding: 10px 20px; background-color: #f0f0f0; color: #333; text-decoration: none; border-radius: 5px;">Đăng
+          ký</a>
+      </div>
+    </div>
+  </div>
 
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const cartItems = document.querySelectorAll('.cart-item');
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const cartItems = document.querySelectorAll('.cart-item');
 
-    cartItems.forEach(item => {
-      const minusBtn = item.querySelector('.minus-btn');
-      const plusBtn = item.querySelector('.plus-btn');
-      const quantityInput = item.querySelector('.quantity-input');
-      const form = item.closest('form'); // The form for this item
+      cartItems.forEach(item => {
+        const minusBtn = item.querySelector('.minus-btn');
+        const plusBtn = item.querySelector('.plus-btn');
+        const quantityInput = item.querySelector('.quantity-input');
+        const form = item.closest('form');
 
-      // IMPORTANT: The plus/minus buttons should ideally submit a form to update quantity
-      // or use AJAX. For now, they only change the visual.
-      // If you want them to update server, they need to trigger a submit or AJAX.
-      // The current setup submits the quantity when "Xác nhận" or "Remove" is clicked.
 
-      if (minusBtn) {
-        minusBtn.addEventListener('click', () => {
-          let currentValue = parseInt(quantityInput.value);
-          if (currentValue > 1) {
-            quantityInput.value = currentValue - 1;
-            // To persist, you'd need an "update quantity" endpoint and form submission/AJAX here.
-            // For simplicity, we assume quantity is only finalized on "Xác nhận" or "Remove".
-          }
-        });
-      }
 
-      if (plusBtn) {
-        plusBtn.addEventListener('click', () => {
-          let currentValue = parseInt(quantityInput.value);
-          const maxQuantity = 10; // Example max
-          if (currentValue < maxQuantity) {
-            quantityInput.value = currentValue + 1;
-            // Persist change logic here if needed immediately
-          } else {
-            alert('Số lượng sản phẩm đã đạt tối đa.');
-          }
-        });
-      }
-    });
+        if (minusBtn) {
+          minusBtn.addEventListener('click', () => {
+            let currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+              quantityInput.value = currentValue - 1;
 
-    // Validation for the address popup form
-    const addressPopup = document.getElementById('addressPopup');
-    if (addressPopup) {
+            }
+          });
+        }
+
+        if (plusBtn) {
+          plusBtn.addEventListener('click', () => {
+            let currentValue = parseInt(quantityInput.value);
+            const maxQuantity = 10;
+            if (currentValue < maxQuantity) {
+              quantityInput.value = currentValue + 1;
+
+            } else {
+              alert('Số lượng sản phẩm đã đạt tối đa.');
+            }
+          });
+        }
+      });
+
+
+      const addressPopup = document.getElementById('addressPopup');
+      if (addressPopup) {
         const buyForm = document.getElementById('buyForm');
         const addressInput = document.getElementById('popupAddress');
         const phoneInput = document.getElementById('popupPhone');
 
-        buyForm.addEventListener('submit', function(event) {
-            let isValid = true;
-            clearError(addressInput);
-            clearError(phoneInput);
+        buyForm.addEventListener('submit', function (event) {
+          let isValid = true;
+          clearError(addressInput);
+          clearError(phoneInput);
 
-            if (addressInput.value.trim() === '') {
-                displayError(addressInput, 'Vui lòng nhập địa chỉ.');
-                isValid = false;
-            }
+          if (addressInput.value.trim() === '') {
+            displayError(addressInput, 'Vui lòng nhập địa chỉ.');
+            isValid = false;
+          }
 
-            const phoneValue = phoneInput.value.trim();
-            if (phoneValue === '') {
-                displayError(phoneInput, 'Vui lòng nhập số điện thoại.');
-                isValid = false;
-            } else if (!/^\d{10,11}$/.test(phoneValue)) { // Basic validation for 10-11 digits
-                displayError(phoneInput, 'Số điện thoại không hợp lệ (phải có 10-11 chữ số).');
-                isValid = false;
-            }
+          const phoneValue = phoneInput.value.trim();
+          if (phoneValue === '') {
+            displayError(phoneInput, 'Vui lòng nhập số điện thoại.');
+            isValid = false;
+          } else if (!/^\d{10,11}$/.test(phoneValue)) {
+            displayError(phoneInput, 'Số điện thoại không hợp lệ (phải có 10-11 chữ số).');
+            isValid = false;
+          }
 
-            if (!isValid) {
-                event.preventDefault(); // Prevent form submission
-            }
-            // If valid, form will submit naturally
+          if (!isValid) {
+            event.preventDefault();
+          }
+
         });
-    }
+      }
 
-    function clearError(inputElement) {
+      function clearError(inputElement) {
         if (!inputElement) return;
         inputElement.classList.remove('input-error-highlight');
         let nextSibling = inputElement.nextElementSibling;
         if (nextSibling && nextSibling.classList.contains('custom-error-message')) {
-            nextSibling.remove();
+          nextSibling.remove();
         }
-    }
+      }
 
-    function displayError(inputElement, message) {
+      function displayError(inputElement, message) {
         if (!inputElement) return;
         clearError(inputElement);
 
@@ -372,9 +387,10 @@
 
         inputElement.classList.add('input-error-highlight');
         inputElement.parentNode.insertBefore(errorP, inputElement.nextSibling);
-    }
+      }
 
-  });
-</script>
+    });
+  </script>
 </body>
+
 </html>

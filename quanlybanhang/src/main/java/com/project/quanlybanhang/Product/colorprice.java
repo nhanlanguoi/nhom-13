@@ -56,9 +56,9 @@ public class colorprice {
         this.discount = discount;
     }
 
-    @JsonIgnore // ĐẢM BẢO ANNOTATION NÀY CÓ Ở ĐÂY
+    @JsonIgnore
     public String getFormattedPrice() {
-        // ... (logic của bạn)
+        
         if (this.price == null || this.price.trim().isEmpty()) {
             return "0.";
         }

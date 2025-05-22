@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.project.quanlybanhang.Cart.cart; // Assuming this is your cart class
-import com.project.quanlybanhang.User.User; // Assuming this is your User class
+import com.project.quanlybanhang.Cart.cart; 
+import com.project.quanlybanhang.User.User; 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,36 +23,36 @@ import java.util.List;
 public class Buycontroller {
 
     private static final String URL_BUY = "src/main/resources/static/data-buy/buy.json";
-    private static final String URL_CART = "src/main/resources/static/data-cart/cart.json"; // Path to cart JSON
+    private static final String URL_CART = "src/main/resources/static/data-cart/cart.json"; 
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
     static {
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper.enable(SerializationFeature.INDENT_OUTPUT); // For pretty printing JSON
+        mapper.enable(SerializationFeature.INDENT_OUTPUT); 
     }
 
     @PostMapping("/save-buy")
     public String saveBuy(@RequestParam String address,
                           @RequestParam String phone,
-                          @RequestParam String productId,     // New param from hidden field
-                          @RequestParam String variantId,     // New param from hidden field
-                          @RequestParam String color,         // New param from hidden field
-                          @RequestParam int quantity,        // New param from hidden field
+                          @RequestParam String productId,    
+                          @RequestParam String variantId,     
+                          @RequestParam String color,         
+                          @RequestParam int quantity,       
                           HttpSession session) {
 
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            // User not logged in, redirect to login or show error
+            
             return "redirect:/login?error=sessionExpired";
         }
 
         try {
-            // 1. Prepare BuyData entry
+            
             BuyData newBuyEntry = new BuyData(
                     variantId,
-                    "confirmed_purchase", // Or just "purchase", "buy"
+                    "confirmed_purchase", 
                     quantity,
                     productId,
                     color,
@@ -62,7 +62,7 @@ public class Buycontroller {
                     phone
             );
 
-            // 2. Read existing buy.json or initialize list
+            
             File buyFile = new File(URL_BUY);
             List<BuyData> buyList;
             if (buyFile.exists() && buyFile.length() > 0) {
@@ -71,7 +71,7 @@ public class Buycontroller {
                 buyList = new ArrayList<>();
             }
 
-            // 3. Add new entry and write to buy.json
+            
             buyList.add(newBuyEntry);
             if (!buyFile.exists()) {
                 buyFile.getParentFile().mkdirs();
@@ -97,13 +97,13 @@ public class Buycontroller {
             boolean cartItemRemoved = false;
             for (cart userCart : cartList) {
                 if (userCart.getUsername().equals(user.getUsername()) && userCart.getIteam() != null) {
-                    // Remove based on productId, variantId, and color
+                   
                     cartItemRemoved = userCart.getIteam().removeIf(item ->
                             item.getProduct().getId().equals(productId) &&
                                     item.getVariantId().equals(variantId) &&
                                     item.getColor().equals(color)
                     );
-                    if (cartItemRemoved) break; // Item found and removed from this user's cart
+                    if (cartItemRemoved) break;
                 }
             }
 
@@ -113,18 +113,17 @@ public class Buycontroller {
             } else {
                 System.err.println("Could not find item in cart.json to remove for user: " + user.getUsername() +
                         " ProductId: " + productId + " VariantId: " + variantId + " Color: " + color);
-                // You might want to redirect with a specific warning if item wasn't found in cart
-                // but purchase was still logged.
+                
             }
 
         } catch (IOException e) {
             System.err.println("Error processing purchase: " + e.getMessage());
-            e.printStackTrace(); // Log stack trace for debugging
-            // Redirect to cart with an error message
+            e.printStackTrace(); 
+            
             return "redirect:/cart?error=purchaseFailed";
         }
 
-        // Redirect to cart page (or a "thank you for your purchase" page)
+       
         return "redirect:/cart?purchaseSuccess=true";
     }
 }

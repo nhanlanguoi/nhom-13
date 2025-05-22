@@ -5,106 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập</title>
     <style>
-        /* Cài đặt cơ bản cho trang */
+        
         body {
-            font-family: Arial, sans-serif; /* Font chữ phổ biến */
-            background-color: #f4f4f4; /* Màu nền xám nhạt */
+            font-family: Arial, sans-serif; 
+            background-color: #f4f4f4;
             display: flex;
-            justify-content: center; /* Căn giữa theo chiều ngang */
-            align-items: center; /* Căn giữa theo chiều dọc */
-            min-height: 100vh; /* Chiều cao tối thiểu bằng chiều cao màn hình */
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
             margin: 0;
         }
 
-        /* Container chính cho form */
-        .login-container { /* Đổi tên class thành login-container */
-            background-color: #fff; /* Nền trắng cho form */
+       
+        .login-container { 
+            background-color: #fff;
             padding: 30px 40px;
-            border-radius: 8px; /* Bo góc nhẹ */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
-            max-width: 400px; /* Giới hạn chiều rộng tối đa */
-            width: 90%; /* Chiều rộng linh hoạt */
-            text-align: center; /* Căn giữa nội dung bên trong */
+            border-radius: 8px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            max-width: 400px;
+            width: 90%; 
+            text-align: center; 
         }
 
-        /* Tiêu đề form */
+        
         .login-container h2 {
-            color: #333; /* Màu chữ tối */
+            color: #333; 
             margin-bottom: 25px;
         }
 
-        /* Thông báo lỗi */
+       
         .error-message {
 
-            color: #d70018; /* Màu đỏ CellphoneS cho chữ lỗi */
+            color: #d70018; 
 
         }
 
-        /* Nhóm các label và input */
+       
         .form-group {
             margin-bottom: 15px;
-            text-align: left; /* Căn trái label và input */
+            text-align: left; 
         }
 
-        /* Nhãn (label) */
+        
         .form-group label {
-            display: block; /* Hiển thị trên một dòng riêng */
+            display: block;
             margin-bottom: 5px;
             font-weight: bold;
-            color: #555; /* Màu chữ xám đậm */
+            color: #555; 
         }
 
-        /* Ô nhập liệu */
+       
         .form-group input[type="text"],
-        .form-group input[type="password"] { /* Chỉ cần text và password cho login */
-            width: 100%; /* Chiếm toàn bộ chiều rộng */
+        .form-group input[type="password"] { 
+            width: 100%; 
             padding: 10px;
-            border: 1px solid #ccc; /* Viền xám nhạt */
+            border: 1px solid #ccc;
             border-radius: 4px;
-            box-sizing: border-box; /* Quan trọng: padding không làm tăng kích thước */
+            box-sizing: border-box; 
             font-size: 16px;
         }
          .form-group input:focus {
-             border-color: #d70018; /* Đổi màu viền khi focus */
-             outline: none; /* Bỏ viền focus mặc định */
-             box-shadow: 0 0 5px rgba(215, 0, 24, 0.3); /* Thêm hiệu ứng bóng mờ khi focus */
+             border-color: #d70018; 
+             outline: none; 
+             box-shadow: 0 0 5px rgba(215, 0, 24, 0.3); 
         }
 
 
-        /* Nút Đăng nhập */
+      
         button[type="submit"] {
-            background-color: #d70018; /* Màu đỏ CellphoneS */
-            color: #fff; /* Chữ trắng */
+            background-color: #d70018; 
+            color: #fff; 
             border: none;
             padding: 12px 20px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
-            width: 100%; /* Chiếm toàn bộ chiều rộng */
+            width: 100%;
             margin-top: 10px;
-            transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu mượt */
+            transition: background-color 0.3s ease; 
         }
 
         button[type="submit"]:hover {
-            background-color: #b80014; /* Màu đỏ đậm hơn khi hover */
+            background-color: #b80014; 
         }
 
-        /* Link Đăng ký */
-        .register-link { /* Đổi tên class */
+       
+        .register-link { 
             margin-top: 20px;
             font-size: 14px;
             color: #555;
         }
 
-        .register-link a { /* Đổi tên class */
-            color: #d70018; /* Màu đỏ CellphoneS cho link */
-            text-decoration: none; /* Bỏ gạch chân */
+        .register-link a { 
+            color: #d70018; 
+            text-decoration: none; 
             font-weight: bold;
         }
 
-        .register-link a:hover { /* Đổi tên class */
-            text-decoration: underline; /* Thêm gạch chân khi hover */
+        .register-link a:hover { 
+            text-decoration: underline; 
         }
 
     </style>

@@ -22,8 +22,8 @@ public class LoginController {
     public String showLoginForm() {
         return "html/login";
     }
-    // Đường dẫn file JSON trùng với RegisterController
-    private static final String USER_FILE_PATH = "src/main/resources/static/data-user/users.json"; //
+    
+    private static final String USER_FILE_PATH = "src/main/resources/static/data-user/users.json"; 
 
     @PostMapping("/login")
     public String login(@RequestParam String username,
@@ -31,9 +31,8 @@ public class LoginController {
                         HttpSession session,
                         Model model) {
         try {
-            if("admin".equals(username) && "admin".equals(password)){ // Sử dụng .equals() cho String
-                // Cân nhắc tạo đối tượng User cho admin và lưu vào session nếu cần
-                // session.setAttribute("user", new User("admin", "admin", "Admin", "admin@example.com", "true", "ADMIN"));
+            if("admin".equals(username) && "admin".equals(password)){ 
+                
                 return "redirect:/Admin";
             }
 
@@ -47,7 +46,7 @@ public class LoginController {
 
             List<Map<String, String>> users = mapper.readValue(file, new TypeReference<>() {}); //
 
-            // Tìm kiếm user
+            
             for (Map<String, String> u : users) {
                 if (u.get("username").equals(username)) {
                     if (u.get("password").equals(password)) {

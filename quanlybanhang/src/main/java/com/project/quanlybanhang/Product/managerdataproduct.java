@@ -9,7 +9,8 @@ public interface managerdataproduct {
     boolean addProduct(Product newProduct) throws IOException;
 
     Product getProductById(String id) throws IOException;
-    List<Variant> getProductVariantsById(String productId) throws  IOException;
+
+    List<Variant> getProductVariantsById(String productId) throws IOException;
 
     boolean updateProduct(Product updatedProduct) throws IOException;
 

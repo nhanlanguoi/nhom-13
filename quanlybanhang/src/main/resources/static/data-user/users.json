@@ -1,0 +1,15 @@
+[ {
+  "username" : "zepphi11",
+  "password" : "1234",
+  "fullname" : "phuclociphone",
+  "email" : "nthanhnhu44@gmail.com",
+  "ban" : "true",
+  "role" : "EMPLOYEE"
+}, {
+  "username" : "zepphi1",
+  "password" : "1234",
+  "fullname" : "lkkk",
+  "email" : "nthanhnhu44@gmail.com",
+  "ban" : "true",
+  "role" : "CUSTOMER"
+} ]

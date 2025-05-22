@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký tài khoản</title>
+    <style>
+        /* Cài đặt cơ bản cho trang */
+        body {
+            font-family: Arial, sans-serif; /* Font chữ phổ biến */
+            background-color: #f4f4f4; /* Màu nền xám nhạt */
+            display: flex;
+            justify-content: center; /* Căn giữa theo chiều ngang */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            min-height: 100vh; /* Chiều cao tối thiểu bằng chiều cao màn hình */
+            margin: 0;
+        }
+
+        /* Container chính cho form */
+        .register-container {
+            background-color: #fff; /* Nền trắng cho form */
+            padding: 30px 40px;
+            border-radius: 8px; /* Bo góc nhẹ */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+            max-width: 400px; /* Giới hạn chiều rộng tối đa */
+            width: 90%; /* Chiều rộng linh hoạt */
+            text-align: center; /* Căn giữa nội dung bên trong */
+        }
+
+        /* Tiêu đề form */
+        .register-container h2 {
+            color: #333; /* Màu chữ tối */
+            margin-bottom: 25px;
+        }
+
+        /* Thông báo lỗi */
+        .error-message {
+
+            color: #d70018; /* Màu đỏ CellphoneS cho chữ lỗi */
+
+        }
+
+        /* Nhóm các label và input */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left; /* Căn trái label và input */
+        }
+
+        /* Nhãn (label) */
+        .form-group label {
+            display: block; /* Hiển thị trên một dòng riêng */
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555; /* Màu chữ xám đậm */
+        }
+
+        /* Ô nhập liệu */
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%; /* Chiếm toàn bộ chiều rộng */
+            padding: 10px;
+            border: 1px solid #ccc; /* Viền xám nhạt */
+            border-radius: 4px;
+            box-sizing: border-box; /* Quan trọng: padding không làm tăng kích thước */
+            font-size: 16px;
+        }
+        .form-group input:focus {
+             border-color: #d70018; /* Đổi màu viền khi focus */
+             outline: none; /* Bỏ viền focus mặc định */
+             box-shadow: 0 0 5px rgba(215, 0, 24, 0.3); /* Thêm hiệu ứng bóng mờ khi focus */
+        }
+
+
+        /* Nút Đăng ký */
+        button[type="submit"] {
+            background-color: #d70018; /* Màu đỏ CellphoneS */
+            color: #fff; /* Chữ trắng */
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%; /* Chiếm toàn bộ chiều rộng */
+            margin-top: 10px;
+            transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu mượt */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #b80014; /* Màu đỏ đậm hơn khi hover */
+        }
+
+        /* Link Đăng nhập */
+        .login-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .login-link a {
+            color: #d70018; /* Màu đỏ CellphoneS cho link */
+            text-decoration: none; /* Bỏ gạch chân */
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline; /* Thêm gạch chân khi hover */
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <h2>Đăng ký tài khoản</h2>
+
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}"></p>
+    </div>
+
+    <form action="/register" method="post">
+        <div class="form-group">
+            <label for="fullname">Tên hiển thị:</label> <input type="text" id="fullname" name="fullname" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label> <input type="email" id="email" name="email" required> </div>
+
+        <div class="form-group">
+            <label for="username">Tên đăng nhập:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mật khẩu:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Xác nhận mật khẩu:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+        </div>
+
+        <button type="submit">Đăng ký</button>
+    </form>
+
+    <p class="login-link">Đã có tài khoản? <a href="/login">Đăng nhập ngay</a></p>
+</div>
+
+</body>
+</html>

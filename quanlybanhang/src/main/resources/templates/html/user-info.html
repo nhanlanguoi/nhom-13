@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/user-info.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+<header class="native-bar">
+  <div class="native-bar-flex container">
+    <div class="logo">
+      <a href="/" style="cursor:pointer;">
+        <img src="/images/logo.png" alt="Logo" />
+      </a>
+    </div>
+
+    <div class="search-container">
+      <input class="search-input" type="text" placeholder="Bạn tìm gì hôm nay?" />
+      <button class="search-button"><i class="fas fa-search"></i></button>
+    </div>
+    <nav class="header-nav">
+      <a href="#" class="nav-item call"><i class="fas fa-phone"></i> <span>Gọi mua hàng</span></a>
+      <a href="/cart" class="nav-item buymaket"><i class="fas fa-shopping-cart"></i> <span>Giỏ hàng</span></a>
+      <a href="/profile" class="nav-item profile"><i class="fas fa-user"></i> <span>Tài khoản</span></a>
+    </nav>
+  </div>
+</header>
+
+<main class="container dashboard-section">
+  <div class="button-row">
+    <a href="/">
+    <button type="button">Quay về trang chủ</button>
+    </a>
+    <button type="button" id="info">Thông tin người dùng</button>
+    <button type="button" id="history">Lịch sử giao dịch</button>
+    <a href="/logout">
+    <button type="button">Đăng xuất</button>
+    </a>
+  </div>
+  <div class="text-area" id="text-area" aria-label="Vùng nhập liệu">
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-container container">
+    <div class="footer-column">
+      <h4>Tổng đài hỗ trợ miễn phí</h4>
+      <p><i class="fas fa-phone-alt"></i> Gọi mua hàng: <strong>1800.2097</strong> (7:30 - 22:00)</p>
+      <p><i class="fas fa-headset"></i> Khiếu nại: <strong>1800.2063</strong> (8:00 - 21:30)</p>
+      <p><i class="fas fa-tools"></i> Bảo hành: <strong>1800.2064</strong> (8:00 - 21:00)</p>
+    </div>
+    <div class="footer-column">
+      <h4>Thông tin và chính sách</h4>
+      <ul>
+        <li><a href="#">Chính sách bảo hành</a></li>
+        <li><a href="#">Hướng dẫn mua hàng online</a></li>
+        <li><a href="#">Chính sách đổi trả</a></li>
+        <li><a href="#">Giao hàng & thanh toán</a></li>
+        <li><a href="#">Hướng dẫn mua hàng trả góp</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Dịch vụ và thông tin khác</h4>
+      <ul>
+        <li><a href="#">Khách hàng doanh nghiệp (B2B)</a></li>
+        <li><a href="#">Ưu đãi thanh toán</a></li>
+        <li><a href="#">Quy chế hoạt động</a></li>
+        <li><a href="#">Chính sách xử lý dữ liệu cá nhân</a></li>
+        <li><a href="#">Liên hệ hợp tác kinh doanh</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Kết nối với chúng tôi</h4>
+      <div class="social-icons">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="Tiktok"><i class="fab fa-tiktok"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; <span id="current-year"></span> Bản quyền thuộc về [Tên công ty của bạn].</p>
+  </div>
+</footer>
+
+
+</body>
+<script th:inline="javascript">
+  let user = /*[[${user}]]*/ {};
+
+  document.getElementById("info").addEventListener("click", function () {
+    document.getElementById("text-area").innerHTML = `
+      <div style="display: flex;justify-content: space-between;">
+        <strong>Thông tin cá nhân:</strong>
+        <i id="edit-icon" class="fa-solid fa-pen-to-square" style="color: black; cursor: pointer;"></i>
+      </div>
+      <table>
+        <tr><td>Họ và tên:</td><td>${user.fullname}</td></tr>
+        <tr><td>Email:</td><td>${user.email}</td></tr>
+        <tr><td>Tên đăng nhập:</td><td>${user.username}</td></tr>
+        <tr><td>Mật khẩu:</td><td>${user.password}</td></tr>
+      </table>
+    `;
+
+    // Gắn sự kiện cho icon bút sau khi nội dung được render
+    document.getElementById("edit-icon").addEventListener("click", function () {
+      document.getElementById("text-area").innerHTML = `
+        <form action="/update-profile" method="post">
+          <table>
+            <tr>
+              <td>Họ và tên:</td>
+              <td><input name="fullname" value="${user.fullname}" required style="width:100%;border:none;outline: none;" ></td>
+            </tr>
+            <tr>
+              <td>Email:</td>
+              <td><input type="email" name="email" value="${user.email}" required style="width:100%;border:none;outline: none;"></td>
+            </tr>
+
+            <tr>
+              <td>Mật khẩu:</td>
+              <td><input type="text" name="password" value="${user.password} " required style="width:100%;border:none;outline: none;"></td>
+            </tr>
+
+
+          </table>
+          <div style="display:flex;justify-content:space-around;margin-top:20px">
+          <button type="submit" style="
+              background-color: var(--primary-color);
+              color: var(--white-color);
+              border: none;
+              border-radius: var(--border-radius);
+              font-size: 14px;
+              font-weight: 500;
+              transition: background-color var(--transition-fast), transform var(--transition-fast);
+              padding:5px;
+              width: 200px;
+              margin: 10px;
+              ">Xác nhận
+          </button>
+          <button type="button" id="cancel-btn" style="background-color: var(--primary-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  padding:5px;
+  width: 200px;
+  margin: 10px;">Hủy</button>
+          </div>
+        </form>
+      `;
+
+      // Xử lý nút hủy (quay lại chế độ xem)
+      document.getElementById("cancel-btn").addEventListener("click", function () {
+        document.getElementById("info").click();
+      });
+    });
+  });
+
+
+  document.getElementById("info").click();
+</script>
+</html>

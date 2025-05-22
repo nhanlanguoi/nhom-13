@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang Quản Trị</title>
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* --- CSS của bạn --- */
+    body { font-family: Arial, sans-serif; margin: 0; background-color: #f4f6f9; color: #333; }
+    .dashboard-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background-color: #fff; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+    .sidebar-header { text-align: center; margin-bottom: 20px; }
+    .sidebar-header .logo-img { max-width: 180px; height: auto; }
+    .sidebar-nav { flex-grow: 1; }
+    .sidebar-nav .nav-button { display: flex; align-items: center; padding: 12px 15px; margin-bottom: 8px; color: #495057; text-decoration: none; border-radius: 5px; transition: background-color 0.3s, color 0.3s; font-size: 15px; }
+    .sidebar-nav .nav-button i { margin-right: 12px; width: 20px; text-align: center; }
+    .sidebar-nav .nav-button:hover, .sidebar-nav .nav-button.active { background-color: #D70018; color: #fff; }
+    .sidebar-footer { text-align: center; padding-top: 20px; border-top: 1px solid #eee; font-size: 0.9em; color: #777; }
+    .main-content { flex-grow: 1; padding: 0; display: flex; flex-direction: column; }
+    .main-header { background-color: #fff; padding: 15px 30px; display: flex; justify-content: flex-end; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .user-profile { display: flex; align-items: center; }
+    .user-profile .avatar { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover; }
+    .user-profile span { font-weight: 500; margin-right: 20px; }
+    .user-profile .notification-icon { font-size: 1.2em; margin-right: 20px; cursor: pointer; }
+    .user-profile a { color: #D70018; text-decoration: none; display: flex; align-items: center; }
+    .user-profile a i { margin-right: 5px; }
+
+    .content-section { display: none; padding: 30px; background-color: #fff; margin: 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.05); }
+    .content-section.active { display: block; }
+    .content-section h1, .content-section h2, .content-section h3 { color: #D70018; margin-top: 0; }
+    .content-section h1 { margin-bottom: 25px; font-size: 1.8em;}
+    .content-section h2 { margin-bottom: 20px; font-size: 1.5em; border-bottom: 1px solid #eee; padding-bottom: 10px;}
+    .content-section h3 { margin-bottom: 15px; font-size: 1.3em; }
+    .card { background-color: #fff; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    .product-list-container { padding: 20px; }
+    .product-item { background-color: #fff; border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
+    .product-item h4 { margin: 0; }
+    .edit-form-container { background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .edit-form-container label { display: block; margin-top: 12px; margin-bottom: 6px; font-weight: bold; color: #555; }
+    .edit-form-container input[type="text"],
+    .edit-form-container input[type="email"],
+    .edit-form-container input[type="number"],
+    .edit-form-container select,
+    .edit-form-container textarea {
+      width: calc(100% - 22px);
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    .edit-form-container textarea { min-height: 80px; }
+    .edit-form-container .form-actions { margin-top: 25px; display: flex; gap: 10px; justify-content: flex-end; }
+    .btn-edit, .btn-save, .btn-cancel, .btn-remove-user { padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 500; transition: background-color 0.2s; }
+    .btn-edit { background-color: #007bff; color: white; }
+    .btn-edit:hover { background-color: #0056b3; }
+    .btn-save { background-color: #28a745; color: white; }
+    .btn-save:hover { background-color: #1e7e34; }
+    .btn-cancel { background-color: #6c757d; color: white; text-decoration: none; display: inline-block; text-align: center; line-height: normal; }
+    .btn-cancel:hover { background-color: #545b62; }
+    .btn-remove-user { background-color: #dc3545; color: white;}
+    .btn-remove-user:hover { background-color: #c82333;}
+
+    .variant-section { border: 1px solid #e0e0e0; padding: 15px; margin-top: 15px; margin-bottom: 15px; border-radius: 6px; background-color: #fff; position: relative;}
+    .variant-section h5 { margin-top: 0; color: #D70018; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 15px; font-size: 1.1em; display: flex; justify-content: space-between; align-items: center;}
+    .colorprice-section { border: 1px dashed #ced4da; padding: 12px; margin-top: 10px; margin-bottom: 10px; border-radius: 4px; background-color: #fdfdfd; position: relative;}
+    .colorprice-section h5 { margin-top: 0; margin-bottom: 10px; font-size: 0.95em; color: #495057; display: flex; justify-content: space-between; align-items: center;}
+
+    .field-group { margin-bottom: 10px; }
+    .alert { padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px; }
+    .alert-success, .success-message { color: #155724; background-color: #d4edda; border-color: #c3e6cb; padding: 10px; margin-top:10px; border-radius: 4px; }
+    .alert-danger, .error-message { color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; padding: 10px; margin-top:10px; border-radius: 4px;}
+    .alert-warning { color: #856404; background-color: #fff3cd; border-color: #ffeeba; }
+
+    .btn-add-item { background-color: #17a2b8; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; margin-top: 10px; margin-bottom: 5px; font-size: 0.9em; }
+    #addVariantButton { background-color: #007bff; }
+    .btn-add-item:hover { opacity: 0.8; }
+    .btn-remove-item { background-color: #e74c3c; color: white; border: none; border-radius: 4px; font-size: 0.8em; line-height: 1.5; text-align: center; cursor: pointer; padding: 3px 8px; }
+    .btn-remove-item:hover { background-color: #c0392b; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.95em; }
+    table th, table td { border: 1px solid #ddd; padding: 10px 12px; text-align: left; vertical-align: middle;}
+    table th { background-color: #f2f2f2; color: #333; font-weight: 600; }
+    table tr:nth-child(even) { background-color: #f9f9f9; }
+    table tr:hover { background-color: #f1f1f1; }
+    table td a.btn-edit { margin-right: 5px; padding: 6px 12px; font-size: 0.9em; }
+    table td form { display: inline-block; margin:0; }
+    /* Nút xóa người dùng trong bảng */
+    table td button[type="submit"] {
+        background-color: #dc3545; color: white;
+        padding: 6px 12px; border: none; border-radius: 4px;
+        cursor: pointer; font-size: 0.9em;
+    }
+    table td button[type="submit"]:hover { background-color: #c82333; }
+    table td button[type="submit"]:disabled { background-color: #ccc; cursor: not-allowed; }
+
+
+    .revenue-summary {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .revenue-summary h3 {
+        color: #D70018;
+        margin-top: 0;
+    }
+    .revenue-summary p {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: #28a745; /* Màu xanh lá cho doanh thu */
+        margin: 10px 0 0 0;
+    }
+    .chart-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    .year-selector-form {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .year-selector-form label {
+        font-weight: bold;
+    }
+    .year-selector-form select, .year-selector-form button {
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+    .year-selector-form button {
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+    .year-selector-form button:hover {
+        background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="/" class="logo-link"><img th:src="@{/images/logo.png}" alt="Logo CellphoneS" class="logo-img"/></a>
+    </div>
+    <nav class="sidebar-nav">
+      <a th:href="@{/admin/products/edit}" class="nav-button" data-target="chinh-sua-san-pham" th:classappend="${activeTab == 'chinh-sua-san-pham' ? 'active' : ''}">
+        <i class="fas fa-edit"></i> Chỉnh sửa sản phẩm
+      </a>
+      <a th:href="@{/admin/products/add}" class="nav-button" data-target="them-san-pham" th:classappend="${activeTab == 'them-san-pham' ? 'active' : ''}">
+        <i class="fas fa-plus-square"></i> Thêm sản phẩm
+      </a>
+      <a th:href="@{/admin/products/users}" class="nav-button" data-target="thong-tin-nguoi-dung" th:classappend="${activeTab == 'thong-tin-nguoi-dung' ? 'active' : ''}">
+        <i class="fas fa-users"></i> Thông tin người dùng
+      </a>
+      <a th:href="@{/admin/products/orders}" class="nav-button" data-target="hang-dang-dat" th:classappend="${activeTab == 'hang-dang-dat' ? 'active' : ''}">
+        <i class="fas fa-shopping-cart"></i> Hàng đang đặt
+      </a>
+      <a th:href="@{/admin/products/revenue}" class="nav-button" data-target="doanh-thu" th:classappend="${activeTab == 'doanh-thu' ? 'active' : ''}">
+        <i class="fas fa-chart-line"></i> Doanh thu
+      </a>
+      <a th:href="@{/admin/products/reports}" class="nav-button" data-target="thong-bao-report" th:classappend="${activeTab == 'thong-bao-report' ? 'active' : ''}">
+        <i class="fas fa-flag"></i> Thông báo report
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <p>&copy; <span id="currentYear"></span> TMV</p>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="main-header">
+      <div class="user-profile">
+        <img th:src="@{/images/logo.png}" alt="User Avatar" class="avatar"> <span>Admin</span>
+        <a th:href="@{/logout}" style="margin-left: 15px;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+      </div>
+    </header>
+
+    <section id="chinh-sua-san-pham" class="content-section" th:classappend="${activeTab == 'chinh-sua-san-pham' ? 'active' : ''}">
+      <h1>Chỉnh sửa sản phẩm</h1>
+      <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+      <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+      <div th:if="${warningMessage}" class="alert alert-warning" th:text="${warningMessage}"></div>
+
+      <div class="product-list-container card">
+        <h2>Chọn sản phẩm để sửa</h2>
+        <div th:if="${products != null and not #lists.isEmpty(products)}">
+          <div th:each="product : ${products}" class="product-item">
+            <h4 th:text="${product.name} + ' (ID: ' + ${product.id} + ')'"></h4>
+            <div class="product-actions">
+              <a th:href="@{/admin/products/edit(productId=${product.id})}" class="btn-edit">Chỉnh sửa</a>
+              <form th:action="@{/admin/products/delete}" method="post" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
+                <input type="hidden" name="productId" th:value="${product.id}" />
+                <button type="submit" class="btn-remove-user">Xóa</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div th:if="${products == null or #lists.isEmpty(products)}">
+          <p>Không có sản phẩm nào để hiển thị.</p>
+        </div>
+      </div>
+
+      <div class="edit-form-container card" th:if="${productToEdit != null}">
+        <h3>Chỉnh sửa: <span th:text="${productToEdit.name}" style="color: #D70018;"></span></h3>
+        <form th:action="@{/admin/products/update}" th:object="${productToEdit}" method="post" enctype="multipart/form-data" id="editProductForm">
+          <input type="hidden" th:field="*{id}" />
+          <div class="field-group"><label for="edit-name">Tên sản phẩm:</label><input type="text" id="edit-name" th:field="*{name}" required /></div>
+          <div class="field-group"><label for="edit-brand">Thương hiệu:</label><input type="text" id="edit-brand" th:field="*{brand}" required /></div>
+          <div class="field-group"><label for="edit-category">Danh mục:</label><input type="text" id="edit-category" th:field="*{category}" /></div>
+          <div class="field-group"><label for="edit-description">Mô tả:</label><textarea id="edit-description" th:field="*{description}" rows="3"></textarea></div>
+          <div class="field-group"><label for="edit-rating">Đánh giá (0.0 - 5.0):</label><input type="number" step="0.1" min="0" max="5" id="edit-rating" th:field="*{rating}" /></div>
+          <div class="field-group"><label for="edit-tagsString">Tags (cách nhau bởi dấu phẩy):</label><input type="text" id="edit-tagsString" name="tagsString" th:value="${productToEdit.tags != null ? #strings.listJoin(productToEdit.tags, ', ') : ''}" /></div>
+
+          <h4>Các phiên bản (Variants):</h4>
+          <div id="edit-variants-container">
+            <div th:each="variant, variantStat : *{variants}" class="variant-section" th:attr="data-variant-index=${variantStat.index}">
+              <input type="hidden" th:field="*{variants[__${variantStat.index}__].id}" />
+              <h5>Phiên bản <span class="variant-number" th:text="${variantStat.index + 1}"></span>
+                <button type="button" class="btn-remove-item" th:attr="onclick=|removeVariant(this, 'edit')|" th:style="${#lists.size(productToEdit.variants) > 1 ? 'display:inline-block;' : 'display:none;'}">×</button>
+              </h5>
+              <div class="field-group">
+                <label th:for="'edit-variant-image-current-' + ${variantStat.index}">Ảnh hiện tại:</label>
+                <img th:if="${variant.image != null and not variant.image.isEmpty()}" th:src="@{${variant.image}}" alt="Ảnh hiện tại" style="max-width: 100px; max-height: 100px; margin-top: 5px; display: block;"/>
+                <input type="hidden" th:name="'variants[' + ${variantStat.index} + '].image'" th:value="${variant.image}" />
+                <label th:for="'edit-variant-image-file-' + ${variantStat.index}" style="margin-top: 5px; display: block;">Chọn ảnh mới (nếu muốn thay đổi):</label>
+                <input type="file" th:id="'edit-variant-image-file-' + ${variantStat.index}" name="variantImageFiles" accept="image/*" />
+              </div>
+              <div class="field-group"><label th:for="'edit-variant-storage-' + ${variantStat.index}">Bộ nhớ (Storage):</label><input type="text" th:id="'edit-variant-storage-' + ${variantStat.index}" th:field="*{variants[__${variantStat.index}__].storage}" /></div>
+              <div class="field-group"><label th:for="'edit-variant-ram-' + ${variantStat.index}">RAM:</label><input type="text" th:id="'edit-variant-ram-' + ${variantStat.index}" th:field="*{variants[__${variantStat.index}__].ram}" /></div>
+              <div class="field-group"><label th:for="'edit-variant-memory-' + ${variantStat.index}">Bộ nhớ trong (Memory):</label><input type="text" th:id="'edit-variant-memory-' + ${variantStat.index}" th:field="*{variants[__${variantStat.index}__].memory}" /></div>
+              <div class="field-group"><label th:for="'edit-variant-screen-' + ${variantStat.index}">Màn hình:</label><input type="text" th:id="'edit-variant-screen-' + ${variantStat.index}" th:field="*{variants[__${variantStat.index}__].screen}" /></div>
+              <div class="field-group"><label th:for="'edit-variant-chip-' + ${variantStat.index}">Chip:</label><input type="text" th:id="'edit-variant-chip-' + ${variantStat.index}" th:field="*{variants[__${variantStat.index}__].chip}" /></div>
+              <div class="field-group"><label th:for="'edit-variant-camera_end-' + ${variantStat.index}">Camera sau:</label><input type="text" th:id="'edit-variant-camera_end-' + ${variantStat.index}" th:field="*{variants[__${variantStat.index}__].camera_end}" /></div>
+              <div class="field-group"><label th:for="'edit-variant-camera_start-' + ${variantStat.index}">Camera trước:</label><input type="text" th:id="'edit-variant-camera_start-' + ${variantStat.index}" th:field="*{variants[__${variantStat.index}__].camera_start}" /></div>
+              <div class="field-group"><label th:for="'edit-variant-pin-' + ${variantStat.index}">Pin:</label><input type="text" th:id="'edit-variant-pin-' + ${variantStat.index}" th:field="*{variants[__${variantStat.index}__].pin}" /></div>
+              <div class="field-group"><label th:for="'edit-variant-power-' + ${variantStat.index}">Sạc (Power):</label><input type="text" th:id="'edit-variant-power-' + ${variantStat.index}" th:field="*{variants[__${variantStat.index}__].power}" /></div>
+
+              <h6>Màu sắc & Giá:</h6>
+              <div class="colorpricesContainer" th:id="'edit-cpContainer-' + ${variantStat.index}">
+                <div th:each="cp, cpStatLocal : *{variants[__${variantStat.index}__].colorprices}" class="colorprice-section" th:attr="data-cp-index=${cpStatLocal.index}">
+                  <input type="hidden" th:field="*{variants[__${variantStat.index}__].colorprices[__${cpStatLocal.index}__].id}" />
+                  <h5>Màu/Giá <span class="cp-number" th:text="${cpStatLocal.index + 1}"></span>
+                    <button type="button" class="btn-remove-item" th:attr="onclick=|removeColorPrice(this, 'edit')|" th:style="${#lists.size(variant.colorprices) > 1 ? 'display:inline-block;' : 'display:none;'}">×</button>
+                  </h5>
+                  <div class="field-group"><label th:for="'edit-cp-color-' + ${variantStat.index} + '-' + ${cpStatLocal.index}">Màu:</label><input type="text" th:id="'edit-cp-color-' + ${variantStat.index} + '-' + ${cpStatLocal.index}" th:field="*{variants[__${variantStat.index}__].colorprices[__${cpStatLocal.index}__].color}" /></div>
+                  <div class="field-group"><label th:for="'edit-cp-price-' + ${variantStat.index} + '-' + ${cpStatLocal.index}">Giá (số nguyên):</label><input type="text" th:id="'edit-cp-price-' + ${variantStat.index} + '-' + ${cpStatLocal.index}" th:field="*{variants[__${variantStat.index}__].colorprices[__${cpStatLocal.index}__].price}" /></div>
+                  <div class="field-group"><label th:for="'edit-cp-discount-' + ${variantStat.index} + '-' + ${cpStatLocal.index}">Giảm giá (%):</label>
+                    <input type="number" th:id="'edit-cp-discount-' + ${variantStat.index} + '-' + ${cpStatLocal.index}"
+                           th:field="*{variants[__${variantStat.index}__].colorprices[__${cpStatLocal.index}__].discount}" />
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn-add-item" th:attr="onclick=|addColorPrice(this, 'edit')|">Thêm Màu/Giá</button>
+            </div>
+          </div>
+          <button type="button" class="btn-add-item" id="addVariantButtonForEditForm">Thêm Phiên bản</button>
+          <div class="form-actions">
+            <button type="submit" class="btn-save">Lưu thay đổi</button>
+            <a th:href="@{/admin/products/edit}" class="btn-cancel">Hủy</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="them-san-pham" class="content-section" th:classappend="${activeTab == 'them-san-pham' ? 'active' : ''}">
+      <h1>Thêm sản phẩm mới</h1>
+      <div class="edit-form-container card" th:if="${newProduct != null}">
+        <form th:action="@{/admin/products/save}" th:object="${newProduct}" method="post" id="addProductForm" enctype="multipart/form-data">
+          <div class="field-group"><label for="add-name">Tên sản phẩm:</label><input type="text" id="add-name" th:field="*{name}" required /></div>
+          <div class="field-group"><label for="add-brand">Thương hiệu:</label><input type="text" id="add-brand" th:field="*{brand}" required /></div>
+          <div class="field-group"><label for="add-category">Danh mục:</label><input type="text" id="add-category" th:field="*{category}" /></div>
+          <div class="field-group"><label for="add-description">Mô tả:</label><textarea id="add-description" th:field="*{description}" rows="3"></textarea></div>
+          <div class="field-group"><label for="add-rating">Đánh giá (0.0 - 5.0):</label><input type="number" step="0.1" min="0" max="5" id="add-rating" th:field="*{rating}" /></div>
+          <div class="field-group"><label for="add-tagsString">Tags (cách nhau bởi dấu phẩy):</label><input type="text" id="add-tagsString" name="tagsString" /></div>
+
+          <h4>Các phiên bản (Variants)</h4>
+          <div id="variantsContainer">
+            <div th:each="variant, variantStat : *{variants}" class="variant-section" th:attr="data-variant-index=${variantStat.index}">
+              <input type="hidden" th:name="'variants[' + ${variantStat.index} + '].id'" />
+              <h5>Phiên bản <span class="variant-number" th:text="${variantStat.index + 1}"></span>
+                <button type="button" class="btn-remove-item" th:attr="onclick=|removeVariant(this, 'add')|" style="display:none;">×</button>
+              </h5>
+              <div class="field-group">
+                <label th:for="'add-variant-image-file-' + ${variantStat.index}">Ảnh phiên bản:</label>
+                <input type="file" th:id="'add-variant-image-file-' + ${variantStat.index}" name="variantImageFiles" accept="image/*" />
+                <input type="hidden" th:name="'variants[' + ${variantStat.index} + '].image'" />
+              </div>
+              <div class="field-group"><label th:for="'add-variant-storage-' + ${variantStat.index}">Bộ nhớ (Storage):</label><input type="text" th:id="'add-variant-storage-' + ${variantStat.index}" th:name="'variants[' + ${variantStat.index} + '].storage'" /></div>
+              <div class="field-group"><label th:for="'add-variant-ram-' + ${variantStat.index}">RAM:</label><input type="text" th:id="'add-variant-ram-' + ${variantStat.index}" th:name="'variants[' + ${variantStat.index} + '].ram'" /></div>
+              <div class="field-group"><label th:for="'add-variant-memory-' + ${variantStat.index}">Bộ nhớ trong (Memory):</label><input type="text" th:id="'add-variant-memory-' + ${variantStat.index}" th:name="'variants[' + ${variantStat.index} + '].memory'" /></div>
+              <div class="field-group"><label th:for="'add-variant-screen-' + ${variantStat.index}">Màn hình:</label><input type="text" th:id="'add-variant-screen-' + ${variantStat.index}" th:name="'variants[' + ${variantStat.index} + '].screen'" /></div>
+              <div class="field-group"><label th:for="'add-variant-chip-' + ${variantStat.index}">Chip:</label><input type="text" th:id="'add-variant-chip-' + ${variantStat.index}" th:name="'variants[' + ${variantStat.index} + '].chip'" /></div>
+              <div class="field-group"><label th:for="'add-variant-camera_end-' + ${variantStat.index}">Camera sau:</label><input type="text" th:id="'add-variant-camera_end-' + ${variantStat.index}" th:name="'variants[' + ${variantStat.index} + '].camera_end'" /></div>
+              <div class="field-group"><label th:for="'add-variant-camera_start-' + ${variantStat.index}">Camera trước:</label><input type="text" th:id="'add-variant-camera_start-' + ${variantStat.index}" th:name="'variants[' + ${variantStat.index} + '].camera_start'" /></div>
+              <div class="field-group"><label th:for="'add-variant-pin-' + ${variantStat.index}">Pin:</label><input type="text" th:id="'add-variant-pin-' + ${variantStat.index}" th:name="'variants[' + ${variantStat.index} + '].pin'" /></div>
+              <div class="field-group"><label th:for="'add-variant-power-' + ${variantStat.index}">Sạc (Power):</label><input type="text" th:id="'add-variant-power-' + ${variantStat.index}" th:name="'variants[' + ${variantStat.index} + '].power'" /></div>
+
+              <h6>Màu sắc & Giá:</h6>
+              <div class="colorpricesContainer" th:id="'add-cpContainer-' + ${variantStat.index}">
+                <div th:each="cp, cpStatLocal : ${variant.colorprices}" class="colorprice-section" th:attr="data-cp-index=${cpStatLocal.index}">
+                  <input type="hidden" th:name="'variants[' + ${variantStat.index} + '].colorprices[' + ${cpStatLocal.index} + '].id'"/>
+                  <h5>Màu/Giá <span class="cp-number" th:text="${cpStatLocal.index + 1}"></span>
+                    <button type="button" class="btn-remove-item" th:attr="onclick=|removeColorPrice(this, 'add')|" style="display:none;">×</button>
+                  </h5>
+                  <div class="field-group"><label th:for="'add-cp-color-' + ${variantStat.index} + '-' + ${cpStatLocal.index}">Màu:</label><input type="text" th:id="'add-cp-color-' + ${variantStat.index} + '-' + ${cpStatLocal.index}" th:name="'variants[' + ${variantStat.index} + '].colorprices[' + ${cpStatLocal.index} + '].color'" /></div>
+                  <div class="field-group"><label th:for="'add-cp-price-' + ${variantStat.index} + '-' + ${cpStatLocal.index}">Giá (số nguyên):</label><input type="text" th:id="'add-cp-price-' + ${variantStat.index} + '-' + ${cpStatLocal.index}" th:name="'variants[' + ${variantStat.index} + '].colorprices[' + ${cpStatLocal.index} + '].price'" /></div>
+                  <div class="field-group"><label th:for="'add-cp-discount-' + ${variantStat.index} + '-' + ${cpStatLocal.index}">Giảm giá (%):</label>
+                    <input type="number" th:id="'add-cp-discount-' + ${variantStat.index} + '-' + ${cpStatLocal.index}"
+                           th:name="'variants[' + ${variantStat.index} + '].colorprices[' + ${cpStatLocal.index} + '].discount'" value="0" />
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn-add-item" th:attr="onclick=|addColorPrice(this, 'add')|">Thêm Màu/Giá</button>
+            </div>
+          </div>
+          <button type="button" class="btn-add-item" id="addVariantButton">Thêm Phiên bản</button>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-save">Thêm sản phẩm</button>
+            <a th:href="@{/admin/products/edit}" class="btn-cancel">Hủy</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="thong-tin-nguoi-dung" class="content-section card" th:classappend="${activeTab == 'thong-tin-nguoi-dung' ? 'active' : ''}">
+      <h2>Quản lý người dùng</h2>
+
+      <div th:if="${userToEdit}" class="edit-form-container" style="margin-bottom: 30px;">
+        <h3>Sửa thông tin người dùng: <span th:text="${userToEdit.username}" style="color: #D70018;"></span></h3>
+        <form th:action="@{/admin/products/users/update}" th:object="${userToEdit}" method="post">
+          <input type="hidden" th:field="*{username}" />
+
+          <div class="field-group">
+            <label for="editUserFullname">Họ và tên:</label>
+            <input type="text" id="editUserFullname" th:field="*{fullname}" class="form-control" />
+          </div>
+          <div class="field-group">
+            <label for="editUserEmail">Email:</label>
+            <input type="email" id="editUserEmail" th:field="*{email}" class="form-control" />
+          </div>
+
+          <div class="field-group">
+            <label for="editUserBanStatus">Trạng thái tài khoản:</label>
+            <select id="editUserBanStatus" th:field="*{ban}" class="form-control">
+              <option value="true">Không cấm</option>
+              <option value="false">Cấm tài khoản</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="editUserRole">Vai trò:</label>
+            <select id="editUserRole" th:field="*{role}" class="form-control">
+              <option value="CUSTOMER">Khách hàng (CUSTOMER)</option>
+              <option value="EMPLOYEE">Nhân viên (EMPLOYEE)</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-save">Lưu thay đổi</button>
+            <a th:href="@{/admin/products/users}" class="btn-cancel">Hủy</a>
+          </div>
+        </form>
+      </div>
+
+      <div th:if="${userManagementSuccessMessage}" class="success-message" th:text="${userManagementSuccessMessage}"></div>
+      <div th:if="${userManagementErrorMessage}" class="error-message" th:text="${userManagementErrorMessage}"></div>
+
+      <h3>Danh sách tất cả người dùng</h3>
+      <table>
+        <thead>
+        <tr>
+          <th>Username</th>
+          <th>Họ tên</th>
+          <th>Email</th>
+          <th>Vai trò</th>
+          <th>Trạng thái cấm</th>
+          <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${allUsers}">
+          <td th:text="${user.username}"></td>
+          <td th:text="${user.fullname}"></td>
+          <td th:text="${user.email}"></td>
+          <td th:text="${user.role}"></td>
+          <td th:text="${user.ban == 'true' ? 'Không cấm' : (user.ban == 'false' ? 'Bị cấm' : user.ban)}"></td>
+          <td>
+            <a th:href="@{/admin/products/users(username=${user.username})}" class="btn-edit">Sửa</a>
+            <form th:action="@{/admin/products/users/delete}" method="post" style="display:inline;" th:onsubmit="'return confirm(\'Bạn có chắc chắn muốn xóa người dùng \\'' + ${user.username} + '\\' không?\');'">
+              <input type="hidden" name="username" th:value="${user.username}" />
+              <button type="submit" th:disabled="${user.username == 'admin'}">Xóa</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(allUsers)}">
+          <td colspan="8" style="text-align: center;">Không có người dùng nào.</td> </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="hang-dang-dat" class="content-section card" th:classappend="${activeTab == 'hang-dang-dat' ? 'active' : ''}">
+      <h2>Quản lý Đơn Hàng</h2>
+
+      <div th:if="${orderManagementErrorMessage}" class="alert alert-danger" th:text="${orderManagementErrorMessage}"></div>
+      <div th:if="${orderManagementMessage}" class="alert alert-info" th:text="${orderManagementMessage}"></div>
+
+      <div th:if="${allOrders != null and not #lists.isEmpty(allOrders)}">
+        <table>
+          <thead>
+          <tr>
+            <th>STT</th> <th>Tên Khách Hàng (Username)</th> <th>Số Điện Thoại</th>
+            <th>Địa Chỉ</th>
+            <th>Email (nếu có)</th>
+            <th>Ngày Đặt</th>
+            <th>Tổng Tiền</th>
+            <th>Chi Tiết Sản Phẩm</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="order, iterStat : ${allOrders}">
+            <td th:text="${iterStat.count}"></td>
+            <td th:text="${order.username}"></td> <td th:text="${order.phone}"></td> <td th:text="${order.address}"></td> <td th:text="${order.username}"></td> <td th:text="${order.orderTimestamp != null ? #temporals.format(order.orderTimestamp, 'dd/MM/yyyy HH:mm:ss') : 'N/A'}"></td>
+            <td>N/A</td> <td>
+            <button type="button" th:attr="onclick=|toggleOrderDetails('details-${iterStat.index}')|">Xem</button>
+            <div th:id="'details-' + ${iterStat.index}" style="display:none; margin-top:10px; padding:10px; border:1px solid #eee;">
+              <h4>Chi tiết mua:</h4>
+              <p><strong>Sản phẩm ID:</strong> <span th:text="${order.productId}"></span></p>
+              <p><strong>Variant ID:</strong> <span th:text="${order.variantId}"></span></p>
+              <p><strong>Màu:</strong> <span th:text="${order.color}"></span></p>
+              <p><strong>Số lượng:</strong> <span th:text="${order.quantity}"></span></p>
+              <p><strong>Action:</strong> <span th:text="${order.action}"></span></p>
+            </div>
+          </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div th:if="${allOrders == null or #lists.isEmpty(allOrders)}">
+        <p th:unless="${orderManagementErrorMessage}">Hiện không có đơn hàng nào.</p>
+      </div>
+    </section>
+
+
+    <section id="doanh-thu" class="content-section card" th:classappend="${activeTab == 'doanh-thu' ? 'active' : ''}">
+      <h2>Báo cáo Doanh Thu</h2>
+
+      <div th:if="${revenueErrorMessage}" class="alert alert-danger" th:text="${revenueErrorMessage}"></div>
+      <div th:if="${revenueMessage}" class="alert alert-info" th:text="${revenueMessage}"></div>
+
+      <div class="revenue-summary">
+        <h3>Tổng Doanh Thu (Tất cả thời gian)</h3>
+        <p th:text="${totalRevenueAllTime != null ? totalRevenueAllTime : '0 VNĐ'}"></p>
+      </div>
+
+      <form th:action="@{/admin/products/revenue}" method="get" class="year-selector-form">
+        <label for="yearSelect">Chọn năm:</label>
+        <select id="yearSelect" name="year" onchange="this.form.submit()">
+          <option th:each="y : ${availableYears}"
+                  th:value="${y}"
+                  th:text="${y}"
+                  th:selected="${y == selectedYear}">
+          </option>
+        </select>
+      </form>
+
+      <div class="chart-container" th:if="${monthLabels != null and not #lists.isEmpty(monthLabels)}">
+        <h3 th:text="'Biểu đồ Doanh Thu Theo Tháng - Năm ' + ${selectedYear}"></h3>
+        <canvas id="monthlyRevenueChart"></canvas>
+      </div>
+      <div th:unless="${monthLabels != null and not #lists.isEmpty(monthLabels)}"
+           th:if="${(revenueErrorMessage == null or #strings.isEmpty(revenueErrorMessage)) and (revenueMessage == null or #strings.isEmpty(revenueMessage))}">
+        <p th:text="'Không có dữ liệu doanh thu cho năm ' + ${selectedYear} + '.'"></p>
+      </div>
+
+    </section>
+
+
+    <section id="thong-bao-report" class="content-section card" th:classappend="${activeTab == 'thong-bao-report' ? 'active' : ''}">
+      <h2>Danh sách Report</h2>
+
+      <div th:if="${reportManagementErrorMessage}" class="alert alert-danger" th:text="${reportManagementErrorMessage}"></div>
+      <div th:if="${reportManagementMessage}" class="alert"
+           th:classappend="${reportManagementMessage.contains('thành công') ? 'alert-success' : 'alert-info'}"
+           th:text="${reportManagementMessage}"></div>
+
+      <div th:if="${allReports != null and not #lists.isEmpty(allReports)}">
+        <form th:action="@{/admin/products/reports/clear}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tất cả report không? Hành động này không thể hoàn tác.');" style="margin-bottom: 20px;">
+          <button type="submit" class="btn-clear-reports">
+            <i class="fas fa-trash-alt"></i> Xóa tất cả Report
+          </button>
+        </form>
+
+        <table>
+          <thead>
+          <tr>
+            <th>Thời gian Report</th>
+            <th>Nhân viên Username</th>
+            <th>Nhân viên Họ Tên</th>
+            <th>Lý do Report</th>
+            <th>Chi tiết Đơn hàng Report</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="report, iterStat : ${allReports}">
+            <td th:text="${#temporals.format(report.reportTimestamp, 'dd/MM/yyyy HH:mm:ss')}"></td>
+            <td th:text="${report.employeeUsername}"></td>
+            <td th:text="${report.employeeFullname}"></td>
+            <td th:text="${report.reportReason}"></td>
+            <td>
+              <span th:attr="onclick=|toggleReportDetails('report-details-${iterStat.index}')|" class="report-details-toggle">Xem chi tiết</span>
+              <div th:id="'report-details-' + ${iterStat.index}" style="display:none;" class="report-details-content">
+                <p><strong>Sản phẩm ID:</strong> <span th:text="${report.reportedOrderData.productId}"></span></p>
+                <p><strong>Variant ID:</strong> <span th:text="${report.reportedOrderData.variantId}"></span></p>
+                <p><strong>Màu:</strong> <span th:text="${report.reportedOrderData.color}"></span></p>
+                <p><strong>Số lượng:</strong> <span th:text="${report.reportedOrderData.quantity}"></span></p>
+                <p><strong>Khách hàng:</strong> <span th:text="${report.reportedOrderData.username}"></span></p>
+                <p><strong>Thời gian đặt hàng:</strong> <span th:text="${#temporals.format(report.reportedOrderData.orderTimestamp, 'dd/MM/yyyy HH:mm:ss')}"></span></p>
+                <p><strong>Địa chỉ:</strong> <span th:text="${report.reportedOrderData.address}"></span></p>
+                <p><strong>Điện thoại:</strong> <span th:text="${report.reportedOrderData.phone}"></span></p>
+                <p><strong>Action:</strong> <span th:text="${report.reportedOrderData.action}"></span></p>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div th:if="${allReports == null or #lists.isEmpty(allReports)}">
+        <p th:unless="${(reportManagementErrorMessage != null and !#strings.isEmpty(reportManagementErrorMessage)) or (reportManagementMessage != null and !#strings.isEmpty(reportManagementMessage))}">Hiện không có report nào.</p>
+      </div>
+    </section>
+
+
+
+  </main>
+</div>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  document.addEventListener('DOMContentLoaded', function() {
+      // --- PHẦN 1: KHỞI TẠO CHUNG & XỬ LÝ TAB ---
+      const currentYearSpan = document.getElementById('currentYear');
+      if (currentYearSpan) {
+          currentYearSpan.textContent = new Date().getFullYear();
+      }
+
+      const navButtons = document.querySelectorAll('.sidebar-nav .nav-button');
+      const contentSections = document.querySelectorAll('.main-content .content-section');
+
+      function updateActiveState(targetId) {
+          navButtons.forEach(btn => {
+              btn.classList.toggle('active', btn.getAttribute('data-target') === targetId);
+          });
+          contentSections.forEach(section => {
+              if (section) { // Kiểm tra section tồn tại
+                  section.classList.toggle('active', section.id === targetId);
+              }
+          });
+      }
+
+      function determineInitialTab() {
+          let targetId = /*[[${activeTab}]]*/ null; // Ưu tiên activeTab từ server
+          const path = window.location.pathname;
+
+          if (targetId && document.getElementById(targetId)) {
+              // Tab đã được xác định bởi server và element tồn tại
+          } else {
+              // Nếu không có activeTab từ server hoặc element không tồn tại, xác định từ URL
+              if (path.includes('/admin/products/revenue')) {
+                  targetId = 'doanh-thu';
+              } else if (path.includes('/admin/products/reports')) {
+                  targetId = 'thong-bao-report';
+              } else if (path.includes('/admin/products/users')) {
+                  targetId = 'thong-tin-nguoi-dung';
+              } else if (path.includes('/admin/products/add')) {
+                  targetId = 'them-san-pham';
+              } else if (path.includes('/admin/products/orders')) {
+                  targetId = 'hang-dang-dat';
+              } else if (path.includes('/admin/products/edit') || path.endsWith('/admin/products') || path.endsWith('/admin/products/')) {
+                  targetId = 'chinh-sua-san-pham';
+              } else {
+                  // Mặc định nếu không có điều kiện nào khớp
+                  const firstNavButton = document.querySelector('.sidebar-nav .nav-button[data-target]');
+                  targetId = firstNavButton ? firstNavButton.getAttribute('data-target') : 'chinh-sua-san-pham';
+              }
+          }
+
+          // Đảm bảo targetId cuối cùng trỏ đến một element tồn tại
+          if (!document.getElementById(targetId)) {
+              const firstNavButton = document.querySelector('.sidebar-nav .nav-button[data-target]');
+              targetId = firstNavButton ? firstNavButton.getAttribute('data-target') : 'chinh-sua-san-pham';
+          }
+
+          updateActiveState(targetId);
+
+          // Gọi hàm vẽ biểu đồ nếu tab doanh thu được active
+          if (targetId === 'doanh-thu') {
+              renderRevenueChart();
+          }
+      }
+
+      // Gọi hàm xử lý active tab ban đầu (sẽ gọi renderRevenueChart nếu cần)
+      determineInitialTab();
+
+      navButtons.forEach(button => {
+          button.addEventListener('click', function(event) {
+              // Đối với thẻ <a>, trình duyệt sẽ tự điều hướng.
+              // `determineInitialTab` sẽ được gọi lại khi trang tải xong để active đúng tab và vẽ biểu đồ.
+              // Nếu bạn sử dụng <button> và muốn chuyển tab mà không tải lại trang (SPA-like),
+              // bạn cần gọi updateActiveState và renderRevenueChart ở đây.
+              // Hiện tại, các link Doanh thu, Report đã là <a> nên không cần xử lý click đặc biệt ở đây.
+              if (this.tagName === 'BUTTON' && this.hasAttribute('data-target')) {
+                   event.preventDefault();
+                   const targetSectionId = this.getAttribute('data-target');
+                   updateActiveState(targetSectionId);
+                   if (targetSectionId === 'doanh-thu') { // Nếu button này mở tab doanh thu (ít khả năng)
+                       renderRevenueChart();
+                   }
+              }
+          });
+      });
+
+      // --- PHẦN 2: LOGIC CHO FORM THÊM/SỬA SẢN PHẨM ---
+      // (Giữ nguyên toàn bộ code JavaScript cho form sản phẩm của bạn ở đây)
+      const addProductForm = document.getElementById('addProductForm');
+      const editProductForm = document.getElementById('editProductForm');
+      let variantTemplateNode = null;
+      const addFormVariantsContainer = addProductForm ? addProductForm.querySelector('#variantsContainer') : null;
+      if (addFormVariantsContainer) {
+          const initialThymeleafVariant = addFormVariantsContainer.querySelector('.variant-section');
+          if (initialThymeleafVariant) {
+              variantTemplateNode = initialThymeleafVariant.cloneNode(true);
+              cleanTemplateNodeForCloning(variantTemplateNode, 'add');
+          }
+      }
+
+      function cleanTemplateNodeForCloning(node, formTypePrefix) {
+          node.querySelectorAll('input[type="text"], input[type="number"], input[type="email"], textarea, input[type="file"], select').forEach(inp => {
+              if (inp.type === 'file') { inp.value = null; }
+              else if (inp.tagName === 'SELECT') { if(inp.options.length > 0) inp.selectedIndex = 0;}
+              else { inp.value = ''; }
+          });
+          node.querySelectorAll('input[type="hidden"]').forEach(inp => {
+              if (inp.name && (inp.name.endsWith('].id') || inp.name.endsWith('].image'))) {
+                  inp.value = '';
+              }
+          });
+          const imgPreview = node.querySelector('img[alt="Preview"], img[alt="Ảnh hiện tại"]');
+          if(imgPreview) imgPreview.style.display = 'none';
+
+          const cpContainer = node.querySelector('.colorpricesContainer');
+          if (cpContainer) {
+              const firstCpSample = cpContainer.querySelector('.colorprice-section');
+              if (firstCpSample) {
+                  firstCpSample.querySelectorAll('input[type="text"], input[type="number"], input[type="hidden"]').forEach(inp => {
+                      inp.value = (inp.name && inp.name.endsWith(".discount")) ? '0' : '';
+                      if(inp.name && inp.name.endsWith(".id")) inp.value = '';
+                  });
+                  while (cpContainer.children.length > 1) {
+                      cpContainer.removeChild(cpContainer.lastChild);
+                  }
+                  const initialCpRemoveBtn = firstCpSample.querySelector('button.btn-remove-item[onclick^="removeColorPrice"]');
+                  if(initialCpRemoveBtn) initialCpRemoveBtn.style.display = 'none';
+              } else if (typeof createColorPriceElementForTemplate === 'function') { // Kiểm tra hàm tồn tại
+                  cpContainer.innerHTML = '';
+                  cpContainer.appendChild(createColorPriceElementForTemplate(0, 0, formTypePrefix));
+              }
+          }
+          const initialVarRemoveBtn = node.querySelector('button.btn-remove-item[onclick^="removeVariant"]');
+          if(initialVarRemoveBtn) initialVarRemoveBtn.style.display = 'none';
+      }
+
+      function getOrCreateVariantTemplate(formIdPrefix) {
+          let templateToUse = variantTemplateNode;
+          if (!templateToUse) {
+              const currentForm = document.getElementById(formIdPrefix === 'add' ? 'addProductForm' : 'editProductForm');
+              if (currentForm) {
+                  const container = currentForm.querySelector(formIdPrefix === 'add' ? '#variantsContainer' : '#edit-variants-container');
+                  if (container) {
+                      const sampleVariant = container.querySelector('.variant-section');
+                      if (sampleVariant) templateToUse = sampleVariant.cloneNode(true);
+                  }
+              }
+          }
+
+          if (templateToUse) {
+              const clonedNode = templateToUse.cloneNode(true);
+              cleanTemplateNodeForCloning(clonedNode, formIdPrefix);
+              return clonedNode;
+          }
+          // Kiểm tra hàm fallbackVariantHTMLTemplate tồn tại trước khi gọi
+          if (typeof fallbackVariantHTMLTemplate === 'function') {
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = fallbackVariantHTMLTemplate("VAR_IDX_PLACEHOLDER", "VAR_NUM_PLACEHOLDER", formIdPrefix).trim();
+              if (tempDiv.firstChild) {
+                   const fallbackNode = tempDiv.firstChild;
+                  cleanTemplateNodeForCloning(fallbackNode, formIdPrefix);
+                  return fallbackNode;
+              }
+          }
+          console.error("Không thể tạo variant template: variantTemplateNode và fallbackVariantHTMLTemplate đều không hợp lệ.");
+          return document.createElement('div'); // Trả về div rỗng để tránh lỗi null
+      }
+
+      if (typeof updateAllVariantIndexes === 'function') { // Kiểm tra các hàm này có tồn tại không
+          const addVariantBtnForAddForm = document.getElementById('addVariantButton');
+          if (addVariantBtnForAddForm && addProductForm) {
+              const container = addProductForm.querySelector('#variantsContainer');
+              addVariantBtnForAddForm.addEventListener('click', function() {
+                  if (!container) return;
+                  const newVariantNode = getOrCreateVariantTemplate('add');
+                  if (!newVariantNode) { console.error("Không thể tạo variant mới cho form Thêm."); return; }
+                  container.appendChild(newVariantNode);
+                  updateAllVariantIndexes(addProductForm, 'add');
+              });
+          }
+
+          const addVariantBtnForEditForm = document.getElementById('addVariantButtonForEditForm');
+          if (addVariantBtnForEditForm && editProductForm) {
+              const container = editProductForm.querySelector('#edit-variants-container');
+              addVariantBtnForEditForm.addEventListener('click', function() {
+                  if (!container) return;
+                  const newVariantNode = getOrCreateVariantTemplate('edit');
+                  if (!newVariantNode) { console.error("Không thể tạo variant mới cho form Sửa."); return; }
+                  container.appendChild(newVariantNode);
+                  updateAllVariantIndexes(editProductForm, 'edit');
+              });
+          }
+           if (addProductForm) {
+              updateAllVariantIndexes(addProductForm, 'add');
+          }
+          if (editProductForm) {
+              updateAllVariantIndexes(editProductForm, 'edit');
+          }
+      } else {
+          console.warn("Các hàm quản lý variant (ví dụ: updateAllVariantIndexes) chưa được định nghĩa.");
+      }
+
+      // Đảm bảo các hàm window.* được định nghĩa nếu chúng được gọi từ HTML
+      if (typeof removeVariant !== 'function') { window.removeVariant = function(button, formType) { /*...*/ }; }
+      if (typeof addColorPrice !== 'function') { window.addColorPrice = function(button, formType) { /*...*/ }; }
+      if (typeof removeColorPrice !== 'function') { window.removeColorPrice = function(button, formType) { /*...*/ }; }
+      // Các hàm này cần được định nghĩa đầy đủ như trong file của bạn
+      // Ví dụ (đảm bảo bạn có định nghĩa đầy đủ):
+      // window.removeVariant = function(button, formType) { /* Định nghĩa đầy đủ của bạn */ };
+      // function updateAllVariantIndexes(formElement, formTypePrefix) { /* Định nghĩa đầy đủ của bạn */ }
+      // window.addColorPrice = function(button, formType) { /* Định nghĩa đầy đủ của bạn */ }
+      // function createColorPriceElementForTemplate(variantIndex, cpIndex, idPrefix) { /* Định nghĩa đầy đủ của bạn */ return document.createElement('div'); }
+      // function fallbackVariantHTMLTemplate(variantIndex, variantNumber, idPrefix = "add-") { /* Định nghĩa đầy đủ của bạn */ return ''; }
+      // function fallbackColorPriceHTMLTemplate(variantIndex, cpIndex, idPrefix = "add-") { /* Định nghĩa đầy đủ của bạn */ return ''; }
+      // window.removeColorPrice = function(button, formType) { /* Định nghĩa đầy đủ của bạn */ }
+      // function updateColorPriceIndexes(cpContainer, variantIndex, formTypePrefix) { /* Định nghĩa đầy đủ của bạn */ }
+      // function updateElementIndexes(element, variantIdx, cpIdx, formTypePrefix) { /* Định nghĩa đầy đủ của bạn */ }
+
+
+
+      // --- PHẦN 3: HÀM VẼ BIỂU ĐỒ DOANH THU ---
+      function renderRevenueChart() {
+          const doanhThuSection = document.getElementById('doanh-thu');
+          if (!doanhThuSection || !doanhThuSection.classList.contains('active')) {
+              // console.log("Biểu đồ: Tab 'doanh-thu' không active, không vẽ.");
+              return;
+          }
+
+          const monthLabels = /*[[${monthLabels}]]*/ [];
+          const revenueValues = /*[[${revenueValues}]]*/ [];
+          const selectedYearForChart = /*[[${selectedYear}]]*/ null;
+          const canvasCtx = document.getElementById('monthlyRevenueChart');
+
+          console.log("Attempting to render chart. Active Tab (from model):", /*[[${activeTab}]]*/ null);
+          console.log("Data for chart - Year:", selectedYearForChart, "Labels:", monthLabels, "Values:", revenueValues);
+
+          if (canvasCtx) {
+              let existingChart = Chart.getChart(canvasCtx);
+              if (existingChart) {
+                  existingChart.destroy();
+              }
+
+              if (monthLabels && monthLabels.length > 0 && revenueValues && revenueValues.length > 0 && monthLabels.length === revenueValues.length) {
+                  console.log("Đang vẽ biểu đồ với dữ liệu:", monthLabels, revenueValues);
+                  new Chart(canvasCtx, {
+                      type: 'bar',
+                      data: {
+                          labels: monthLabels,
+                          datasets: [{
+                              label: 'Doanh thu (VNĐ) năm ' + selectedYearForChart,
+                              data: revenueValues,
+                              backgroundColor: 'rgba(215, 0, 24, 0.5)',
+                              borderColor: 'rgba(215, 0, 24, 1)',
+                              borderWidth: 1
+                          }]
+                      },
+                      options: { /* ... options của bạn ... */ } // Giữ nguyên options
+                  });
+              } else {
+                  console.log("Biểu đồ: Dữ liệu không hợp lệ hoặc không đủ để vẽ. Labels:", monthLabels, "Values:", revenueValues);
+                  // Xóa canvas nếu không có dữ liệu hợp lệ
+                  const context = canvasCtx.getContext('2d');
+                  context.clearRect(0, 0, canvasCtx.width, canvasCtx.height);
+                  // Hoặc hiển thị thông báo trực tiếp trên canvas
+                   if (monthLabels && monthLabels.length === 0 && (!revenueValues || revenueValues.length === 0)){
+                      context.font = "16px Arial";
+                      context.textAlign = "center";
+                      context.fillText("Không có dữ liệu doanh thu cho năm " + selectedYearForChart, canvasCtx.width/2, canvasCtx.height/2);
+                  }
+              }
+          } else {
+              console.log("Biểu đồ: Không tìm thấy thẻ canvas với ID 'monthlyRevenueChart'.");
+          }
+      }
+      // --- KẾT THÚC LOGIC BIỂU ĐỒ DOANH THU ---
+
+  }); // Kết thúc của document.addEventListener('DOMContentLoaded')
+
+  // Các hàm helper toàn cục: toggleOrderDetails, toggleReportDetails
+  // Đặt các định nghĩa hàm này ở đây nếu chúng được gọi từ HTML (onclick)
+  // hoặc nếu bạn đã có chúng ở đây từ trước.
+  function toggleOrderDetails(detailsId) {
+    const detailsDiv = document.getElementById(detailsId);
+    if (detailsDiv) {
+        detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+    }
+  }
+
+  function toggleReportDetails(detailsId) {
+    const detailsDiv = document.getElementById(detailsId);
+    if (detailsDiv) {
+        detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+    }
+  }
+  console.log("Attempting to render chart. Active Tab (from model):", /*[[${activeTab}]]*/ null);
+console.log("Data for chart - Year:", selectedYearForChart, "Labels:", monthLabels, "Values:", revenueValues);
+</script>
+</body>
+</html>

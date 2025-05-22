@@ -1,0 +1,29 @@
+[ {
+  "id" : "prod_a8b681",
+  "name" : "iphone16",
+  "brand" : "Apple",
+  "category" : "Điện thoại",
+  "description" : "điện thoại",
+  "rating" : 5.0,
+  "variants" : [ {
+    "id" : "prod_a8b681-variant-0-bd27",
+    "storage" : "5G",
+    "ram" : "8GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Đen",
+      "price" : "28923490000",
+      "discount" : 100
+    } ],
+    "image" : null,
+    "screen" : "Dynamic AMOLED 2X 11",
+    "chip" : "Snapdragon 8 Gen 2 for Galaxy",
+    "memory" : "128GB",
+    "camera_end" : "13 MP",
+    "camera_start" : "12 MP",
+    "pin" : "8400 mAh",
+    "power" : "45 W"
+  } ],
+  "tags" : [ "iphone", "mới", "giảm giá", "cao cấp" ],
+  "releaseDate" : null
+} ]

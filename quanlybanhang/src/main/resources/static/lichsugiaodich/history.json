@@ -1,0 +1,35 @@
+[ {
+  "id" : "de4500ef-4559-4c57-86f5-32047fbe82e2",
+  "orderData" : {
+    "variantId" : "iphone16promax-128gb-black",
+    "action" : "confirmed_purchase",
+    "quantity" : 10,
+    "productId" : "iphone15proplus",
+    "color" : "Đen",
+    "username" : "zepphi1",
+    "orderTimestamp" : "2025-04-21T02:17:12.867288",
+    "address" : "thon 7",
+    "phone" : "0917571916"
+  },
+  "employeeUsername" : "zepphi11",
+  "employeeFullname" : "phuclociphone",
+  "acceptedTimestamp" : "2025-04-21T02:17:34.710009",
+  "completedTimestamp" : "2025-04-21T02:17:38.029807"
+}, {
+  "id" : "4ba04e48-5b3a-436f-a1f4-01cc98eac59d",
+  "orderData" : {
+    "variantId" : "iphone16promax-128gb-black",
+    "action" : "confirmed_purchase",
+    "quantity" : 1,
+    "productId" : "iphone15proplus",
+    "color" : "Đen",
+    "username" : "zepphi1",
+    "orderTimestamp" : "2025-05-22T10:46:30.178727",
+    "address" : "TỔ DÂN PHỐ 8",
+    "phone" : "0917571916"
+  },
+  "employeeUsername" : "zepphi11",
+  "employeeFullname" : "phuclociphone",
+  "acceptedTimestamp" : "2025-05-22T10:46:52.669846",
+  "completedTimestamp" : "2025-05-22T10:46:54.209504"
+} ]

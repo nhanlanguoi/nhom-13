@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class BuyData {
     private String variantId;
-    private String action; // "add" in this context means confirmed purchase
+    private String action; 
     private int quantity;
     private String productId;
     private String color;
@@ -20,10 +20,10 @@ public class BuyData {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime orderTimestamp;
-    private String address; // New field
-    private String phone;   // New field
+    private String address; 
+    private String phone;   
 
-    // Default constructor for Jackson
+    
     public BuyData() {
     }
 

@@ -76,7 +76,7 @@ public class UserController {
                 u.put("fullname" , fullname);
                 u.put("email" , email);
                 u.put("password" , passwordconfig);
-                // save laij vào file
+               
                 mapper.writeValue(file, users);
                 user.setFullname(fullname);
                 user.setEmail(email);

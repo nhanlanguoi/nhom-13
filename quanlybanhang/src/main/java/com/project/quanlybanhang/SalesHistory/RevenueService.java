@@ -117,8 +117,7 @@ public class RevenueService {
                 int quantity = entry.getOrderData().getQuantity();
                 double itemPrice = 0;
 
-                // 1. Tách 'storageCapacity' (dung lượng bộ nhớ) từ 'variantIdStringFromHistory'
-                //    Ví dụ: "128gb" từ "iphone16promax-128gb-black"
+               
                 String storageCapacity = "";
                 if (variantIdStringFromHistory != null) {
                     String[] parts = variantIdStringFromHistory.split("-");
@@ -130,54 +129,52 @@ public class RevenueService {
                     }
                 }
 
-                // 2. Tìm Product dựa trên 'productIdFromHistory'
+               
                 Product foundProduct = allProducts.stream()
                         .filter(p -> p.getId().equalsIgnoreCase(productIdFromHistory))
                         .findFirst().orElse(null);
 
                 if (foundProduct != null) {
-                    // 3. Lặp qua các Variant của sản phẩm đó
+                   
                     for (Variant variant : foundProduct.getVariants()) {
                         boolean capacityMatch;
-                        // 3a. So khớp dung lượng bộ nhớ ('storageCapacity' parse được với 'variant.getMemory()')
+                       
                         if (!storageCapacity.isEmpty()) {
-                            // Nếu dung lượng được chỉ định trong variantId của history, nó phải khớp
+                           
                             capacityMatch = variant.getMemory() != null &&
                                     variant.getMemory().equalsIgnoreCase(storageCapacity);
                         } else {
-                            // Nếu không có dung lượng nào được chỉ định trong variantId của history,
-                            // ta coi như nó khớp (sẽ dựa vào màu sắc để phân biệt).
-                            // Hoặc bạn có thể đặt capacityMatch = false nếu yêu cầu variantId luôn phải có dung lượng.
+                            
                             capacityMatch = true;
                         }
 
-                        // 4. NẾU DUNG LƯỢNG KHỚP (HOẶC KHÔNG CẦN CHECK DUNG LƯỢNG TỪ VARIANTID)
+                        
                         if (capacityMatch) {
-                            // 4a. DUYỆT QUA 'colorprices' CỦA VARIANT HIỆN TẠI ĐỂ TÌM ĐÚNG MÀU
+                           
                             for (colorprice cp : variant.getColorprices()) {
-                                // 4b. SO KHỚP MÀU (không phân biệt hoa thường)
+                              
                                 if (cp.getColor().equalsIgnoreCase(colorNameFromHistory)) {
                                     try {
-                                        // Lấy giá từ 'cp.getPrice()' và loại bỏ các ký tự không phải số
+                                        
                                         itemPrice = Double.parseDouble(cp.getPrice().replaceAll("[^\\d.]", ""));
                                     } catch (NumberFormatException e) {
                                         System.err.println("Lỗi parse giá tiền: " + cp.getPrice() +
                                                 " cho sản phẩm ID " + productIdFromHistory +
                                                 ", màu: " + colorNameFromHistory);
-                                        itemPrice = 0; // Reset giá nếu có lỗi parse
+                                        itemPrice = 0;
                                     }
-                                    break; // Đã tìm thấy giá cho màu này, thoát vòng lặp colorprices
+                                    break; 
                                 }
                             }
                         }
-                        // 5. Nếu đã tìm thấy giá (itemPrice > 0), thoát vòng lặp duyệt các variants
+                        
                         if (itemPrice > 0) {
                             break;
                         }
                     }
                 }
 
-                // 6. Ghi nhận nếu không tìm thấy giá và tính tổng tiền
+              
                 if (itemPrice == 0) {
                     System.err.println("Không tìm thấy giá cho sản phẩm: " + productIdFromHistory +
                             ", variantId: " + variantIdStringFromHistory +
@@ -194,8 +191,8 @@ public class RevenueService {
         return processedHistory.stream()
                 .filter(entry -> entry.getCompletedTimestamp() != null && entry.getCompletedTimestamp().getYear() == year)
                 .collect(Collectors.groupingBy(
-                        entry -> entry.getCompletedTimestamp().getMonth().toString(), // Nhóm theo tên tháng
-                        LinkedHashMap::new, // Để giữ thứ tự tháng
+                        entry -> entry.getCompletedTimestamp().getMonth().toString(), 
+                        LinkedHashMap::new, 
                         Collectors.summingDouble(HistoryEntry::getTotalAmount)
                 ));
     }

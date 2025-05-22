@@ -55,7 +55,7 @@ public class UserService {
         List<User> users = null;
         boolean loadedFromSrc = false;
 
-        // 1. Ưu tiên đọc từ src/main/resources
+       
         if (Files.exists(srcUserJsonFilePath)) {
             try (InputStream srcIs = Files.newInputStream(srcUserJsonFilePath)) {
                 if (srcIs.available() > 0) {
@@ -63,7 +63,7 @@ public class UserService {
                     System.out.println("[UserService] Successfully loaded " + (users != null ? users.size() : 0) + " users from src: " + srcUserJsonFilePath.toAbsolutePath());
                     loadedFromSrc = true;
 
-                    // Nếu đọc từ src thành công, đồng bộ sang target
+                   
                     if (users != null) { // Chỉ đồng bộ nếu thực sự đọc được danh sách
                         try {
                             // Tạo OutputStream cho target và ghi đè

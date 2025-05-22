@@ -110,13 +110,15 @@
   }
 
   .search-container {
-      display: flex;
-      width: 40%; /* Chiều rộng mặc định */
-      background-color: var(--white-color);
-      border-radius: var(--border-radius);
-      overflow: hidden;
-      margin: 0 15px; /* Khoảng cách mặc định */
-  }
+        display: flex;
+        width: 40%; /* Chiều rộng mặc định */
+        background-color: var(--white-color);
+        border-radius: var(--border-radius);
+        /* overflow: hidden; */ /* Xóa hoặc comment dòng này */
+        overflow: visible;    /* HOẶC THAY BẰNG DÒNG NÀY */
+        margin: 0 15px; /* Khoảng cách mặc định */
+        position: relative;  /* QUAN TRỌNG: Phải có để .search-results-box định vị theo */
+    }
 
   .search-input {
     flex-grow: 1;
@@ -901,3 +903,71 @@
       font-size: 13px;
    }
 }
+
+
+.popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000; 
+    }
+
+    .popup-box {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    
+    .search-container {
+        position: relative;
+    }
+    .search-results-box {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        
+        
+        width: calc(100% - 40px);
+        max-width: 100%; 
+        background: white;
+        border: 1px solid #ddd;
+        border-top: none;
+        border-radius: 0 0 4px 4px;
+        max-height: 250px;
+        overflow-y: auto;
+        z-index: 1001;
+        display: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .native-bar-flex .search-container .search-results-box {
+        
+           
+        width: 100%; 
+    }
+
+
+    .search-result-item {
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #333;
+        border-bottom: 1px solid #eee;
+    }
+    .search-result-item:last-child {
+        border-bottom: none;
+    }
+    .search-result-item:hover {
+        background-color: #f0f0f0;
+    }
+   
+    .search-result-item strong {
+        font-weight: 500; 
+    }

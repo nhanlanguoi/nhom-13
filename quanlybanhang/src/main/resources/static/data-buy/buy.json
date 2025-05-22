@@ -1,1 +1,11 @@
-[ ]
+[ {
+  "variantId" : "7aed7e9f-a6ac-40e7-8d0a-89ce0cd1dcc4-variant-1d9f",
+  "action" : "confirmed_purchase",
+  "quantity" : 1,
+  "productId" : "7aed7e9f-a6ac-40e7-8d0a-89ce0cd1dcc4",
+  "color" : "Trắng",
+  "username" : "zepphi1",
+  "orderTimestamp" : "2025-05-22T23:32:40.532092",
+  "address" : "thon 2",
+  "phone" : "0917571916"
+} ]

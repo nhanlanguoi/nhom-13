@@ -49,4 +49,32 @@
   } ],
   "tags" : [ "iphone", "mới", "giảm giá", "cao cấp", "Apple", "iphone16", "apple" ],
   "releaseDate" : null
+}, {
+  "id" : "7aed7e9f-a6ac-40e7-8d0a-89ce0cd1dcc4",
+  "name" : "MacBook Air M2 2024",
+  "brand" : "Apple ",
+  "category" : "Laptop",
+  "description" : "laptop",
+  "rating" : 4.0,
+  "variants" : [ {
+    "id" : "7aed7e9f-a6ac-40e7-8d0a-89ce0cd1dcc4-variant-1d9f",
+    "storage" : "256 GB",
+    "ram" : "8GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Trắng",
+      "price" : "28923490000",
+      "discount" : 100
+    } ],
+    "image" : "/data-product/image/prod_b737_newvar0_33a8bce9.webp",
+    "screen" : "2k",
+    "chip" : "Air m2",
+    "memory" : "256 GB",
+    "camera_end" : "13 MP",
+    "camera_start" : "12 MP",
+    "pin" : "8400 mAh",
+    "power" : "45 W"
+  } ],
+  "tags" : [ "macbook", "mới", "giảm giá", "cao cấp", "Apple" ],
+  "releaseDate" : null
 } ]

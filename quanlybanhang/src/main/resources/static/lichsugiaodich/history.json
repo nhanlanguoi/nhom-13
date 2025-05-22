@@ -32,4 +32,21 @@
   "employeeFullname" : "phuclociphone",
   "acceptedTimestamp" : "2025-05-22T10:46:52.669846",
   "completedTimestamp" : "2025-05-22T10:46:54.209504"
+}, {
+  "id" : "75ed1ad7-bf93-4559-9bca-32a18dea93fa",
+  "orderData" : {
+    "variantId" : "cfe31e4e-f501-4538-89a3-bdbf3652c6fa-variant-7d61",
+    "action" : "confirmed_purchase",
+    "quantity" : 6,
+    "productId" : "cfe31e4e-f501-4538-89a3-bdbf3652c6fa",
+    "color" : "Trắng",
+    "username" : "zepphi1",
+    "orderTimestamp" : "2025-05-22T23:24:44.492134",
+    "address" : "thôn 2",
+    "phone" : "0917571916"
+  },
+  "employeeUsername" : "zepphi11",
+  "employeeFullname" : "phuclociphone",
+  "acceptedTimestamp" : "2025-05-22T23:25:16.129797",
+  "completedTimestamp" : "2025-05-22T23:26:01.703391"
 } ]

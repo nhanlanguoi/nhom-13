@@ -505,3 +505,32 @@
             font-weight: bold;
             width: 150px;
         }
+
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 13px; /* Giảm kích thước chữ một chút nếu cần */
+}
+
+.history-table th,
+.history-table td {
+  border: 1px solid var(--border-color);
+  padding: 8px 10px; /* Điều chỉnh padding */
+  text-align: left;
+}
+
+.history-table th {
+  background-color: var(--secondary-color);
+  font-weight: 600; /* Đậm hơn cho tiêu đề cột */
+  color: var(--text-color);
+}
+
+.history-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.history-table tbody tr:hover {
+  background-color: #f1f1f1;
+}

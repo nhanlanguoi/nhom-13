@@ -170,6 +170,103 @@
 
 
   document.getElementById("info").click();
+
+
+  document.getElementById("history").addEventListener("click", function() {
+    fetchHistoryData(user.username); // Gọi hàm để lấy và hiển thị lịch sử
+  });
+
+  async function fetchHistoryData(currentUsername) {
+    const textArea = document.getElementById("text-area");
+    textArea.innerHTML = '<p>Đang tải lịch sử giao dịch...</p>';
+
+    try {
+      // Sử dụng Promise.all để tải đồng thời cả lịch sử và danh sách sản phẩm
+      const [historyResponse, productsResponse] = await Promise.all([
+        fetch('/lichsugiaodich/history.json'),
+        fetch('/data-product/product.json') // Đường dẫn tới file product.json
+      ]);
+
+      if (!historyResponse.ok) {
+        throw new Error(`HTTP error! status: ${historyResponse.status} (history.json)`);
+      }
+      if (!productsResponse.ok) {
+        throw new Error(`HTTP error! status: ${productsResponse.status} (product.json)`);
+      }
+
+      const historyData = await historyResponse.json();
+      const productsData = await productsResponse.json();
+
+      // Tạo một đối tượng để dễ dàng tra cứu tên sản phẩm bằng ID
+      const productMap = {};
+      productsData.forEach(product => {
+        productMap[product.id] = product.name; // Giả sử product.json có trường 'id' và 'name'
+      });
+
+      // Lọc lịch sử giao dịch của người dùng hiện tại
+      const userHistory = historyData.filter(entry => entry.orderData && entry.orderData.username === currentUsername);
+
+      if (userHistory.length === 0) {
+        textArea.innerHTML = '<p>Không có lịch sử giao dịch nào.</p>';
+        return;
+      }
+
+      // Tạo bảng để hiển thị lịch sử
+      let historyHtml = `
+        <strong>Lịch sử giao dịch:</strong>
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Ngày hoàn thành</th>
+              <th>Sản phẩm</th>
+              <th>Màu</th>
+              <th>Số lượng</th>
+              <th>Địa chỉ</th>
+              <th>Số điện thoại</th>
+              <th>Nhân viên giao</th>
+              <th>Tổng tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      userHistory.forEach((entry, index) => {
+        const orderData = entry.orderData || {};
+        const completedTimestamp = entry.completedTimestamp ? new Date(entry.completedTimestamp).toLocaleString('vi-VN') : 'N/A';
+        const employeeFullname = entry.employeeFullname || 'N/A';
+        // Lấy tên sản phẩm từ productMap, nếu không tìm thấy thì hiển thị productId
+        const productName = productMap[orderData.productId] || orderData.productId || 'N/A';
+
+        const totalAmountFormatted = entry.totalAmount ? entry.totalAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) : 'N/A';
+
+
+        historyHtml += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${completedTimestamp}</td>
+            <td>${productName}</td>
+            <td>${orderData.color || 'N/A'}</td>
+            <td>${orderData.quantity || 'N/A'}</td>
+            <td>${orderData.address || 'N/A'}</td>
+            <td>${orderData.phone || 'N/A'}</td>
+            <td>${employeeFullname}</td>
+            <td>${totalAmountFormatted}</td>
+          </tr>
+        `;
+      });
+
+      historyHtml += `
+          </tbody>
+        </table>
+      `;
+      textArea.innerHTML = historyHtml;
+
+    } catch (error) {
+      console.error("Lỗi khi tải lịch sử giao dịch:", error);
+      textArea.innerHTML = `<p style="color: red;">Không thể tải lịch sử giao dịch. Lỗi: ${error.message}. Vui lòng thử lại sau.</p>`;
+    }
+  }
 </script>
 
 </html>

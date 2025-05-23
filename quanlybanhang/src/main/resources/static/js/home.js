@@ -96,6 +96,114 @@ document.addEventListener('DOMContentLoaded', function () {
         currentYearSpan.textContent = new Date().getFullYear();
       }
 
+
+
+
+      const adSliderElement = document.getElementById('homeAdvertisementSlider');
+          const prevAdButton = document.getElementById('homePrevAd');
+          const nextAdButton = document.getElementById('homeNextAd');
+          const noAdsMsgElement = document.getElementById('noHomeAdsMessage');
+
+          let currentAdIndex = 0;
+          let adImageUrls = [];
+
+          async function fetchAndDisplayAdvertisements() {
+              // Kiểm tra sự tồn tại của các element trước khi tiếp tục
+              if (!adSliderElement || !prevAdButton || !nextAdButton || !noAdsMsgElement) {
+                  // console.log("Một hoặc nhiều element quảng cáo không tìm thấy trên trang này.");
+                  return; // Không thực hiện gì nếu element không tồn tại (ví dụ trên trang khác không có slider)
+              }
+
+              try {
+                  const response = await fetch('/api/advertisements/current-images'); // API đã tạo trong AdvertisementController
+                  if (!response.ok) {
+                      console.error('Lỗi tải danh sách quảng cáo:', response.status);
+                      showNoAdsMessage();
+                      return;
+                  }
+                  adImageUrls = await response.json();
+
+                  if (adImageUrls && adImageUrls.length > 0) {
+                      noAdsMsgElement.style.display = 'none';
+                      adSliderElement.style.display = 'flex'; // Hoặc 'block' tùy theo CSS của slider
+                      renderAdvertisements();
+
+                      // Hiển thị/ẩn nút dựa trên số lượng quảng cáo
+                      if (adImageUrls.length > 1) {
+                          prevAdButton.style.display = 'block';
+                          nextAdButton.style.display = 'block';
+                      } else {
+                          prevAdButton.style.display = 'none';
+                          nextAdButton.style.display = 'none';
+                      }
+                  } else {
+                      showNoAdsMessage();
+                  }
+              } catch (error) {
+                  console.error('Lỗi khi fetch quảng cáo:', error);
+                  showNoAdsMessage();
+              }
+          }
+
+          function showNoAdsMessage() {
+              if (!adSliderElement || !noAdsMsgElement || !prevAdButton || !nextAdButton) return;
+              adSliderElement.innerHTML = '';
+              adSliderElement.style.display = 'none';
+              prevAdButton.style.display = 'none';
+              nextAdButton.style.display = 'none';
+              noAdsMsgElement.style.display = 'block';
+          }
+
+          function renderAdvertisements() {
+              if (!adSliderElement) return;
+              adSliderElement.innerHTML = ''; // Xóa nội dung cũ
+              adImageUrls.forEach(imageUrl => {
+                  const slideDiv = document.createElement('div');
+                  slideDiv.classList.add('advertisement-slide'); // Cần CSS cho class này
+
+                  const imgElement = document.createElement('img');
+                  imgElement.src = imageUrl;
+                  imgElement.alt = "Quảng cáo";
+                  // Bạn có thể thêm style trực tiếp ở đây hoặc tốt hơn là trong file CSS
+                  imgElement.style.width = "100%"; // Ví dụ
+                  imgElement.style.height = "auto"; // Ví dụ
+                  imgElement.style.objectFit = "cover"; // Hoặc 'contain'
+
+                  slideDiv.appendChild(imgElement);
+                  adSliderElement.appendChild(slideDiv);
+              });
+              updateSliderView();
+          }
+
+          function updateSliderView() {
+              if (adImageUrls.length > 0 && adSliderElement) {
+                  // CSS cho .slider nên là display: flex; và overflow: hidden;
+                  // CSS cho .advertisement-slide là min-width: 100%; transition: transform 0.5s ease-in-out;
+                  adSliderElement.style.transform = `translateX(-${currentAdIndex * 100}%)`;
+              }
+          }
+
+          if (nextAdButton) {
+              nextAdButton.addEventListener('click', () => {
+                  if (adImageUrls.length > 1) {
+                      currentAdIndex = (currentAdIndex + 1) % adImageUrls.length;
+                      updateSliderView();
+                  }
+              });
+          }
+
+          if (prevAdButton) {
+              prevAdButton.addEventListener('click', () => {
+                  if (adImageUrls.length > 1) {
+                      currentAdIndex = (currentAdIndex - 1 + adImageUrls.length) % adImageUrls.length;
+                      updateSliderView();
+                  }
+              });
+          }
+
+
+          fetchAndDisplayAdvertisements();
+
       
 
 });

@@ -508,7 +508,7 @@
         overflow-x: auto; /* Cho phép cuộn ngang danh mục */
         padding: 10px;
         justify-content: flex-start;
-        /* Thêm thanh cuộn custom nếu muốn đẹp hơn */
+
         scrollbar-width: thin;
         scrollbar-color: var(--primary-color) var(--border-color);
     }

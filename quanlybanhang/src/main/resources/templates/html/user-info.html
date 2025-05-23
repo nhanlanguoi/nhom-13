@@ -23,8 +23,13 @@
       </div>
 
       <div class="search-container">
-        <input class="search-input" type="text" placeholder="Bạn tìm gì hôm nay?" />
-        <button class="search-button"><i class="fas fa-search"></i></button>
+        <form id="search-form" action="/search" method="get" style="display: flex; width: 100%;">
+          <input class="search-input" type="text" name="tag" id="search-input-main"
+                 placeholder="Tìm kiếm theo tags sản phẩm..." autocomplete="off" />
+          <button class="search-button" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+        <div class="search-results-box" id="search-results-main">
+        </div>
       </div>
       <nav class="header-nav">
         <a href="#" class="nav-item call"><i class="fas fa-phone"></i> <span>Gọi mua hàng</span></a>
@@ -268,5 +273,5 @@
     }
   }
 </script>
-
+<script th:src="@{/js/search.js}"></script>
 </html>

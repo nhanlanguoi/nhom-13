@@ -42,6 +42,9 @@
           th:classappend="${activeTab == 'thong-bao-report' ? 'active' : ''}">
           <i class="fas fa-flag"></i> Thông báo report
         </a>
+        <a href="#" class="nav-button" data-target="quan-ly-quang-cao">
+          <i class="fas fa-images"></i> Quản lý Quảng Cáo
+        </a>
       </nav>
       <div class="sidebar-footer">
         <p>&copy; <span id="currentYear"></span> TMV</p>
@@ -528,7 +531,14 @@
         </div>
       </section>
 
-
+      <section id="quan-ly-quang-cao" class="content-section card"
+               th:classappend="${activeTab == 'quan-ly-quang-cao' ? 'active' : ''}">
+        <h2>Cập nhật Ảnh Quảng Cáo</h2>
+        <p>Chọn một hoặc nhiều ảnh mới. Tất cả ảnh quảng cáo hiện tại sẽ bị xóa và thay thế bằng các ảnh bạn chọn.</p>
+        <input type="file" id="advertisementNewImages" accept="image/*" multiple style="margin-bottom: 10px; display: block;">
+        <button id="updateAdvertisementImagesBtn" class="btn-save">Cập nhật Ảnh</button>
+        <div id="adminAdStatus" style="margin-top: 15px; font-weight: bold;"></div>
+      </section>
 
     </main>
   </div>
@@ -537,426 +547,489 @@
 
     document.addEventListener('DOMContentLoaded', function () {
 
-      const currentYearSpan = document.getElementById('currentYear');
-      if (currentYearSpan) {
-        currentYearSpan.textContent = new Date().getFullYear();
+  const currentYearSpan = document.getElementById('currentYear');
+  if (currentYearSpan) {
+    currentYearSpan.textContent = new Date().getFullYear();
+  }
+
+  const navButtons = document.querySelectorAll('.sidebar-nav .nav-button');
+  const contentSections = document.querySelectorAll('.main-content .content-section');
+
+  function updateActiveState(targetId) {
+    if (!targetId) return; // Nếu không có targetId thì không làm gì cả
+    navButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-target') === targetId);
+    });
+    contentSections.forEach(section => {
+      section.classList.toggle('active', section.id === targetId);
+    });
+  }
+
+  function determineInitialTab() {
+    let targetId = /*[[${activeTab}]]*/ null;
+    const path = window.location.pathname;
+    const hash = window.location.hash.substring(1);
+
+    if (hash && document.getElementById(hash)) {
+        targetId = hash;
+    } else if (targetId && document.getElementById(targetId)) {
+        // activeTab từ server là ưu tiên nếu không có hash
+    } else {
+      if (path.includes('/admin/products/revenue')) {
+        targetId = 'doanh-thu';
+      } else if (path.includes('/admin/products/reports')) {
+        targetId = 'thong-bao-report';
+      } else if (path.includes('/admin/products/users')) {
+        targetId = 'thong-tin-nguoi-dung';
+      } else if (path.includes('/admin/products/add')) {
+        targetId = 'them-san-pham';
+      } else if (path.includes('/admin/products/orders')) {
+        targetId = 'hang-dang-dat';
+      } else if (path.includes('/admin/products/edit') || path.endsWith('/admin/products') || path.endsWith('/admin/products/')) {
+        targetId = 'chinh-sua-san-pham';
+      } else {
+        const firstNavButton = document.querySelector('.sidebar-nav .nav-button[data-target]');
+        targetId = firstNavButton ? firstNavButton.getAttribute('data-target') : 'chinh-sua-san-pham';
       }
+    }
 
-      const navButtons = document.querySelectorAll('.sidebar-nav .nav-button');
-      const contentSections = document.querySelectorAll('.main-content .content-section');
+    if (!document.getElementById(targetId)) {
+      targetId = 'chinh-sua-san-pham'; // Mặc định cuối cùng
+    }
 
-      function updateActiveState(targetId) {
-        navButtons.forEach(btn => {
-          btn.classList.toggle('active', btn.getAttribute('data-target') === targetId);
-        });
-        contentSections.forEach(section => {
-          section.classList.toggle('active', section.id === targetId);
-        });
-      }
+    updateActiveState(targetId);
 
-      function determineInitialTab() {
-        let targetId = /*[[${activeTab}]]*/ null;
-        const path = window.location.pathname;
+    if (targetId === 'doanh-thu') {
+      renderRevenueChart();
+    }
+  }
 
-        if (targetId && document.getElementById(targetId)) {
-          // Tab đã được xác định bởi server và element tồn tại
-        } else {
-          // Nếu không có activeTab từ server hoặc element không tồn tại, xác định từ URL
-          if (path.includes('/admin/products/revenue')) {
-            targetId = 'doanh-thu';
-          } else if (path.includes('/admin/products/reports')) {
-            targetId = 'thong-bao-report';
-          } else if (path.includes('/admin/products/users')) {
-            targetId = 'thong-tin-nguoi-dung';
-          } else if (path.includes('/admin/products/add')) {
-            targetId = 'them-san-pham';
-          } else if (path.includes('/admin/products/orders')) {
-            targetId = 'hang-dang-dat';
-          } else if (path.includes('/admin/products/edit') || path.endsWith('/admin/products') || path.endsWith('/admin/products/')) {
-            targetId = 'chinh-sua-san-pham';
-          } else {
-            // Mặc định nếu không có điều kiện nào khớp
-            const firstNavButton = document.querySelector('.sidebar-nav .nav-button[data-target]');
-            targetId = firstNavButton ? firstNavButton.getAttribute('data-target') : 'chinh-sua-san-pham';
-          }
-        }
+  determineInitialTab();
 
-        // Đảm bảo targetId cuối cùng trỏ đến một element tồn tại
-        if (!document.getElementById(targetId)) {
-          const firstNavButton = document.querySelector('.sidebar-nav .nav-button[data-target]');
-          targetId = firstNavButton ? firstNavButton.getAttribute('data-target') : 'chinh-sua-san-pham';
-        }
+  navButtons.forEach(button => {
+    button.addEventListener('click', function (event) {
+        const targetSectionId = this.getAttribute('data-target');
+        if (!targetSectionId) return;
 
-        updateActiveState(targetId);
+        const href = this.getAttribute('href');
 
-        // Gọi hàm vẽ biểu đồ nếu tab doanh thu được active
-        if (targetId === 'doanh-thu') {
-          renderRevenueChart();
-        }
-      }
-
-      // Gọi hàm xử lý active tab ban đầu (sẽ gọi renderRevenueChart nếu cần)
-      determineInitialTab();
-
-      navButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
-
-          if (this.tagName === 'BUTTON' && this.hasAttribute('data-target')) {
+        if (this.tagName === 'A' && (href === '#' || (href && href.startsWith('#')) || (href && window.location.pathname === href.split('#')[0] && href.includes('#')) ) ) {
             event.preventDefault();
-            const targetSectionId = this.getAttribute('data-target');
             updateActiveState(targetSectionId);
-            if (targetSectionId === 'doanh-thu') { // Nếu button này mở tab doanh thu (ít khả năng)
-              renderRevenueChart();
+            window.location.hash = targetSectionId;
+            if (targetSectionId === 'doanh-thu') {
+                renderRevenueChart();
             }
-          }
+        } else if (this.tagName === 'BUTTON') { // Dành cho các nút <button> nếu có
+            event.preventDefault();
+            updateActiveState(targetSectionId);
+            window.location.hash = targetSectionId;
+            if (targetSectionId === 'doanh-thu') {
+                renderRevenueChart();
+            }
+        }
+        // Nếu là thẻ <a> với href tới một trang khác (ví dụ /admin/products/edit),
+        // không làm gì cả, để trình duyệt tự điều hướng.
+        // `determineInitialTab` sẽ xử lý active tab khi trang mới được tải.
+    });
+  });
+
+  window.addEventListener('hashchange', function() {
+    determineInitialTab();
+  });
+
+  // PHẦN CODE CHO THÊM/SỬA SẢN PHẨM, VARIANTS, COLORPRICES (GIỮ NGUYÊN TỪ FILE BẠN CUNG CẤP)
+  const addProductForm = document.getElementById('addProductForm');
+  const editProductForm = document.getElementById('editProductForm');
+  let variantTemplateNode = null;
+  const addFormVariantsContainer = addProductForm ? addProductForm.querySelector('#variantsContainer') : null;
+  if (addFormVariantsContainer) {
+    const initialThymeleafVariant = addFormVariantsContainer.querySelector('.variant-section');
+    if (initialThymeleafVariant) {
+      variantTemplateNode = initialThymeleafVariant.cloneNode(true);
+      cleanTemplateNodeForCloning(variantTemplateNode, 'add');
+    }
+  }
+
+  function cleanTemplateNodeForCloning(node, formTypePrefix) {
+    node.querySelectorAll('input[type="text"], input[type="number"], input[type="email"], textarea, input[type="file"], select').forEach(inp => {
+      if (inp.type === 'file') { inp.value = null; }
+      else if (inp.tagName === 'SELECT') { if (inp.options.length > 0) inp.selectedIndex = 0; }
+      else { inp.value = ''; }
+    });
+    node.querySelectorAll('input[type="hidden"]').forEach(inp => {
+      if (inp.name && (inp.name.endsWith('].id') || inp.name.endsWith('].image'))) {
+        inp.value = '';
+      }
+    });
+    const imgPreview = node.querySelector('img[alt="Preview"], img[alt="Ảnh hiện tại"]');
+    if (imgPreview) imgPreview.style.display = 'none';
+
+    const cpContainer = node.querySelector('.colorpricesContainer');
+    if (cpContainer) {
+      const firstCpSample = cpContainer.querySelector('.colorprice-section');
+      if (firstCpSample) {
+        firstCpSample.querySelectorAll('input[type="text"], input[type="number"], input[type="hidden"]').forEach(inp => {
+          inp.value = (inp.name && inp.name.endsWith(".discount")) ? '0' : '';
+          if (inp.name && inp.name.endsWith(".id")) inp.value = '';
         });
+        while (cpContainer.children.length > 1) {
+          cpContainer.removeChild(cpContainer.lastChild);
+        }
+        const initialCpRemoveBtn = firstCpSample.querySelector('button.btn-remove-item[onclick^="removeColorPrice"]');
+        if (initialCpRemoveBtn) initialCpRemoveBtn.style.display = 'none';
+      } else {
+        cpContainer.innerHTML = '';
+        cpContainer.appendChild(createColorPriceElementForTemplate(0, 0, formTypePrefix));
+      }
+    }
+    const initialVarRemoveBtn = node.querySelector('button.btn-remove-item[onclick^="removeVariant"]');
+    if (initialVarRemoveBtn) initialVarRemoveBtn.style.display = 'none';
+  }
+
+  function getOrCreateVariantTemplate(formIdPrefix) {
+    let templateToUse = variantTemplateNode;
+
+    if (!templateToUse && formIdPrefix === 'edit') {
+         const editFormContainer = document.getElementById('editProductForm');
+         if (editFormContainer) {
+             const sampleVariantEdit = editFormContainer.querySelector('#edit-variants-container .variant-section');
+             if (sampleVariantEdit) {
+                 templateToUse = sampleVariantEdit.cloneNode(true);
+             }
+         }
+    }
+
+    if (templateToUse) {
+      const clonedNode = templateToUse.cloneNode(true);
+      cleanTemplateNodeForCloning(clonedNode, formIdPrefix);
+      return clonedNode;
+    }
+
+    if (typeof fallbackVariantHTMLTemplate === 'function') {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = fallbackVariantHTMLTemplate("VAR_IDX_PLACEHOLDER", "VAR_NUM_PLACEHOLDER", formIdPrefix).trim();
+      if (tempDiv.firstChild) {
+        const fallbackNode = tempDiv.firstChild;
+        cleanTemplateNodeForCloning(fallbackNode, formIdPrefix);
+        return fallbackNode;
+      }
+    }
+    console.error("Không thể tạo variant template: variantTemplateNode và fallbackVariantHTMLTemplate đều không hợp lệ.");
+    const errorDiv = document.createElement('div');
+    errorDiv.textContent = "Lỗi tạo phiên bản. Vui lòng thử lại hoặc liên hệ hỗ trợ.";
+    errorDiv.style.color = "red";
+    return errorDiv;
+  }
+
+  const addVariantBtnForAddForm = document.getElementById('addVariantButton');
+  if (addVariantBtnForAddForm && addProductForm) {
+    const container = addProductForm.querySelector('#variantsContainer');
+    addVariantBtnForAddForm.addEventListener('click', function () {
+      if (!container) return;
+      const newVariantNode = getOrCreateVariantTemplate('add');
+      if (!newVariantNode || newVariantNode.textContent.includes("Lỗi tạo phiên bản")) {
+        console.error("Không thể tạo variant mới cho form Thêm."); return;
+      }
+      container.appendChild(newVariantNode);
+      updateAllVariantIndexes(addProductForm, 'add');
+    });
+  }
+
+  const addVariantBtnForEditForm = document.getElementById('addVariantButtonForEditForm');
+  if (addVariantBtnForEditForm && editProductForm) {
+    const container = editProductForm.querySelector('#edit-variants-container');
+    addVariantBtnForEditForm.addEventListener('click', function () {
+      if (!container) return;
+      const newVariantNode = getOrCreateVariantTemplate('edit');
+       if (!newVariantNode || newVariantNode.textContent.includes("Lỗi tạo phiên bản")) {
+        console.error("Không thể tạo variant mới cho form Sửa."); return;
+      }
+      container.appendChild(newVariantNode);
+      updateAllVariantIndexes(editProductForm, 'edit');
+    });
+  }
+
+  window.removeVariant = function (button, formType) {
+    const formElement = button.closest('form');
+    const variantsContainerInForm = formElement.querySelector(formType === 'add' ? '#variantsContainer' : '#edit-variants-container');
+    const variantSection = button.closest('.variant-section');
+    if (variantsContainerInForm.querySelectorAll('.variant-section').length > 1) {
+      variantSection.remove();
+      updateAllVariantIndexes(formElement, formType);
+    } else {
+      alert("Sản phẩm phải có ít nhất một phiên bản.");
+    }
+  }
+
+  function updateAllVariantIndexes(formElement, formTypePrefix) {
+    if (!formElement) return;
+    const variantsContainerInForm = formElement.querySelector(formTypePrefix === 'add' ? '#variantsContainer' : '#edit-variants-container');
+    if (!variantsContainerInForm) return;
+
+    const allVariantSections = variantsContainerInForm.querySelectorAll('.variant-section');
+    allVariantSections.forEach((variantNode, newVariantIndex) => {
+      variantNode.setAttribute('data-variant-index', newVariantIndex);
+      const variantNumberSpan = variantNode.querySelector('.variant-number');
+      if (variantNumberSpan) variantNumberSpan.textContent = newVariantIndex + 1;
+
+      variantNode.querySelectorAll('input, textarea, select, label, button[onclick^="addColorPrice"]').forEach(el => {
+        updateElementIndexes(el, newVariantIndex, -1, formTypePrefix);
       });
 
-
-      const addProductForm = document.getElementById('addProductForm');
-      const editProductForm = document.getElementById('editProductForm');
-      let variantTemplateNode = null;
-      const addFormVariantsContainer = addProductForm ? addProductForm.querySelector('#variantsContainer') : null;
-      if (addFormVariantsContainer) {
-        const initialThymeleafVariant = addFormVariantsContainer.querySelector('.variant-section');
-        if (initialThymeleafVariant) {
-          variantTemplateNode = initialThymeleafVariant.cloneNode(true);
-          cleanTemplateNodeForCloning(variantTemplateNode, 'add');
-        }
+      const cpContainer = variantNode.querySelector('.colorpricesContainer');
+      if (cpContainer) {
+        cpContainer.id = `${formTypePrefix}-cpContainer-${newVariantIndex}`;
+        updateColorPriceIndexes(cpContainer, newVariantIndex, formTypePrefix);
       }
 
-      function cleanTemplateNodeForCloning(node, formTypePrefix) {
-        node.querySelectorAll('input[type="text"], input[type="number"], input[type="email"], textarea, input[type="file"], select').forEach(inp => {
-          if (inp.type === 'file') { inp.value = null; }
-          else if (inp.tagName === 'SELECT') { if (inp.options.length > 0) inp.selectedIndex = 0; }
-          else { inp.value = ''; }
-        });
-        node.querySelectorAll('input[type="hidden"]').forEach(inp => {
-          if (inp.name && (inp.name.endsWith('].id') || inp.name.endsWith('].image'))) {
-            inp.value = '';
-          }
-        });
-        const imgPreview = node.querySelector('img[alt="Preview"], img[alt="Ảnh hiện tại"]');
-        if (imgPreview) imgPreview.style.display = 'none';
-
-        const cpContainer = node.querySelector('.colorpricesContainer');
-        if (cpContainer) {
-          const firstCpSample = cpContainer.querySelector('.colorprice-section');
-          if (firstCpSample) {
-            firstCpSample.querySelectorAll('input[type="text"], input[type="number"], input[type="hidden"]').forEach(inp => {
-              inp.value = (inp.name && inp.name.endsWith(".discount")) ? '0' : '';
-              if (inp.name && inp.name.endsWith(".id")) inp.value = '';
-            });
-            while (cpContainer.children.length > 1) {
-              cpContainer.removeChild(cpContainer.lastChild);
-            }
-            const initialCpRemoveBtn = firstCpSample.querySelector('button.btn-remove-item[onclick^="removeColorPrice"]');
-            if (initialCpRemoveBtn) initialCpRemoveBtn.style.display = 'none';
-          } else { // Kiểm tra hàm tồn tại
-            cpContainer.innerHTML = '';
-            cpContainer.appendChild(createColorPriceElementForTemplate(0, 0, formTypePrefix));
-          }
-        }
-        const initialVarRemoveBtn = node.querySelector('button.btn-remove-item[onclick^="removeVariant"]');
-        if (initialVarRemoveBtn) initialVarRemoveBtn.style.display = 'none';
+      const removeBtn = variantNode.querySelector('button.btn-remove-item[onclick^="removeVariant"]');
+      if (removeBtn) {
+        removeBtn.style.display = allVariantSections.length > 1 ? 'inline-block' : 'none';
+        removeBtn.setAttribute('onclick', `removeVariant(this, '${formTypePrefix}')`);
       }
-
-      function getOrCreateVariantTemplate(formIdPrefix) {
-        let templateToUse = variantTemplateNode;
-        if (!templateToUse) {
-          const currentForm = document.getElementById(formIdPrefix === 'add' ? 'addProductForm' : 'editProductForm');
-          if (currentForm) {
-            const container = currentForm.querySelector(formIdPrefix === 'add' ? '#variantsContainer' : '#edit-variants-container');
-            if (container) {
-              const sampleVariant = container.querySelector('.variant-section');
-              if (sampleVariant) templateToUse = sampleVariant.cloneNode(true);
-            }
-          }
-        }
-
-        if (templateToUse) {
-          const clonedNode = templateToUse.cloneNode(true);
-          cleanTemplateNodeForCloning(clonedNode, formIdPrefix);
-          return clonedNode;
-        }
-
-        if (typeof fallbackVariantHTMLTemplate === 'function') {
-          const tempDiv = document.createElement('div');
-          tempDiv.innerHTML = fallbackVariantHTMLTemplate("VAR_IDX_PLACEHOLDER", "VAR_NUM_PLACEHOLDER", formIdPrefix).trim();
-          if (tempDiv.firstChild) {
-            const fallbackNode = tempDiv.firstChild;
-            cleanTemplateNodeForCloning(fallbackNode, formIdPrefix);
-            return fallbackNode;
-          }
-        }
-        console.error("Không thể tạo variant template: variantTemplateNode và fallbackVariantHTMLTemplate đều không hợp lệ.");
-        return document.createElement('div');
-      }
-
-      const addVariantBtnForAddForm = document.getElementById('addVariantButton');
-      if (addVariantBtnForAddForm && addProductForm) {
-        const container = addProductForm.querySelector('#variantsContainer');
-        addVariantBtnForAddForm.addEventListener('click', function () {
-          if (!container) return;
-          const newVariantNode = getOrCreateVariantTemplate('add');
-          if (!newVariantNode) { console.error("Không thể tạo variant mới cho form Thêm."); return; }
-          container.appendChild(newVariantNode);
-          updateAllVariantIndexes(addProductForm, 'add');
-        });
-      }
-
-      const addVariantBtnForEditForm = document.getElementById('addVariantButtonForEditForm');
-      if (addVariantBtnForEditForm && editProductForm) {
-        const container = editProductForm.querySelector('#edit-variants-container');
-        addVariantBtnForEditForm.addEventListener('click', function () {
-          if (!container) return;
-          const newVariantNode = getOrCreateVariantTemplate('edit');
-          if (!newVariantNode) { console.error("Không thể tạo variant mới cho form Sửa."); return; }
-          container.appendChild(newVariantNode);
-          updateAllVariantIndexes(editProductForm, 'edit');
-        });
-      }
-
-      window.removeVariant = function (button, formType) {
-        const formElement = button.closest('form');
-        const variantsContainerInForm = formElement.querySelector(formType === 'add' ? '#variantsContainer' : '#edit-variants-container');
-        const variantSection = button.closest('.variant-section');
-        if (variantsContainerInForm.querySelectorAll('.variant-section').length > 1) {
-          variantSection.remove();
-          updateAllVariantIndexes(formElement, formType);
-        } else {
-          alert("Sản phẩm phải có ít nhất một phiên bản.");
-        }
-      }
-
-      function updateAllVariantIndexes(formElement, formTypePrefix) {
-        if (!formElement) return;
-        const variantsContainerInForm = formElement.querySelector(formTypePrefix === 'add' ? '#variantsContainer' : '#edit-variants-container');
-        if (!variantsContainerInForm) return;
-
-        const allVariantSections = variantsContainerInForm.querySelectorAll('.variant-section');
-        allVariantSections.forEach((variantNode, newVariantIndex) => {
-          variantNode.setAttribute('data-variant-index', newVariantIndex);
-          const variantNumberSpan = variantNode.querySelector('.variant-number');
-          if (variantNumberSpan) variantNumberSpan.textContent = newVariantIndex + 1;
-
-          variantNode.querySelectorAll('input, textarea, select, label, button[onclick^="addColorPrice"]').forEach(el => {
-            updateElementIndexes(el, newVariantIndex, -1, formTypePrefix);
-          });
-
-          const cpContainer = variantNode.querySelector('.colorpricesContainer');
-          if (cpContainer) {
-            cpContainer.id = `${formTypePrefix}cpContainer-${newVariantIndex}`;
-            updateColorPriceIndexes(cpContainer, newVariantIndex, formTypePrefix);
-          }
-          const removeBtn = variantNode.querySelector('button.btn-remove-item[onclick^="removeVariant"]');
-          if (removeBtn) {
-            removeBtn.style.display = allVariantSections.length > 1 ? 'inline-block' : 'none';
-            removeBtn.setAttribute('onclick', `removeVariant(this, '${formTypePrefix}')`);
-          }
-        });
-      }
-
-      window.addColorPrice = function (button, formType) {
-        const variantSection = button.closest('.variant-section');
-        const cpContainer = variantSection.querySelector('.colorpricesContainer');
-        const variantIndex = parseInt(variantSection.getAttribute('data-variant-index'));
-        const newCpIndex = cpContainer.querySelectorAll('.colorprice-section').length;
-
-        const newCpElement = createColorPriceElementForTemplate(variantIndex, newCpIndex, formType);
-        cpContainer.appendChild(newCpElement);
-        updateColorPriceIndexes(cpContainer, variantIndex, formType);
-      }
-
-      function createColorPriceElementForTemplate(variantIndex, cpIndex, idPrefix) {
-        const cpSection = document.createElement('div');
-        cpSection.className = 'colorprice-section';
-        cpSection.setAttribute('data-cp-index', cpIndex);
-
-        cpSection.innerHTML = `
-              <input type="hidden" name="variants[${variantIndex}].colorprices[${cpIndex}].id" value=""/>
-              <h5>Màu/Giá <span class="cp-number">${cpIndex + 1}</span>
-                  <button type="button" class="btn-remove-item" onclick="removeColorPrice(this, '${idPrefix}')" style="display:none;">×</button>
-              </h5>
-              <div class="field-group"><label for="${idPrefix}cp-color-${variantIndex}-${cpIndex}">Màu:</label><input type="text" id="${idPrefix}cp-color-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].color" /></div>
-              <div class="field-group"><label for="${idPrefix}cp-price-${variantIndex}-${cpIndex}">Giá (số nguyên):</label><input type="text" id="${idPrefix}cp-price-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].price" /></div>
-              <div class="field-group"><label for="${idPrefix}cp-discount-${variantIndex}-${cpIndex}">Giảm giá (%):</label><input type="number" id="${idPrefix}cp-discount-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].discount" value="0" /></div>
-          `;
-        return cpSection;
-      }
-
-      function fallbackVariantHTMLTemplate(variantIndex, variantNumber, idPrefix = "add-") {
-        return `
-           <div class="variant-section" data-variant-index="${variantIndex}">
-               <input type="hidden" name="variants[${variantIndex}].id" value=""/>
-               <h5>Phiên bản <span class="variant-number">${variantNumber}</span>
-                   <button type="button" class="btn-remove-item" onclick="removeVariant(this, '${idPrefix}')" style="display:none;">×</button>
-               </h5>
-               <div class="field-group"><label for="${idPrefix}variant-image-file-${variantIndex}">Ảnh phiên bản:</label><input type="file" name="variantImageFiles" id="${idPrefix}variant-image-file-${variantIndex}" accept="image/*" /> <input type="hidden" name="variants[${variantIndex}].image" value="" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-storage-${variantIndex}">Bộ nhớ (Storage):</label><input type="text" id="${idPrefix}variant-storage-${variantIndex}" name="variants[${variantIndex}].storage" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-ram-${variantIndex}">RAM:</label><input type="text" id="${idPrefix}variant-ram-${variantIndex}" name="variants[${variantIndex}].ram" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-memory-${variantIndex}">Bộ nhớ trong (Memory):</label><input type="text" id="${idPrefix}variant-memory-${variantIndex}" name="variants[${variantIndex}].memory" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-screen-${variantIndex}">Màn hình:</label><input type="text" id="${idPrefix}variant-screen-${variantIndex}" name="variants[${variantIndex}].screen" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-chip-${variantIndex}">Chip:</label><input type="text" id="${idPrefix}variant-chip-${variantIndex}" name="variants[${variantIndex}].chip" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-camera_end-${variantIndex}">Camera sau:</label><input type="text" id="${idPrefix}variant-camera_end-${variantIndex}" name="variants[${variantIndex}].camera_end" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-camera_start-${variantIndex}">Camera trước:</label><input type="text" id="${idPrefix}variant-camera_start-${variantIndex}" name="variants[${variantIndex}].camera_start" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-pin-${variantIndex}">Pin:</label><input type="text" id="${idPrefix}variant-pin-${variantIndex}" name="variants[${variantIndex}].pin" /></div>
-               <div class="field-group"><label for="${idPrefix}variant-power-${variantIndex}">Sạc (Power):</label><input type="text" id="${idPrefix}variant-power-${variantIndex}" name="variants[${variantIndex}].power" /></div>
-               <h6>Màu sắc & Giá:</h6>
-               <div class="colorpricesContainer" id="${idPrefix}cpContainer-${variantIndex}">
-                   ${fallbackColorPriceHTMLTemplate(variantIndex, 0, idPrefix)}
-               </div>
-               <button type="button" class="btn-add-item" onclick="addColorPrice(this, '${idPrefix}')">Thêm Màu/Giá</button>
-           </div>`;
-      }
-      function fallbackColorPriceHTMLTemplate(variantIndex, cpIndex, idPrefix = "add-") {
-        return `
-               <div class="colorprice-section" data-cp-index="${cpIndex}">
-                   <input type="hidden" name="variants[${variantIndex}].colorprices[${cpIndex}].id" value=""/>
-                   <h5>Màu/Giá <span class="cp-number">${cpIndex + 1}</span>
-                       <button type="button" class="btn-remove-item" onclick="removeColorPrice(this, '${idPrefix}')" style="display:none;">×</button>
-                   </h5>
-                   <div class="field-group"><label for="${idPrefix}cp-color-${variantIndex}-${cpIndex}">Màu:</label><input type="text" id="${idPrefix}cp-color-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].color" /></div>
-                   <div class="field-group"><label for="${idPrefix}cp-price-${variantIndex}-${cpIndex}">Giá (số nguyên):</label><input type="text" id="${idPrefix}cp-price-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].price" /></div>
-                   <div class="field-group"><label for="${idPrefix}cp-discount-${variantIndex}-${cpIndex}">Giảm giá (%):</label><input type="number" id="${idPrefix}cp-discount-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].discount" value="0"/></div>
-               </div>`;
-      }
-
-      window.removeColorPrice = function (button, formType) {
-        const cpSection = button.closest('.colorprice-section');
-        const cpContainer = cpSection.parentElement;
-        const variantSection = cpContainer.closest('.variant-section');
-        const variantIndex = parseInt(variantSection.getAttribute('data-variant-index'));
-
-        if (cpContainer.querySelectorAll('.colorprice-section').length > 1) {
-          cpSection.remove();
-          updateColorPriceIndexes(cpContainer, variantIndex, formType);
-        } else {
-          alert("Mỗi phiên bản phải có ít nhất một màu/giá.");
-        }
-      }
-
-      function updateColorPriceIndexes(cpContainer, variantIndex, formTypePrefix) {
-        if (!cpContainer) return;
-        const allCpSections = cpContainer.querySelectorAll('.colorprice-section');
-        allCpSections.forEach((cpNode, newCpIndex) => {
-          cpNode.setAttribute('data-cp-index', newCpIndex);
-          const cpNumberSpan = cpNode.querySelector('.cp-number');
-          if (cpNumberSpan) cpNumberSpan.textContent = newCpIndex + 1;
-          cpNode.querySelectorAll('input, label, select').forEach(el => {
-            updateElementIndexes(el, variantIndex, newCpIndex, formTypePrefix);
-          });
-          const removeBtn = cpNode.querySelector('button.btn-remove-item[onclick^="removeColorPrice"]');
-          if (removeBtn) {
-            removeBtn.style.display = allCpSections.length > 1 ? 'inline-block' : 'none';
-            removeBtn.setAttribute('onclick', `removeColorPrice(this, '${formTypePrefix}')`);
-          }
-        });
-      }
-
-      function updateElementIndexes(element, variantIdx, cpIdx, formTypePrefix) {
-        const attrsToUpdate = ['name', 'id', 'for'];
-        attrsToUpdate.forEach(attr => {
-          let oldVal = element.getAttribute(attr);
-          if (oldVal) {
-            let newVal = oldVal.replace(/variants\[(\d+|VAR_IDX_PLACEHOLDER)\]/g, `variants[${variantIdx}]`);
-            if (cpIdx !== -1) {
-              newVal = newVal.replace(/colorprices\[(\d+|CP_IDX_PLACEHOLDER)\]/g, `colorprices[${cpIdx}]`);
-              newVal = newVal.replace(new RegExp(`(add-|edit-|gen-)(cp-(?:color|price|discount)-)(\\d+|VAR_IDX_PLACEHOLDER)-(\\d+|CP_IDX_PLACEHOLDER)`, 'g'), `${formTypePrefix}$2${variantIdx}-${cpIdx}`);
-            } else {
-              newVal = newVal.replace(new RegExp(`(add-|edit-|gen-)(variant-(?:image|storage|ram|memory|screen|chip|camera_end|camera_start|pin|power|image-file)-)(\\d+|VAR_IDX_PLACEHOLDER)`, 'g'), `${formTypePrefix}$2${variantIdx}`);
-            }
-            element.setAttribute(attr, newVal);
-          }
-        });
-      }
-
-      if (addProductForm) {
-        updateAllVariantIndexes(addProductForm, 'add');
-      }
-      if (editProductForm) {
-        updateAllVariantIndexes(editProductForm, 'edit');
-      }
-
-
-     
-     
-
-
-
-      function renderRevenueChart() {
-        const doanhThuSection = document.getElementById('doanh-thu');
-        if (!doanhThuSection || !doanhThuSection.classList.contains('active')) {
-
-          return;
-        }
-
-        const monthLabels = /*[[${monthLabels}]]*/[];
-        const revenueValues = /*[[${revenueValues}]]*/[];
-        const selectedYearForChart = /*[[${selectedYear}]]*/ null;
-        const canvasCtx = document.getElementById('monthlyRevenueChart');
-
-        console.log("Attempting to render chart. Active Tab (from model):", /*[[${activeTab}]]*/ null);
-        console.log("Data for chart - Year:", selectedYearForChart, "Labels:", monthLabels, "Values:", revenueValues);
-
-        if (canvasCtx) {
-          let existingChart = Chart.getChart(canvasCtx);
-          if (existingChart) {
-            existingChart.destroy();
-          }
-
-          if (monthLabels && monthLabels.length > 0 && revenueValues && revenueValues.length > 0 && monthLabels.length === revenueValues.length) {
-            console.log("Đang vẽ biểu đồ với dữ liệu:", monthLabels, revenueValues);
-            new Chart(canvasCtx, {
-              type: 'bar',
-              data: {
-                labels: monthLabels,
-                datasets: [{
-                  label: 'Doanh thu (VNĐ) năm ' + selectedYearForChart,
-                  data: revenueValues,
-                  backgroundColor: 'rgba(215, 0, 24, 0.5)',
-                  borderColor: 'rgba(215, 0, 24, 1)',
-                  borderWidth: 1
-                }]
-              },
-              options: { /* ... options của bạn ... */ } // Giữ nguyên options
-            });
-          } else {
-            console.log("Biểu đồ: Dữ liệu không hợp lệ hoặc không đủ để vẽ. Labels:", monthLabels, "Values:", revenueValues);
-            // Xóa canvas nếu không có dữ liệu hợp lệ
-            const context = canvasCtx.getContext('2d');
-            context.clearRect(0, 0, canvasCtx.width, canvasCtx.height);
-            // Hoặc hiển thị thông báo trực tiếp trên canvas
-            if (monthLabels && monthLabels.length === 0 && (!revenueValues || revenueValues.length === 0)) {
-              context.font = "16px Arial";
-              context.textAlign = "center";
-              context.fillText("Không có dữ liệu doanh thu cho năm " + selectedYearForChart, canvasCtx.width / 2, canvasCtx.height / 2);
-            }
-          }
-        } else {
-          console.log("Biểu đồ: Không tìm thấy thẻ canvas với ID 'monthlyRevenueChart'.");
-        }
-      }
-
-
     });
+  }
 
+  window.addColorPrice = function (button, formType) {
+    const variantSection = button.closest('.variant-section');
+    const cpContainer = variantSection.querySelector('.colorpricesContainer');
+    const variantIndex = parseInt(variantSection.getAttribute('data-variant-index'));
+    const newCpIndex = cpContainer.querySelectorAll('.colorprice-section').length;
 
-    function toggleOrderDetails(detailsId) {
-      const detailsDiv = document.getElementById(detailsId);
-      if (detailsDiv) {
-        detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+    const newCpElement = createColorPriceElementForTemplate(variantIndex, newCpIndex, formType);
+    cpContainer.appendChild(newCpElement);
+    updateColorPriceIndexes(cpContainer, variantIndex, formType);
+  }
+
+  function createColorPriceElementForTemplate(variantIndex, cpIndex, idPrefix) {
+    const cpSection = document.createElement('div');
+    cpSection.className = 'colorprice-section';
+    cpSection.setAttribute('data-cp-index', cpIndex);
+    cpSection.innerHTML = `
+          <input type="hidden" name="variants[${variantIndex}].colorprices[${cpIndex}].id" value=""/>
+          <h5>Màu/Giá <span class="cp-number">${cpIndex + 1}</span>
+              <button type="button" class="btn-remove-item" onclick="removeColorPrice(this, '${idPrefix}')" style="display:none;">×</button>
+          </h5>
+          <div class="field-group"><label for="${idPrefix}-cp-color-${variantIndex}-${cpIndex}">Màu:</label><input type="text" id="${idPrefix}-cp-color-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].color" /></div>
+          <div class="field-group"><label for="${idPrefix}-cp-price-${variantIndex}-${cpIndex}">Giá (số nguyên):</label><input type="text" id="${idPrefix}-cp-price-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].price" /></div>
+          <div class="field-group"><label for="${idPrefix}-cp-discount-${variantIndex}-${cpIndex}">Giảm giá (%):</label><input type="number" id="${idPrefix}-cp-discount-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].discount" value="0" /></div>
+      `;
+    return cpSection;
+  }
+
+  function fallbackVariantHTMLTemplate(variantIndex, variantNumber, formTypePrefix = "add") {
+    return `
+       <div class="variant-section" data-variant-index="${variantIndex}">
+           <input type="hidden" name="variants[${variantIndex}].id" value=""/>
+           <h5>Phiên bản <span class="variant-number">${variantNumber}</span>
+               <button type="button" class="btn-remove-item" onclick="removeVariant(this, '${formTypePrefix}')" style="display:none;">×</button>
+           </h5>
+           <div class="field-group"><label for="${formTypePrefix}-variant-image-file-${variantIndex}">Ảnh phiên bản:</label><input type="file" name="variantImageFiles" id="${formTypePrefix}-variant-image-file-${variantIndex}" accept="image/*" /> <input type="hidden" name="variants[${variantIndex}].image" value="" /></div>
+           <div class="field-group"><label for="${formTypePrefix}-variant-storage-${variantIndex}">Bộ nhớ (Storage):</label><input type="text" id="${formTypePrefix}-variant-storage-${variantIndex}" name="variants[${variantIndex}].storage" /></div>
+           <div class="field-group"><label for="${formTypePrefix}-variant-ram-${variantIndex}">RAM:</label><input type="text" id="${formTypePrefix}-variant-ram-${variantIndex}" name="variants[${variantIndex}].ram" /></div>
+           <div class="field-group"><label for="${formTypePrefix}-variant-memory-${variantIndex}">Bộ nhớ trong (Memory):</label><input type="text" id="${formTypePrefix}-variant-memory-${variantIndex}" name="variants[${variantIndex}].memory" /></div>
+           <div class="field-group"><label for="${formTypePrefix}-variant-screen-${variantIndex}">Màn hình:</label><input type="text" id="${formTypePrefix}-variant-screen-${variantIndex}" name="variants[${variantIndex}].screen" /></div>
+           <div class="field-group"><label for="${formTypePrefix}-variant-chip-${variantIndex}">Chip:</label><input type="text" id="${formTypePrefix}-variant-chip-${variantIndex}" name="variants[${variantIndex}].chip" /></div>
+           <div class="field-group"><label for="${formTypePrefix}-variant-camera_end-${variantIndex}">Camera sau:</label><input type="text" id="${formTypePrefix}-variant-camera_end-${variantIndex}" name="variants[${variantIndex}].camera_end" /></div>
+           <div class="field-group"><label for="${formTypePrefix}-variant-camera_start-${variantIndex}">Camera trước:</label><input type="text" id="${formTypePrefix}-variant-camera_start-${variantIndex}" name="variants[${variantIndex}].camera_start" /></div>
+           <div class="field-group"><label for="${formTypePrefix}-variant-pin-${variantIndex}">Pin:</label><input type="text" id="${formTypePrefix}-variant-pin-${variantIndex}" name="variants[${variantIndex}].pin" /></div>
+           <div class="field-group"><label for="${formTypePrefix}-variant-power-${variantIndex}">Sạc (Power):</label><input type="text" id="${formTypePrefix}-variant-power-${variantIndex}" name="variants[${variantIndex}].power" /></div>
+           <h6>Màu sắc & Giá:</h6>
+           <div class="colorpricesContainer" id="${formTypePrefix}-cpContainer-${variantIndex}">
+               ${fallbackColorPriceHTMLTemplate(variantIndex, 0, formTypePrefix)}
+           </div>
+           <button type="button" class="btn-add-item" onclick="addColorPrice(this, '${formTypePrefix}')">Thêm Màu/Giá</button>
+       </div>`;
+  }
+  function fallbackColorPriceHTMLTemplate(variantIndex, cpIndex, formTypePrefix = "add") {
+    return `
+           <div class="colorprice-section" data-cp-index="${cpIndex}">
+               <input type="hidden" name="variants[${variantIndex}].colorprices[${cpIndex}].id" value=""/>
+               <h5>Màu/Giá <span class="cp-number">${cpIndex + 1}</span>
+                   <button type="button" class="btn-remove-item" onclick="removeColorPrice(this, '${formTypePrefix}')" style="display:none;">×</button>
+               </h5>
+               <div class="field-group"><label for="${formTypePrefix}-cp-color-${variantIndex}-${cpIndex}">Màu:</label><input type="text" id="${formTypePrefix}-cp-color-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].color" /></div>
+               <div class="field-group"><label for="${formTypePrefix}-cp-price-${variantIndex}-${cpIndex}">Giá (số nguyên):</label><input type="text" id="${formTypePrefix}-cp-price-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].price" /></div>
+               <div class="field-group"><label for="${formTypePrefix}-cp-discount-${variantIndex}-${cpIndex}">Giảm giá (%):</label><input type="number" id="${formTypePrefix}-cp-discount-${variantIndex}-${cpIndex}" name="variants[${variantIndex}].colorprices[${cpIndex}].discount" value="0"/></div>
+           </div>`;
+  }
+
+  window.removeColorPrice = function (button, formType) {
+    const cpSection = button.closest('.colorprice-section');
+    const cpContainer = cpSection.parentElement;
+    const variantSection = cpContainer.closest('.variant-section');
+    const variantIndex = parseInt(variantSection.getAttribute('data-variant-index'));
+
+    if (cpContainer.querySelectorAll('.colorprice-section').length > 1) {
+      cpSection.remove();
+      updateColorPriceIndexes(cpContainer, variantIndex, formType);
+    } else {
+      alert("Mỗi phiên bản phải có ít nhất một màu/giá.");
+    }
+  }
+
+  function updateColorPriceIndexes(cpContainer, variantIndex, formTypePrefix) {
+    if (!cpContainer) return;
+    const allCpSections = cpContainer.querySelectorAll('.colorprice-section');
+    allCpSections.forEach((cpNode, newCpIndex) => {
+      cpNode.setAttribute('data-cp-index', newCpIndex);
+      const cpNumberSpan = cpNode.querySelector('.cp-number');
+      if (cpNumberSpan) cpNumberSpan.textContent = newCpIndex + 1;
+      cpNode.querySelectorAll('input, label, select').forEach(el => {
+        updateElementIndexes(el, variantIndex, newCpIndex, formTypePrefix);
+      });
+      const removeBtn = cpNode.querySelector('button.btn-remove-item[onclick^="removeColorPrice"]');
+      if (removeBtn) {
+        removeBtn.style.display = allCpSections.length > 1 ? 'inline-block' : 'none';
+        removeBtn.setAttribute('onclick', `removeColorPrice(this, '${formTypePrefix}')`);
       }
+    });
+  }
+
+  function updateElementIndexes(element, variantIdx, cpIdx, formTypePrefix) {
+    const attrsToUpdate = ['name', 'id', 'for'];
+    attrsToUpdate.forEach(attr => {
+      let oldVal = element.getAttribute(attr);
+      if (oldVal) {
+        let currentPrefix = "add-";
+        if (oldVal.startsWith("edit-")) {
+            currentPrefix = "edit-";
+        }
+        const effectivePrefix = (formTypePrefix === 'add' || formTypePrefix === 'edit') ? formTypePrefix + "-" : currentPrefix;
+
+        let newVal = oldVal.replace(/variants\[(\d+|VAR_IDX_PLACEHOLDER)\]/g, `variants[${variantIdx}]`);
+        if (cpIdx !== -1) {
+          newVal = newVal.replace(/colorprices\[(\d+|CP_IDX_PLACEHOLDER)\]/g, `colorprices[${cpIdx}]`);
+          newVal = newVal.replace(new RegExp(`(add-|edit-)(cp-(?:color|price|discount)-)(\\d+|VAR_IDX_PLACEHOLDER)-(\\d+|CP_IDX_PLACEHOLDER)`, 'g'), `${effectivePrefix}$2${variantIdx}-${cpIdx}`);
+        } else {
+          newVal = newVal.replace(new RegExp(`(add-|edit-)(variant-(?:image-file|storage|ram|memory|screen|chip|camera_end|camera_start|pin|power)-)(\\d+|VAR_IDX_PLACEHOLDER)`, 'g'), `${effectivePrefix}$2${variantIdx}`);
+          if(element.classList.contains('colorpricesContainer')){
+             newVal = newVal.replace(new RegExp(`(add-|edit-)(cpContainer-)(\\d+|VAR_IDX_PLACEHOLDER)`, 'g'), `${effectivePrefix}$2${variantIdx}`);
+          }
+        }
+        element.setAttribute(attr, newVal);
+      }
+    });
+    if (element.tagName === 'BUTTON' && element.getAttribute('onclick') && element.getAttribute('onclick').startsWith('addColorPrice')) {
+        element.setAttribute('onclick', `addColorPrice(this, '${formTypePrefix}')`);
+    }
+  }
+
+
+  if (addProductForm) {
+    updateAllVariantIndexes(addProductForm, 'add');
+  }
+  if (editProductForm) {
+    updateAllVariantIndexes(editProductForm, 'edit');
+  }
+
+  function renderRevenueChart() {
+    const doanhThuSection = document.getElementById('doanh-thu');
+    if (!doanhThuSection || !doanhThuSection.classList.contains('active')) {
+      return;
     }
 
-    function toggleReportDetails(detailsId) {
-      const detailsDiv = document.getElementById(detailsId);
-      if (detailsDiv) {
-        detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+    const monthLabels = /*[[${monthLabels}]]*/[];
+    const revenueValues = /*[[${revenueValues}]]*/[];
+    const selectedYearForChart = /*[[${selectedYear}]]*/ null;
+    const canvasCtx = document.getElementById('monthlyRevenueChart');
+
+    if (canvasCtx) {
+      let existingChart = Chart.getChart(canvasCtx);
+      if (existingChart) {
+        existingChart.destroy();
+      }
+
+      if (monthLabels && monthLabels.length > 0 && revenueValues && revenueValues.length > 0 && monthLabels.length === revenueValues.length) {
+        new Chart(canvasCtx, {
+          type: 'bar',
+          data: {
+            labels: monthLabels,
+            datasets: [{
+              label: 'Doanh thu (VNĐ) năm ' + selectedYearForChart,
+              data: revenueValues,
+              backgroundColor: 'rgba(215, 0, 24, 0.5)',
+              borderColor: 'rgba(215, 0, 24, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: { scales: { y: { beginAtZero: true } } }
+        });
+      } else {
+        const context = canvasCtx.getContext('2d');
+        context.clearRect(0, 0, canvasCtx.width, canvasCtx.height);
+        if (selectedYearForChart && (!monthLabels || monthLabels.length === 0)) {
+          context.font = "16px Arial";
+          context.textAlign = "center";
+          context.fillText("Không có dữ liệu doanh thu cho năm " + selectedYearForChart, canvasCtx.width / 2, canvasCtx.height / 2);
+        }
       }
     }
-    console.log("Attempting to render chart. Active Tab (from model):", /*[[${activeTab}]]*/ null);
-    console.log("Data for chart - Year:", selectedYearForChart, "Labels:", monthLabels, "Values:", revenueValues);
+  }
+
+  // JAVASCRIPT CHO QUẢN LÝ QUẢNG CÁO
+  const newImagesInput = document.getElementById('advertisementNewImages');
+  const updateBtn = document.getElementById('updateAdvertisementImagesBtn');
+  const adStatusDiv = document.getElementById('adminAdStatus');
+
+  if (updateBtn && newImagesInput && adStatusDiv) {
+      updateBtn.addEventListener('click', async () => {
+          const files = newImagesInput.files;
+          if (files.length === 0) {
+              adStatusDiv.textContent = 'Vui lòng chọn ít nhất một ảnh.';
+              adStatusDiv.style.color = 'red';
+              return;
+          }
+
+          const formData = new FormData();
+          for (let i = 0; i < files.length; i++) {
+              formData.append('newImages', files[i]);
+          }
+
+          adStatusDiv.textContent = 'Đang xử lý...';
+          adStatusDiv.style.color = 'blue';
+
+          try {
+              const response = await fetch('/admin/advertisements/update-images', {
+                  method: 'POST',
+                  body: formData
+              });
+
+              if (response.ok) {
+                  const message = await response.text();
+                  adStatusDiv.textContent = message;
+                  adStatusDiv.style.color = 'green';
+                  newImagesInput.value = '';
+              } else {
+                  const errorText = await response.text();
+                  adStatusDiv.textContent = `Lỗi: ${response.status} - ${errorText}`;
+                  adStatusDiv.style.color = 'red';
+              }
+          } catch (error) {
+              console.error('Lỗi khi cập nhật ảnh quảng cáo:', error);
+              adStatusDiv.textContent = 'Lỗi kết nối hoặc server không phản hồi.';
+              adStatusDiv.style.color = 'red';
+          }
+      });
+  }
+}); // Kết thúc DOMContentLoaded
+
+
+function toggleOrderDetails(detailsId) {
+  const detailsDiv = document.getElementById(detailsId);
+  if (detailsDiv) {
+    detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+function toggleReportDetails(detailsId) {
+  const detailsDiv = document.getElementById(detailsId);
+  if (detailsDiv) {
+    detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
   </script>
 </body>
 

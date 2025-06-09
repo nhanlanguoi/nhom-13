@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quy chế hoạt động</title>
+  <style>
+    body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background: #f2f4f7;
+  color: #222;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px 40px;
+  box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
+  border-radius: 10px;
+  overflow-y: auto;
+  min-height: 80vh;
+}
+
+h1 {
+  text-align: center;
+  color: #c30000;
+  margin-bottom: 40px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.nav-buttons button {
+  background-color: #c30000;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgb(195 0 0 / 0.5);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.nav-buttons button:hover,
+.nav-buttons button:focus {
+  background-color: #8a0000;
+  transform: scale(1.05);
+  outline: none;
+}
+
+.accordion-section {
+  border-top: 1px solid #ddd;
+  padding: 20px 0 0 0;
+}
+
+.accordion-section:last-child {
+  border-bottom: 1px solid #ddd;
+}
+
+.accordion-title {
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+  padding-right: 40px;
+  color: #444;
+  user-select: none;
+  transition: color 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.accordion-title:hover {
+  color: #c30000;
+}
+
+.accordion-title::after {
+  content: "+";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 26px;
+  color: #c30000;
+  font-weight: 700;
+  transition: transform 0.3s ease;
+}
+
+.accordion-title.active {
+  color: #c30000;
+}
+
+.accordion-title.active::after {
+  content: "−";
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.accordion-content {
+  display: none;
+  margin-top: 10px;
+  padding-left: 25px;
+  color: #555;
+  font-size: 16px;
+  line-height: 1.6;
+  border-left: 3px solid #c30000;
+  transition: max-height 0.4s ease;
+}
+
+.accordion-content ul {
+  list-style: disc inside;
+  margin: 10px 0 10px 0;
+  padding-left: 0;
+}
+
+.accordion-content li {
+  margin-bottom: 8px;
+}
+
+.accordion-content p {
+  margin: 10px 0;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 20px 15px;
+    margin: 20px;
+  }
+  .nav-buttons button {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+  .accordion-title {
+    font-size: 18px;
+    padding-right: 30px;
+  }
+  .accordion-title::after {
+    font-size: 22px;
+    right: 8px;
+  }
+  .accordion-content {
+    font-size: 15px;
+    padding-left: 15px;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Quy chế hoạt động</h1>
+
+    <div class="nav-buttons">
+      <button onclick="toggleSection('section1')">I. Quy định chung</button>
+      <button onclick="toggleSection('section2')">II. Quy trình giao hàng</button>
+      <button onclick="toggleSection('section3')">III. Chính sách bảo mật thông tin</button>
+    </div>
+
+    <div class="accordion-section">
+      <div class="accordion-title" onclick="toggleAccordion(this)">1. Quy định chung</div>
+      <div class="accordion-content" id="section1">
+        <ul>
+          <li>Website thương mại điện tử. Đối tượng phục vụ là tất cả các khách hàng có nhu cầu mua hàng, đặt hàng thông qua website thương mại điện tử.</li>
+          <li>Sản phẩm được kinh doanh phải đáp ứng đầy đủ các quy định của nhà nước về nguồn gốc, xuất xứ hàng hóa, chất lượng sản phẩm.</li>
+          <li>Hoạt động mua bán tại phải được thực hiện công khai, minh bạch, đảm bảo quyền lợi của người tiêu dùng.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="accordion-section">
+      <div class="accordion-title" onclick="toggleAccordion(this)">2. Quy trình giao hàng</div>
+      <div class="accordion-content" id="section2">
+        <p><strong>I. Dành cho người mua hàng tại Website:</strong></p>
+        <ul>
+          <li><strong>Bước 1:</strong> Quý khách tìm sản phẩm cần mua, đọc và đồng ý với các quy định.</li>
+          <li><strong>Bước 2:</strong> Xem giá và thông tin chi tiết sản phẩm đó, nếu đồng ý muốn mua hàng, Quý khách tùy theo yêu cầu của mình.</li>
+          <li><strong>Bước 3:</strong> Nhập thông tin mua hàng theo hướng dẫn. Nếu có mã khuyến mại, vui lòng nhập trực tiếp vào form đặt mua.</li>
+          <li><strong>Bước 4:</strong> Sau khi nhận đơn hàng,cửa hàng sẽ liên hệ xác nhận qua tổng đài 1800.xxxx.</li>
+          <li><strong>Bước 5:</strong> Cửa hàng cam kết giao hàng tận nơi hoặc khách hàng đến nhận tại cửa hàng.</li>
+        </ul>
+        <p><strong>II. Quy trình giao nhận vận chuyển:</strong></p>
+        <p>Thực hiện giao hàng miễn phí trên toàn quốc. Sau khi xác nhận đơn hàng, chúng tôi tiến hành giao hàng theo yêu cầu.</p>
+        <p><strong>Lưu ý:</strong> Với giao dịch từ 10 triệu đồng trở lên, quý khách vui lòng cung cấp <strong>thẻ vật lý</strong> và <strong>CCCD bản gốc</strong> của <strong>đúng chủ thẻ</strong> để đối chiếu trước khi giao hàng.</p>
+        <p>Trường hợp không đúng chủ thẻ hoặc có dấu hiệu gian lận.</p>
+      </div>
+    </div>
+
+    <div class="accordion-section">
+      <div class="accordion-title" onclick="toggleAccordion(this)">3. Chính sách bảo mật thông tin</div>
+      <div class="accordion-content" id="section3">
+        <h3>I. Sự chấp thuận</h3>
+        <p>- Bằng việc truy cập vào và sử dụng một số dịch vụ tại website, bạn đồng ý rằng thông tin cá nhân của bạn sẽ được thu thập và sử dụng như được nêu trong Chính Sách này.</p>
+        <p>- Trường hợp bạn không đồng ý với Chính sách này, bạn có thể dừng cung cấp thông tin cho chúng tôi và/hoặc sử dụng các quyền như được nêu tại mục dưới đây.</p>
+
+        <h3>II. Phạm vi thu thập</h3>
+        <ul>
+          <p>- Khi truy cập và sử dụng một số dịch vụ, bạn có thể sẽ được yêu cầu cung cấp trực tiếp cho chúng tôi thông tin cá nhân (Email, Họ tên, Số ĐT liên lạc, địa chỉ, thông tin đăng nhập tài khoản bao gồm thông tin bất kỳ cần thiết để thiết lập tài khoản ví dụ như tên đăng nhập, mật khẩu đăng nhập, ID/địa chỉ đăng nhập và câu hỏi/trả lời an ninh …). Mọi thông tin khai báo phải đảm bảo tính chính xác và hợp pháp chúng tôi không chịu mọi trách nhiệm liên quan đến tính pháp lý của thông tin khai báo. </p>
+          <p>- Chúng tôi cũng có thể thu thập thông tin về số lần truy cập, bao gồm số trang bạn xem, số links (liên kết) bạn click và những thông tin khác liên quan đến việc kết nối đến website   </p>
+          <p>- Chúng tôi cũng thu thập các thông tin từ trình duyệt Web(Browser) bạn sử dụng mỗi khi truy cập, bao gồm: địa chỉ IP, loại Browser, ngôn ngữ sử dụng, thời gian và những địa chỉ mà Browser truy xuất đến. </p>
+          <p>- Chúng tôi có thể sẽ thu thập thông tin cá nhân từ các nguồn hợp pháp khác.</p>
+        </ul>
+
+        <h3>III. Mục đích thu thập và sử dụng thông tin</h3>
+        <ul>
+          <p>- Thu thập và sử dụng thông tin cá nhân với mục đích phù hợp và hoàn toàn tuân thủ nội dung của “Chính sách bảo mật” này. Cụ thể:</p>
+          <p>- Xử lý đơn hàng: gọi điện/tin nhắn xác nhận việc đặt hàng, thông báo về trạng thái đơn hàng & thời gian giao hàng, xác nhận việc huỷ đơn hàng (nếu có) và xử lý các vấn đề khác liên quan đến đơn đặt hàng của bạn.</p>
+          <p>- Gửi thông tin về bảo hành sản phẩm.</p>
+          <p>- Tạo và duy trì tài khoản: để tạoạo và duy trì tài khoản của bạn tại website của chúng tôi.</p>
+          <p>- Phản hồi, giải quyết khiếu nại, yêu cầu của bạn.</p>
+          <p>- Thông tin trao thưởng ,các khảo sát để chăm sóc khách hàng tốt hơn.</p>
+          <p>- Xác nhận các thông tin về kỹ thuật & bảo mật thông tin khách hàng.</p>
+          <p>- Cá Nhân Hóa: Chúng tôi có thể tổ hợp dữ liệu được thu thập để có một cái nhìn hoàn chỉnh hơn về một người tiêu dùng và từ đó cho phép chúng tôi phục vụ tốt hơn với sự cá nhân hóa mạnh hơn ở các khía cạnh, bao gồm nhưng không giới hạn: (i) để cải thiện và cá nhân hóa trải nghiệm của bạn trên websitee, (ii) để cải thiện các tiện ích, dịch vụ, điều chỉnh chúng phù hợp với các nhu cầu được cá thể hóa và đi đến những ý tưởng dịch vụ mới, (iii) để phục vụ bạn với những giới thiệu, quảng cáo được điều chỉnh.</p>
+          <p>- An ninh: cho các mục đích ngăn ngừa các hoạt động phá hủy tài khoản người dùng của khách hàng hoặc các hoạt động giả mạo khách hàng.</p>
+          <p>- Các trường hợp có sự yêu cầu của cơ quan nhà nước có thẩm quyền, theo đúng quy định của pháp luật.s</p>
+        </ul>
+
+        <h3>IV. Thời gian lưu trữ thông tin</h3>
+        <p>- Dữ liệu cá nhân của Khách hàng sẽ được lưu trữ cho đến khi có yêu cầu hủy bỏ. Còn lại trong mọi trường hợp thông tin cá nhân khách hàng sẽ được bảo mật trên máy chủ.</p>
+
+        <h3>V. Đơn vị thu thập và quản lý thông tin cá nhân</h3>
+        <p>
+          - Công ty TNHH Thương mại và Dịch vụ Kỹ thuật<br/>
+          - Giấy chứng nhận đăng ký doanh nghiệp số 031xxxx <br/>
+          - Địa chỉ: xxxx - xxxx - xxxx <br/>
+          - Điện thoại: 1800.xxxx .
+        </p>
+
+        <h3>VI. Cam kết bảo mật thông tin cá nhân khách hàng</h3>
+        <p>- Khách hàng có quyền cung cấp thông tin cá nhân cho chúng tôi và có thể thay đổi quyết định đó vào bất cứ lúc nào.</p>
+        <p>- Khách hàng có quyền chỉnh sửa một số thông tin cơ bản bao gồm tên, giới tính, địa chỉ.</p>
+        <p>- Các Hãng/Nhà Phân phối để bảo hành sản phẩm, trao thưởng, thực hiện chương trình khuyến mại hoặc trường hợp khác phục vụ cho việc mua bán hàng hóa giữa cửa hàng và Khách hàng.</p>
+        <p>- Luật sư, cố vấn, đơn vị kiểm toán</p>
+        <p>- Bên xử lý Dữ liệu cá nhân theo Hợp đồng cung cấp dịch vụ tại từng thời điểm</p>
+        <p>- Các đối tác trong hoạt động marketing,các cơ quan nhà nước có thẩm quyền,các bên thứ ba khác</p>
+        <p>- Chúng tôi chỉ cung cấp các thông tin trong giới hạn phạm vi thông tin cần thiết và cũng sẽ yêu cầu các bên thứ ba trên tuân thủ mọi quy định pháp luật về bảo vệ thông tin cá nhân liên quan và các yêu cầu về an ninh liên quan đến thông tin cá nhân.</p>
+        <p>- Chúng tôi cam kết sử dụng các biện pháp quản lý, kỹ thuật phù hợp để bảo vệ thông tin do mình thu thập, lưu trữ; tuân thủ các tiêu chuẩn, quy chuẩn kỹ thuật về bảo đảm an toàn thông tin mạng.</p>
+        <p>- Chúng tôi lưu trữ thông tin cá nhân khách hàng trong môi trường vận hành an toàn và chỉ có nhân viên, đại diện và nhà cung cấp dịch vụ có thể truy cập trên cơ sở cần phải biết. Chúng tôi tuân theo các tiêu chuẩn ngành, pháp luật trong việc bảo mật thông tin cá nhân khách hàng. Trong trường hợp máy chủ lưu trữ thông tin bị hacker tấn công dẫn đến mất mát dữ liệu cá nhân khách hàng, cửa hàng sẽ có trách nhiệm thông báo vụ việc cho cơ quan chức năng điều tra xử lý kịp thời và thông báo cho khách hàng được biết.</p>
+        <p>- Ban quản lý yêu cầu các cá nhân khi mua hàng là khách hàng, tùy từng trường hợp phải cung cấp đầy đủ thông tin cá nhân có liên quan như: Họ và tên, địa chỉ liên lạc, email, số chứng minh nhân dân, điện thoại, số tài khoản, số thẻ thanh toán …., và chịu trách nhiệm về tính pháp lý của những thông tin trên. Ban quản lý không chịu trách nhiệm cũng như không giải quyết mọi khiếu nại có liên quan đến quyền lợi của Khách hàng đó nếu xét thấy tất cả thông tin cá nhân của khách hàng đó cung cấp khi đăng ký ban đầu là không chính xác.</p>
+        <p>- Bảo mật tuyệt đối mọi thông tin giao dịch trực tuyến của khách hàng bao gồm thông tin hóa đơn kế toán chứng từ số hóa tại trung tâm dữ liệu</p>
+
+        <h3>VII. Quản lý thông tin xấu</h3>
+        <p>- Khách hàng có trách nhiệm thông báo kịp thời cho website về những hành vi sử dụng trái phép, lạm dụng, vi phạm bảo mật để có biện pháp giải quyết phù hợp.</p>
+        <h3>VIII. Trách nhiệm trong trường hợp phát sinh lỗi kỹ thuật</h3>
+        <p>- Website cam kết nỗ lực đảm bảo sự an toàn và ổn định của toàn bộ hệ thống kỹ thuật. Tuy nhiên, trong trường hợp xảy ra sự cố do lỗi cửa hànghàng sẽ ngay lập tức áp dụng các biện pháp để đảm bảo quyền lợi cho người mua hàng.</p>
+        <p>- Khi thực hiện các giao dịch trên Website, bắt buộc các khách hàng phải thực hiện đúng theo các quy trình hướng dẫn.</p>
+        <p>- Ban quản lý website cam kết cung cấp chất lượng dịch vụ tốt nhất cho các khách hàng tham gia giao dịch. Trường hợp phát sinh lỗi kỹ thuật, lỗi phần mềm hoặc các lỗi khách quan khác dẫn đến khách hàng không thể tham gia giao dịch được thì các khách hàng thông báo cho Ban quản lý website TMĐT qua địa chỉ email hoặc qua điện thoại (từ 7:30 – 22:00 hằng ngày) chúng tôi sẽ khắc phục lỗi trong thời gian sớm nhất, tạo điều kiện cho các khách hàng tham gia website.</p>
+        <p>- Tuy nhiên, Ban quản lý website sẽ không chịu trách nhiệm giải quyết trong trường hợp thông báo của các khách hàng không đến được Ban quản lý, phát sinh từ lỗi kỹ thuật, lỗi đường truyền, phần mềm hoặc các lỗi khác không do Ban quản lý gây ra.</p>
+        <h3>IX. Quy trình tiếp nhận & giải quyết khiếu nại</h3>
+        <ul>
+            <p><strong>Bước 1: Người mua hàng có thể gửi khiếu nại của mình qua các phương tiện sau:</strong></p>
+            <li>Tại website liên hệ, bình luận khách hàng</li>
+            <li>Qua tổng đài giải quyết khiếu nại</li>
+            <li>Qua email hỗ trợ khách hàng</li>
+            <li>Qua các kênh mạng xã hội chính thức của cửa hàng</li> 
+        </ul>
+        <p><strong>Bước 2: Ban quản lý sẽ sẽ liên lạc với khách hàng để tìm hiểu nguyên nhân để thoả thuận đền bù (khi cần).</strong></p>
+        <h3>X. Quyền và nghĩa vụ của Ban quản lý website</h3>
+        <P>- Website sẽ tiến hành cung cấp các dịch vụ, sản phẩm cho khách hàng sau khi đã hoàn thành các thủ tục và các điều kiện bắt buộc đã nêu.</P>
+        <p>- Website có thể chấm dứt quyền khách hàng và quyền sử dụng một hoặc tất cả các dịch vụ của khách hàng trong trường hợp khách hàng vi phạm các Quy chế của cửa hàng, hoặc có những hành vi ảnh hưởng đến hoạt động kinh doanh trên Website.</p>
+        <p>- Trong trường hợp chấm dứt quyền sử dụng dịch vụ thì tất cả các chứng nhận, các quyền của khách hàng được cấp sẽ mặc nhiên hết giá trị và bị chấm dứt.</p>
+        <p>- Website giữ bản quyền sử dụng dịch vụ và các nội dung trên Website theo các quy định pháp luật về bảo hộ sở hữu trí tuệ tại Việt Nam. Tất cả các biểu tượng, nội dung theo các ngôn ngữ khác nhau đều thuộc quyền sở hữu của Website. Nghiêm cấm mọi hành vi sao chép, sử dụng và phổ biến bất hợp pháp các quyền sở hữu trên.</p>
+        <p>- Website chịu trách nhiệm xây dựng dịch vụ bao gồm một số công việc chính như: nghiên cứu, thiết kế, mua sắm các thiết bị phần cứng và phần mềm, kết nối Internet, xây dựng chính sách phục vụ cho hoạt động Website trong điều kiện và phạm vi cho phép.</p>
+        <p>- Website sẽ tiến hành triển khai và hợp tác với các đối tác trong việc xây dựng hệ thống các dịch vụ, các công cụ tiện ích phục vụ cho việc giao dịch của các khách hàng tham gia và người sử dụng trên Website</p>
+        <p>- Website chịu trách nhiệm xây dựng, bổ sung hệ thống các kiến thức, thông tin về: nghiệp vụ ngoại thương, thương mại điện tử, hệ thống văn bản pháp luật thương mại trong nước và quốc tế, thị trường nước ngoài, cũng như các tin tức có liên quan đến hoạt động của Website.</p>
+        <p>- Website sẽ cố gắng đến mức cao nhất trong phạm vi và điều kiện có thể để duy trì hoạt động bình thường của Website và khắc phục các sự cố như: sự cố kỹ thuật về máy móc, lỗi phần mềm, hệ thống đường truyền internet, nhân sự, các biến động xã hội, thiên tai, mất điện, các quyết định của cơ quan nhà nước hay một tổ chức liên quan thứ ba. Tuy nhiên nếu những sự cố trên xảy ra nằm ngoài khả năng kiểm soát, là những trường hợp bất khả kháng mà gây thiệt hại cho khách hàng thì Website  không phải chịu trách nhiệm liên đới</p>
+        <ul>
+            <p><strong>Website có trách nhiệm:</strong></p>
+            <li>Xây dựng và thực hiện cơ chế để đảm bảo việc đăng thông tin trên Website TMĐT Cellphones.com.vn được thực hiện chính xác.</li>
+            <li>Không đăng tải những thông tin bán hàng hóa, dịch vụ thuộc danh mục hàng hóa, dịch vụ cấm kinh doanh theo quy định của pháp luật và hàng hóa hạn chế kinh doanh theo quy định tại Thông tư 47/2014/TT-BCT.
+            </li>
+        </ul>
+        <h3>XI. Hiệu lực</h3>
+        <p>- Quy chế của Website chính thức có hiệu lực thi hành kể từ ngày ký Quyết định ban hành kèm theo Quy chế này, ngày 22/02/2024, Website có quyền và có thể thay đổi Quy chế này bằng cách thông báo lên Website cho các khách hàng biết. Quy chế sửa đổi có hiệu lực kể từ ngày Quyết định về việc sửa đổi Quy chế có hiệu lực. Việc khách hàng tiếp tục sử dụng dịch vụ sau khi Quy chế sửa đổi được công bố và thực thi đồng nghĩa với việc khách hàng đã chấp nhận Quy chế sửa đổi này.</p>
+          </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleAccordion(titleElement) {
+      titleElement.classList.toggle("active");
+      const content = titleElement.nextElementSibling;
+      content.style.display = (content.style.display === "block") ? "none" : "block";
+    }
+
+    function toggleSection(id) {
+      document.querySelectorAll(".accordion-title").forEach((el) => {
+        const content = el.nextElementSibling;
+        if (content.id === id) {
+          const isActive = el.classList.contains("active");
+          el.classList.toggle("active", !isActive);
+          content.style.display = isActive ? "none" : "block";
+        } else {
+          el.classList.remove("active");
+          content.style.display = "none";
+        }
+      });
+    }
+  </script>
+</body>
+</html>

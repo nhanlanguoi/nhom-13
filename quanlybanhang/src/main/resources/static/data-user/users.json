@@ -12,4 +12,18 @@
   "email" : "nthanhnhu44@gmail.com",
   "ban" : "true",
   "role" : "CUSTOMER"
+}, {
+  "username" : "Mindepzai",
+  "password" : "hjhj1234",
+  "fullname" : "Hehe",
+  "email" : "adutrangweb@gmail.com",
+  "ban" : "true",
+  "role" : "CUSTOMER"
+}, {
+  "username" : "Nguyễn Thành Như",
+  "password" : "nhu12345",
+  "fullname" : "giutepki",
+  "email" : "nthanhnhu45@gmail.com",
+  "ban" : "false",
+  "role" : "CUSTOMER"
 } ]

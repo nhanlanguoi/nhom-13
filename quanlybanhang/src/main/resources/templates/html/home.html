@@ -70,6 +70,25 @@
     width: calc(100% - 40px); /* Để padding không làm vỡ layout */
     box-sizing: border-box;
 }
+       .popup-box > a {
+    display: inline-block;  /* Quan trọng: Chuyển sang inline-block */
+    margin-top: 15px;       /* Bây giờ sẽ có tác dụng */
+    margin-left: 5px;       /* Thêm chút margin ngang nếu cần */
+    margin-right: 5px;      /* Thêm chút margin ngang nếu cần */
+    padding: 10px 15px;     /* Padding của bạn */
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    color: var(--primary-color);
+    background-color: var(--white-color);
+    font-weight: 500;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.popup-box > a:hover {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
   </style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />

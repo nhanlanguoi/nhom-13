@@ -26,4 +26,11 @@
   "email" : "nthanhnhu45@gmail.com",
   "ban" : "false",
   "role" : "CUSTOMER"
+}, {
+  "username" : "nhan",
+  "password" : "1234",
+  "fullname" : "iPhone 15 Pro Max",
+  "email" : "nguyenthanhnhan2005n@gmail.com",
+  "ban" : "true",
+  "role" : "CUSTOMER"
 } ]

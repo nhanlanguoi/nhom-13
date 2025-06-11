@@ -1,136 +1,148 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      data-n-head="ssr"
+      rel="icon"
+      type="image/x-icon"
+      href="https://cdn2.cellphones.com.vn/200x/media/favicon/default/logo-cps.png"
+    />
     <title>Đăng nhập</title>
     <style>
-        
-        body {
-            font-family: Arial, sans-serif; 
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
 
-       
-        .login-container { 
-            background-color: #fff;
-            padding: 30px 40px;
-            border-radius: 8px; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-            max-width: 400px;
-            width: 90%; 
-            text-align: center; 
-        }
+      .login-container {
+        background-color: #fff;
+        padding: 30px 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+      }
 
-        
-        .login-container h2 {
-            color: #333; 
-            margin-bottom: 25px;
-        }
+      .login-container h2 {
+        color: #333;
+        margin-bottom: 25px;
+      }
 
-       
-        .error-message {
+      .error-message {
+        color: #d70018;
+      }
 
-            color: #d70018; 
+      .form-group {
+        margin-bottom: 15px;
+        text-align: left;
+      }
 
-        }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+      }
 
-       
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left; 
-        }
+      .form-group input[type="text"],
+      .form-group input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+      .form-group input:focus {
+        border-color: #d70018;
+        outline: none;
+        box-shadow: 0 0 5px rgba(215, 0, 24, 0.3);
+      }
 
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555; 
-        }
+      button[type="submit"] {
+        background-color: #d70018;
+        color: #fff;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        width: 100%;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+      }
 
-       
-        .form-group input[type="text"],
-        .form-group input[type="password"] { 
-            width: 100%; 
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box; 
-            font-size: 16px;
-        }
-         .form-group input:focus {
-             border-color: #d70018; 
-             outline: none; 
-             box-shadow: 0 0 5px rgba(215, 0, 24, 0.3); 
-        }
+      button[type="submit"]:hover {
+        background-color: #b80014;
+      }
 
+      .register-link {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #555;
+      }
 
-      
-        button[type="submit"] {
-            background-color: #d70018; 
-            color: #fff; 
-            border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 10px;
-            transition: background-color 0.3s ease; 
-        }
+      .register-link a {
+        color: #d70018;
+        text-decoration: none;
+        font-weight: bold;
+      }
 
-        button[type="submit"]:hover {
-            background-color: #b80014; 
-        }
-
-       
-        .register-link { 
-            margin-top: 20px;
-            font-size: 14px;
-            color: #555;
-        }
-
-        .register-link a { 
-            color: #d70018; 
-            text-decoration: none; 
-            font-weight: bold;
-        }
-
-        .register-link a:hover { 
-            text-decoration: underline; 
-        }
-
+      .register-link a:hover {
+        text-decoration: underline;
+      }
     </style>
-</head>
-<body>
+    <script src="{% static '../../static/js/login.js' %}"></script>
+  </head>
+  <body>
+    <div class="login-container">
+      <h2>Đăng nhập</h2>
 
-<div class="login-container"> <h2>Đăng nhập</h2>
+      <div th:if="${error}" class="error-message">
+        <p th:text="${error}"></p>
+      </div>
 
-    <div th:if="${error}" class="error-message"> <p th:text="${error}"></p>
-    </div>
-
-    <form action="/login" method="post">
-        <div class="form-group"> <label for="username">Tên đăng nhập:</label>
-            <input type="text" id="username" name="username" th:value="${username}" required>
+      <form action="/login" method="post">
+        <div class="form-group">
+          <label for="username">Tên đăng nhập</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            th:value="${username}"
+            required
+            placeholder="Nhập tên đăng nhập của bạn"
+          />
         </div>
 
-        <div class="form-group"> <label for="password">Mật khẩu:</label>
-            <input type="password" id="password" name="password" required>
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            th:value="${password}"
+            required
+            placeholder="Nhập mật khẩu của bạn"
+          />
         </div>
 
         <button type="submit">Đăng nhập</button>
-    </form>
+      </form>
 
-    <p class="register-link"> Bạn chưa có tài khoản? <a href="/register">Đăng ký ngay</a>
-    </p>
-</div>
-
-</body>
+      <p class="register-link">
+        Bạn chưa có tài khoản? <a href="/register">Đăng ký ngay</a>
+      </p>
+    </div>
+    <script src="../../static/js/login.js"></script>
+  </body>
 </html>

@@ -37,7 +37,7 @@ body {
 }
 
 .sidebar-header {
-    padding: 20px;
+    padding: 0;
     text-align: center;
     border-bottom: 1px solid #EEEEEE;
 }

@@ -202,8 +202,60 @@ document.addEventListener('DOMContentLoaded', function () {
           }
 
 
-          fetchAndDisplayAdvertisements();
+    fetchAndDisplayAdvertisements();
 
-      
+    const closePopupBtn = document.querySelector('.close-popup-button');
+    const popupOverlay = document.querySelector('.popup-overlay');
+    if (closePopupBtn && popupOverlay) {
+        closePopupBtn.addEventListener('click', function () {
+            popupOverlay.style.display = 'none';
+        });
+    }
+    const nav = document.querySelector('.category-nav');
+  const buttons = nav.querySelectorAll('.category-button');
+  const dropdowns = nav.querySelectorAll('.dropdown-category');
 
+  buttons.forEach(btn => {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      // Ẩn tất cả dropdown
+      dropdowns.forEach(d => d.classList.remove('active'));
+      // Lấy id dropdown từ data-dropdown
+      const dropdownId = btn.getAttribute('data-dropdown');
+      const dropdown = nav.querySelector('#' + dropdownId);
+      if (dropdown && dropdown.classList.contains('active')) {
+        dropdown.classList.remove('active');
+      } else {
+        dropdowns.forEach(d => d.classList.remove('active'));
+        if (dropdown) dropdown.classList.add('active');
+      }
+    });
+  });
+
+  // Đóng dropdown khi click ra ngoài
+  document.addEventListener('click', function () {
+    dropdowns.forEach(d => d.classList.remove('active'));
+  });
+    
+  const btn = document.querySelector('.button-danhmuc');
+  const dropdown = document.querySelector('.danhmuc-dropdown');
+  const overlay = document.querySelector('.danhmuc-overlay');
+  if (btn && dropdown && overlay) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      dropdown.classList.toggle('active');
+      overlay.classList.toggle('active');
+    });
+    overlay.addEventListener('click', function () {
+      dropdown.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+    document.addEventListener('click', function () {
+      dropdown.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+    dropdown.addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+  }
 });

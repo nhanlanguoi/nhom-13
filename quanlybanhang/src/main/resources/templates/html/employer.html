@@ -1,520 +1,641 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang Nhân Viên</title>
-    <link rel="stylesheet" th:href="@{/css/admin.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      data-n-head="ssr"
+      rel="icon"
+      type="image/x-icon"
+      href="https://cdn2.cellphones.com.vn/200x/media/favicon/default/logo-cps.png"
+    />
 
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            background-color: #f4f6f9;
-            color: #333;
-            line-height: 1.6;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        background-color: #f4f6f9;
+        color: #333;
+        line-height: 1.6;
+      }
 
-        .container {
-            max-width: 1300px;
-            /* Tăng độ rộng container */
-            margin: 20px auto;
-            padding: 25px;
-            background-color: #fff;
-            border-radius: 10px;
-            /* Bo góc mềm mại hơn */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            /* Box shadow rõ nét hơn */
-        }
+      .container {
+        max-width: 1300px;
+        /* Tăng độ rộng container */
+        margin: 20px auto;
+        padding: 25px;
+        background-color: #fff;
+        border-radius: 10px;
+        /* Bo góc mềm mại hơn */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        /* Box shadow rõ nét hơn */
+      }
 
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .page-header h1 {
+        color: #d70018;
+        /* Giữ màu chủ đạo */
+        font-size: 1.8em;
+        margin: 0;
+      }
+
+      .user-info {
+        text-align: right;
+        font-size: 0.95em;
+      }
+
+      .user-info span {
+        font-weight: 600;
+        /* Tăng độ đậm */
+      }
+
+      .logout-btn {
+        background-color: #dc3545;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9em;
+        margin-left: 15px;
+        transition: background-color 0.3s ease;
+        border: none;
+      }
+
+      .logout-btn:hover {
+        background-color: #c82333;
+        text-decoration: none;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        /* Thêm shadow nhẹ cho bảng */
+      }
+
+      th,
+      td {
+        border: 1px solid #e0e0e0;
+        /* Border màu nhạt hơn */
+        padding: 12px 15px;
+        /* Tăng padding */
+        text-align: left;
+        vertical-align: middle;
+        font-size: 0.9em;
+      }
+
+      th {
+        background-color: #f8f9fa;
+        /* Màu nền header bảng nhạt hơn */
+        font-weight: 600;
+        /* Chữ đậm hơn */
+        color: #495057;
+        text-transform: uppercase;
+        /* Viết hoa chữ đầu mục */
+        letter-spacing: 0.5px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+        /* Màu xen kẽ cho các dòng */
+      }
+
+      tr:hover {
+        background-color: #f1f1f1;
+        /* Highlight khi hover */
+      }
+
+      .actions form,
+      .actions button {
+        /* Áp dụng cho cả button report */
+        display: inline-block;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        /* Thêm margin bottom cho các nút trên mobile */
+      }
+
+      .actions button,
+      .btn-report {
+        /* .btn-report chung cho nút report */
+        padding: 8px 12px;
+        /* Đồng nhất padding */
+        border: none;
+        border-radius: 5px;
+        /* Bo góc nút */
+        cursor: pointer;
+        font-size: 0.85em;
+        /* Kích thước font nhỏ hơn chút */
+        font-weight: 500;
+        color: white;
+        transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .actions button:hover,
+      .btn-report:hover {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+      }
+
+      .btn-accept {
+        background-color: #28a745;
+      }
+
+      .btn-accept:hover {
+        background-color: #218838;
+      }
+
+      .btn-complete {
+        background-color: #007bff;
+      }
+
+      .btn-complete:hover {
+        background-color: #0056b3;
+      }
+
+      .btn-report {
+        /* Style riêng cho nút report nếu cần, hoặc dùng chung như trên */
+        background-color: #ffc107;
+        color: #212529;
+        /* Màu chữ tối cho nền vàng */
+      }
+
+      .btn-report:hover {
+        background-color: #e0a800;
+      }
+
+      /* Message Styling (giống admin.css hoặc tùy chỉnh) */
+      .message {
+        padding: 12px 18px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        font-size: 0.95em;
+        border: 1px solid transparent;
+      }
+
+      .success-message {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+      }
+
+      .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+      }
+
+      .warning-message {
+        background-color: #fff3cd;
+        color: #856404;
+        border-color: #ffeeba;
+      }
+
+      .info-message {
+        background-color: #cce5ff;
+        color: #004085;
+        border-color: #b8daff;
+      }
+
+      /* Modal Styling (giữ nguyên hoặc tùy chỉnh thêm) */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Nền mờ đậm hơn */
+        padding-top: 50px;
+        /* Giảm padding top */
+      }
+
+      .modal-content {
+        background-color: #fff;
+        margin: 5% auto;
+        padding: 25px;
+        /* Tăng padding modal */
+        border: 1px solid #ddd;
+        /* Border nhạt hơn */
+        width: 90%;
+        /* Tăng width cho mobile */
+        max-width: 550px;
+        /* Tăng max-width */
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-content h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+      }
+
+      .modal-content textarea {
+        width: calc(100% - 20px);
+        /* Fix full width issue with padding/border */
+        min-height: 120px;
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 0.95em;
+      }
+
+      .modal-content .modal-actions {
+        /* Đổi tên class để tránh xung đột */
+        text-align: right;
+      }
+
+      .modal-content .modal-actions button {
+        margin-left: 10px;
+        padding: 10px 20px;
+        /* Tăng padding nút modal */
+        font-size: 0.9em;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .modal-btn-cancel {
+        background-color: #6c757d;
+        color: white;
+      }
+
+      .modal-btn-cancel:hover {
+        background-color: #5a6268;
+      }
+
+      .modal-btn-confirm {
+        background-color: #d70018;
+        /* Màu chủ đạo cho nút confirm */
+        color: white;
+      }
+
+      .modal-btn-confirm:hover {
+        background-color: #b80014;
+      }
+
+      .close-button {
+        color: #777;
+        /* Màu nút close nhạt hơn */
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        transition: color 0.2s ease;
+      }
+
+      .close-button:hover,
+      .close-button:focus {
+        color: #333;
+        /* Đậm hơn khi hover */
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
         .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .page-header h1 {
-            color: #D70018;
-            /* Giữ màu chủ đạo */
-            font-size: 1.8em;
-            margin: 0;
+          flex-direction: column;
+          align-items: flex-start;
         }
 
         .user-info {
-            text-align: right;
-            font-size: 0.95em;
+          width: 100%;
+          text-align: left;
+          margin-top: 10px;
         }
 
-        .user-info span {
-            font-weight: 600;
-            /* Tăng độ đậm */
-        }
-
-        .logout-btn {
-            background-color: #dc3545;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 0.9em;
-            margin-left: 15px;
-            transition: background-color 0.3s ease;
-            border: none;
-        }
-
-        .logout-btn:hover {
-            background-color: #c82333;
-            text-decoration: none;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            /* Thêm shadow nhẹ cho bảng */
+        .user-info .logout-btn {
+          margin-left: 0;
+          margin-top: 5px;
+          display: inline-block;
         }
 
         th,
         td {
-            border: 1px solid #e0e0e0;
-            /* Border màu nhạt hơn */
-            padding: 12px 15px;
-            /* Tăng padding */
-            text-align: left;
-            vertical-align: middle;
-            font-size: 0.9em;
-        }
-
-        th {
-            background-color: #f8f9fa;
-            /* Màu nền header bảng nhạt hơn */
-            font-weight: 600;
-            /* Chữ đậm hơn */
-            color: #495057;
-            text-transform: uppercase;
-            /* Viết hoa chữ đầu mục */
-            letter-spacing: 0.5px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-            /* Màu xen kẽ cho các dòng */
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
-            /* Highlight khi hover */
-        }
-
-        .actions form,
-        .actions button {
-            /* Áp dụng cho cả button report */
-            display: inline-block;
-            margin-right: 5px;
-            margin-bottom: 5px;
-            /* Thêm margin bottom cho các nút trên mobile */
+          padding: 8px 10px;
+          font-size: 0.85em;
         }
 
         .actions button,
         .btn-report {
-            /* .btn-report chung cho nút report */
-            padding: 8px 12px;
-            /* Đồng nhất padding */
-            border: none;
-            border-radius: 5px;
-            /* Bo góc nút */
-            cursor: pointer;
-            font-size: 0.85em;
-            /* Kích thước font nhỏ hơn chút */
-            font-weight: 500;
-            color: white;
-            transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          width: calc(50% - 8px);
+          margin-bottom: 8px;
         }
 
-        .actions button:hover,
-        .btn-report:hover {
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        /* Nút chiếm nửa hàng */
+        .actions form {
+          width: calc(50% - 8px);
+          margin-bottom: 8px;
         }
 
-        .btn-accept {
-            background-color: #28a745;
+        .actions form button {
+          width: 100%;
         }
 
-        .btn-accept:hover {
-            background-color: #218838;
-        }
+        /* Nút trong form chiếm full width của form */
+      }
 
-        .btn-complete {
-            background-color: #007bff;
-        }
-
-        .btn-complete:hover {
-            background-color: #0056b3;
-        }
-
+      @media (max-width: 480px) {
+        .actions button,
         .btn-report {
-            /* Style riêng cho nút report nếu cần, hoặc dùng chung như trên */
-            background-color: #ffc107;
-            color: #212529;
-            /* Màu chữ tối cho nền vàng */
+          width: 100%;
+          margin-right: 0;
         }
 
-        .btn-report:hover {
-            background-color: #e0a800;
+        /* Nút chiếm full width */
+        .actions form {
+          width: 100%;
+          margin-right: 0;
         }
-
-        /* Message Styling (giống admin.css hoặc tùy chỉnh) */
-        .message {
-            padding: 12px 18px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            font-size: 0.95em;
-            border: 1px solid transparent;
-        }
-
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            border-color: #c3e6cb;
-        }
-
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            border-color: #f5c6cb;
-        }
-
-        .warning-message {
-            background-color: #fff3cd;
-            color: #856404;
-            border-color: #ffeeba;
-        }
-
-        .info-message {
-            background-color: #cce5ff;
-            color: #004085;
-            border-color: #b8daff;
-        }
-
-        /* Modal Styling (giữ nguyên hoặc tùy chỉnh thêm) */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-            /* Nền mờ đậm hơn */
-            padding-top: 50px;
-            /* Giảm padding top */
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 5% auto;
-            padding: 25px;
-            /* Tăng padding modal */
-            border: 1px solid #ddd;
-            /* Border nhạt hơn */
-            width: 90%;
-            /* Tăng width cho mobile */
-            max-width: 550px;
-            /* Tăng max-width */
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal-content h2 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            color: #333;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        .modal-content textarea {
-            width: calc(100% - 20px);
-            /* Fix full width issue with padding/border */
-            min-height: 120px;
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 0.95em;
-        }
-
-        .modal-content .modal-actions {
-            /* Đổi tên class để tránh xung đột */
-            text-align: right;
-        }
-
-        .modal-content .modal-actions button {
-            margin-left: 10px;
-            padding: 10px 20px;
-            /* Tăng padding nút modal */
-            font-size: 0.9em;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .modal-btn-cancel {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .modal-btn-cancel:hover {
-            background-color: #5a6268;
-        }
-
-        .modal-btn-confirm {
-            background-color: #D70018;
-            /* Màu chủ đạo cho nút confirm */
-            color: white;
-        }
-
-        .modal-btn-confirm:hover {
-            background-color: #b80014;
-        }
-
-        .close-button {
-            color: #777;
-            /* Màu nút close nhạt hơn */
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            transition: color 0.2s ease;
-        }
-
-        .close-button:hover,
-        .close-button:focus {
-            color: #333;
-            /* Đậm hơn khi hover */
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .user-info {
-                width: 100%;
-                text-align: left;
-                margin-top: 10px;
-            }
-
-            .user-info .logout-btn {
-                margin-left: 0;
-                margin-top: 5px;
-                display: inline-block;
-            }
-
-            th,
-            td {
-                padding: 8px 10px;
-                font-size: 0.85em;
-            }
-
-            .actions button,
-            .btn-report {
-                width: calc(50% - 8px);
-                margin-bottom: 8px;
-            }
-
-            /* Nút chiếm nửa hàng */
-            .actions form {
-                width: calc(50% - 8px);
-                margin-bottom: 8px;
-            }
-
-            .actions form button {
-                width: 100%;
-            }
-
-            /* Nút trong form chiếm full width của form */
-
-        }
-
-        @media (max-width: 480px) {
-
-            .actions button,
-            .btn-report {
-                width: 100%;
-                margin-right: 0;
-            }
-
-            /* Nút chiếm full width */
-            .actions form {
-                width: 100%;
-                margin-right: 0;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <div class="page-header">
-            <h1>Quản lý Đơn Hàng Nhân Viên</h1>
-            <div class="user-info" th:if="${session.user != null}">
-                Xin chào, <span
-                    th:text="${session.user.fullname != null ? session.user.fullname : session.user.username}">Nhân
-                    viên</span>
-                (<span th:text="${session.user.username}"></span>)
-                <a th:href="@{/logout}" class="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                </a>
-            </div>
+      <div class="page-header">
+        <h1>Quản lý Đơn Hàng Nhân Viên</h1>
+        <div class="user-info" th:if="${session.user != null}">
+          Xin chào,
+          <span
+            th:text="${session.user.fullname != null ? session.user.fullname : session.user.username}"
+            >Nhân viên</span
+          >
+          (<span th:text="${session.user.username}"></span>)
+          <a th:href="@{/logout}" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+          </a>
         </div>
+      </div>
 
-        <div th:if="${successMessage}" class="message success-message" th:text="${successMessage}"></div>
-        <div th:if="${errorMessage}" class="message error-message" th:text="${errorMessage}"></div>
-        <div th:if="${warningMessage}" class="message warning-message" th:text="${warningMessage}"></div>
-        <div th:if="${infoMessage}" class="message info-message" th:text="${infoMessage}"></div>
+      <div
+        th:if="${successMessage}"
+        class="message success-message"
+        th:text="${successMessage}"
+      ></div>
+      <div
+        th:if="${errorMessage}"
+        class="message error-message"
+        th:text="${errorMessage}"
+      ></div>
+      <div
+        th:if="${warningMessage}"
+        class="message warning-message"
+        th:text="${warningMessage}"
+      ></div>
+      <div
+        th:if="${infoMessage}"
+        class="message info-message"
+        th:text="${infoMessage}"
+      ></div>
 
-        <div th:if="${#lists.isEmpty(orders)}">
-            <p style="text-align: center; font-size: 1.1em; color: #777; margin-top: 30px;">Hiện tại không có đơn hàng
-                nào để xử lý.</p>
-        </div>
+      <div th:if="${#lists.isEmpty(orders)}">
+        <p
+          style="
+            text-align: center;
+            font-size: 1.1em;
+            color: #777;
+            margin-top: 30px;
+          "
+        >
+          Hiện tại không có đơn hàng nào để xử lý.
+        </p>
+      </div>
 
-        <table th:unless="${#lists.isEmpty(orders)}">
-            <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Khách hàng</th>
-                    <th>Sản phẩm ID</th>
-                    <th>Ngày đặt</th>
-                    <th>Trạng thái</th>
-                    <th style="width: 25%;">Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="orderWrapper, iterStat : ${orders}">
-                    <td data-label="STT" th:text="${iterStat.count}"></td>
-                    <td data-label="Khách hàng" th:text="${orderWrapper.buyData.username}"></td>
-                    <td data-label="Sản phẩm ID" th:text="${orderWrapper.buyData.productId}"></td>
-                    <td data-label="Ngày đặt"
-                        th:text="${#temporals.format(orderWrapper.buyData.orderTimestamp, 'dd/MM/yyyy HH:mm')}"></td>
-                    <td data-label="Trạng thái">
-                        <span th:if="${orderWrapper.status == 'new'}"
-                            style="color: #dc3545; font-weight: bold;">Mới</span>
-                        <span th:if="${orderWrapper.status == 'accepted_by_me'}"
-                            style="color: #007bff; font-weight: bold;">Đang giao</span>
-                    </td>
-                    <td data-label="Hành động" class="actions">
-                        <form th:if="${orderWrapper.status == 'new'}" th:action="@{/employee/accept-order}"
-                            method="post">
-                            <input type="hidden" name="customerUsername" th:value="${orderWrapper.buyData.username}" />
-                            <input type="hidden" name="orderTimestamp"
-                                th:value="${orderWrapper.buyData.orderTimestamp}" />
-                            <input type="hidden" name="productId" th:value="${orderWrapper.buyData.productId}" />
-                            <input type="hidden" name="variantId" th:value="${orderWrapper.buyData.variantId}" />
-                            <input type="hidden" name="color" th:value="${orderWrapper.buyData.color}" />
-                            <button type="submit" class="btn-accept"><i class="fas fa-check-circle"></i> Nhận
-                                hàng</button>
-                        </form>
-                        <form th:if="${orderWrapper.status == 'accepted_by_me'}"
-                            th:action="@{/employee/complete-delivery}" method="post">
-                            <input type="hidden" name="dangGiaoId" th:value="${orderWrapper.dangGiaoId}" />
-                            <button type="submit" class="btn-complete"><i class="fas fa-truck"></i> Giao thành
-                                công</button>
-                        </form>
+      <table th:unless="${#lists.isEmpty(orders)}">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Khách hàng</th>
+            <th>Sản phẩm ID</th>
+            <th>Ngày đặt</th>
+            <th>Trạng thái</th>
+            <th style="width: 25%">Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="orderWrapper, iterStat : ${orders}">
+            <td data-label="STT" th:text="${iterStat.count}"></td>
+            <td
+              data-label="Khách hàng"
+              th:text="${orderWrapper.buyData.username}"
+            ></td>
+            <td
+              data-label="Sản phẩm ID"
+              th:text="${orderWrapper.buyData.productId}"
+            ></td>
+            <td
+              data-label="Ngày đặt"
+              th:text="${#temporals.format(orderWrapper.buyData.orderTimestamp, 'dd/MM/yyyy HH:mm')}"
+            ></td>
+            <td data-label="Trạng thái">
+              <span
+                th:if="${orderWrapper.status == 'new'}"
+                style="color: #dc3545; font-weight: bold"
+                >Mới</span
+              >
+              <span
+                th:if="${orderWrapper.status == 'accepted_by_me'}"
+                style="color: #007bff; font-weight: bold"
+                >Đang giao</span
+              >
+            </td>
+            <td data-label="Hành động" class="actions">
+              <form
+                th:if="${orderWrapper.status == 'new'}"
+                th:action="@{/employee/accept-order}"
+                method="post"
+              >
+                <input
+                  type="hidden"
+                  name="customerUsername"
+                  th:value="${orderWrapper.buyData.username}"
+                />
+                <input
+                  type="hidden"
+                  name="orderTimestamp"
+                  th:value="${orderWrapper.buyData.orderTimestamp}"
+                />
+                <input
+                  type="hidden"
+                  name="productId"
+                  th:value="${orderWrapper.buyData.productId}"
+                />
+                <input
+                  type="hidden"
+                  name="variantId"
+                  th:value="${orderWrapper.buyData.variantId}"
+                />
+                <input
+                  type="hidden"
+                  name="color"
+                  th:value="${orderWrapper.buyData.color}"
+                />
+                <button type="submit" class="btn-accept">
+                  <i class="fas fa-check-circle"></i> Nhận hàng
+                </button>
+              </form>
+              <form
+                th:if="${orderWrapper.status == 'accepted_by_me'}"
+                th:action="@{/employee/complete-delivery}"
+                method="post"
+              >
+                <input
+                  type="hidden"
+                  name="dangGiaoId"
+                  th:value="${orderWrapper.dangGiaoId}"
+                />
+                <button type="submit" class="btn-complete">
+                  <i class="fas fa-truck"></i> Giao thành công
+                </button>
+              </form>
 
-                        <button type="button" class="btn-report open-report-modal" th:attr="data-order-type=${orderWrapper.status},
+              <button
+                type="button"
+                class="btn-report open-report-modal"
+                th:attr="data-order-type=${orderWrapper.status},
                                  data-danggiao-id=${orderWrapper.status == 'accepted_by_me' ? orderWrapper.dangGiaoId : ''},
                                  data-customer-username=${orderWrapper.buyData.username},
                                  data-order-timestamp=${orderWrapper.buyData.orderTimestamp},
                                  data-product-id=${orderWrapper.buyData.productId},
                                  data-variant-id=${orderWrapper.buyData.variantId},
-                                 data-color=${orderWrapper.buyData.color}">
-                            <i class="fas fa-flag"></i> Report
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                                 data-color=${orderWrapper.buyData.color}"
+              >
+                <i class="fas fa-flag"></i> Report
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div id="reportModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeReportModal()">&times;</span>
-            <h2><i class="fas fa-file-alt" style="margin-right: 10px;"></i>Báo cáo đơn hàng</h2>
-            <form id="reportForm" th:action="@{/employee/submit-report}" method="post">
-                <input type="hidden" id="reportOrderType" name="orderType" value="" />
-                <input type="hidden" id="reportDangGiaoId" name="dangGiaoId" value="" />
-                <input type="hidden" id="reportCustomerUsername" name="customerUsername" value="" />
-                <input type="hidden" id="reportOrderTimestamp" name="orderTimestamp" value="" />
-                <input type="hidden" id="reportProductId" name="productId" value="" />
-                <input type="hidden" id="reportVariantId" name="variantId" value="" />
-                <input type="hidden" id="reportColor" name="color" value="" />
+      <div class="modal-content">
+        <span class="close-button" onclick="closeReportModal()">&times;</span>
+        <h2>
+          <i class="fas fa-file-alt" style="margin-right: 10px"></i>Báo cáo đơn
+          hàng
+        </h2>
+        <form
+          id="reportForm"
+          th:action="@{/employee/submit-report}"
+          method="post"
+        >
+          <input type="hidden" id="reportOrderType" name="orderType" value="" />
+          <input
+            type="hidden"
+            id="reportDangGiaoId"
+            name="dangGiaoId"
+            value=""
+          />
+          <input
+            type="hidden"
+            id="reportCustomerUsername"
+            name="customerUsername"
+            value=""
+          />
+          <input
+            type="hidden"
+            id="reportOrderTimestamp"
+            name="orderTimestamp"
+            value=""
+          />
+          <input type="hidden" id="reportProductId" name="productId" value="" />
+          <input type="hidden" id="reportVariantId" name="variantId" value="" />
+          <input type="hidden" id="reportColor" name="color" value="" />
 
-                <div>
-                    <label for="reportReason" style="display:block; margin-bottom: 5px; font-weight: 500;">Lý do báo
-                        cáo:</label>
-                    <textarea id="reportReason" name="reportReason" required
-                        placeholder="Nhập chi tiết lý do báo cáo đơn hàng này..."></textarea>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="modal-btn-cancel" onclick="closeReportModal()">Hủy</button>
-                    <button type="submit" class="modal-btn-confirm"><i class="fas fa-paper-plane"></i> Xác nhận
-                        Report</button>
-                </div>
-            </form>
-        </div>
+          <div>
+            <label
+              for="reportReason"
+              style="display: block; margin-bottom: 5px; font-weight: 500"
+              >Lý do báo cáo:</label
+            >
+            <textarea
+              id="reportReason"
+              name="reportReason"
+              required
+              placeholder="Nhập chi tiết lý do báo cáo đơn hàng này..."
+            ></textarea>
+          </div>
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="modal-btn-cancel"
+              onclick="closeReportModal()"
+            >
+              Hủy
+            </button>
+            <button type="submit" class="modal-btn-confirm">
+              <i class="fas fa-paper-plane"></i> Xác nhận Report
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <script>
-        const reportModal = document.getElementById('reportModal');
+      const reportModal = document.getElementById("reportModal");
 
+      document.querySelectorAll(".open-report-modal").forEach((button) => {
+        button.addEventListener("click", function () {
+          document.getElementById("reportOrderType").value =
+            this.dataset.orderType;
+          document.getElementById("reportDangGiaoId").value =
+            this.dataset.danggiaoId;
+          document.getElementById("reportCustomerUsername").value =
+            this.dataset.customerUsername;
 
-        document.querySelectorAll('.open-report-modal').forEach(button => {
-            button.addEventListener('click', function () {
-                document.getElementById('reportOrderType').value = this.dataset.orderType;
-                document.getElementById('reportDangGiaoId').value = this.dataset.danggiaoId;
-                document.getElementById('reportCustomerUsername').value = this.dataset.customerUsername;
+          document.getElementById("reportOrderTimestamp").value =
+            this.dataset.orderTimestamp;
+          document.getElementById("reportProductId").value =
+            this.dataset.productId;
+          document.getElementById("reportVariantId").value =
+            this.dataset.variantId;
+          document.getElementById("reportColor").value = this.dataset.color;
 
-                document.getElementById('reportOrderTimestamp').value = this.dataset.orderTimestamp;
-                document.getElementById('reportProductId').value = this.dataset.productId;
-                document.getElementById('reportVariantId').value = this.dataset.variantId;
-                document.getElementById('reportColor').value = this.dataset.color;
-
-                document.getElementById('reportReason').value = '';
-                reportModal.style.display = 'block';
-                document.getElementById('reportReason').focus(); // Focus vào textarea
-            });
+          document.getElementById("reportReason").value = "";
+          reportModal.style.display = "block";
+          document.getElementById("reportReason").focus(); // Focus vào textarea
         });
+      });
 
-        function closeReportModal() {
-            reportModal.style.display = 'none';
+      function closeReportModal() {
+        reportModal.style.display = "none";
+      }
+
+      window.onclick = function (event) {
+        if (event.target == reportModal) {
+          closeReportModal();
         }
+      };
 
-        window.onclick = function (event) {
-            if (event.target == reportModal) {
-                closeReportModal();
-            }
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && reportModal.style.display === "block") {
+          closeReportModal();
         }
-
-        document.addEventListener('keydown', function (event) {
-            if (event.key === "Escape" && reportModal.style.display === 'block') {
-                closeReportModal();
-            }
-        });
+      });
     </script>
-</body>
-
+  </body>
 </html>

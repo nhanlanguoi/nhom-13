@@ -1,110 +1,154 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../static/css/user-info.css" />
+    <link
+      data-n-head="ssr"
+      rel="icon"
+      type="image/x-icon"
+      href="https://cdn2.cellphones.com.vn/200x/media/favicon/default/logo-cps.png"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-<head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/user-info.css">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
+  <body>
+    <header class="native-bar">
+      <div class="native-bar-flex container">
+        <div class="logo">
+          <a href="/" style="cursor: pointer">
+            <img
+              style="width: 300px; height: 100px"
+              src="../../static/images/logo.png"
+              alt="Logo"
+            />
+          </a>
+        </div>
 
-<body>
+        <div class="search-container">
+          <form
+            id="search-form"
+            action="/search"
+            method="get"
+            style="display: flex; width: 100%"
+          >
+            <input
+              class="search-input"
+              type="text"
+              name="tag"
+              id="search-input-main"
+              placeholder="Tìm kiếm theo tags sản phẩm..."
+              autocomplete="off"
+            />
+            <button class="search-button" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
+          <div class="search-results-box" id="search-results-main"></div>
+        </div>
+        <nav class="header-nav">
+          <a href="#" class="nav-item call"
+            ><i class="fas fa-phone"></i> <span>Gọi mua hàng</span></a
+          >
+          <a href="/cart" class="nav-item buymaket"
+            ><i class="fas fa-shopping-cart"></i> <span>Giỏ hàng</span></a
+          >
+          <a href="/profile" class="nav-item profile"
+            ><i class="fas fa-user"></i> <span>Tài khoản</span></a
+          >
+        </nav>
+      </div>
+    </header>
 
-  <header class="native-bar">
-    <div class="native-bar-flex container">
-      <div class="logo">
-        <a href="/" style="cursor:pointer;">
-          <img src="/images/logo.png" alt="Logo" />
+    <main class="container dashboard-section">
+      <div class="button-row">
+        <a href="/">
+          <button type="button">Quay về trang chủ</button>
+        </a>
+        <button type="button" id="info">Thông tin người dùng</button>
+        <button type="button" id="history">Lịch sử giao dịch</button>
+        <a href="/logout">
+          <button type="button">Đăng xuất</button>
         </a>
       </div>
+      <div class="text-area" id="text-area" aria-label="Vùng nhập liệu"></div>
+    </main>
 
-      <div class="search-container">
-        <form id="search-form" action="/search" method="get" style="display: flex; width: 100%;">
-          <input class="search-input" type="text" name="tag" id="search-input-main"
-                 placeholder="Tìm kiếm theo tags sản phẩm..." autocomplete="off" />
-          <button class="search-button" type="submit"><i class="fas fa-search"></i></button>
-        </form>
-        <div class="search-results-box" id="search-results-main">
+    <footer class="footer">
+      <div class="footer-container container">
+        <div class="footer-column">
+          <h4>Tổng đài hỗ trợ miễn phí</h4>
+          <p>
+            <i class="fas fa-phone-alt"></i> Gọi mua hàng:
+            <strong>1800.2097</strong> (7:30 - 22:00)
+          </p>
+          <p>
+            <i class="fas fa-headset"></i> Khiếu nại:
+            <strong>1800.2063</strong> (8:00 - 21:30)
+          </p>
+          <p>
+            <i class="fas fa-tools"></i> Bảo hành:
+            <strong>1800.2064</strong> (8:00 - 21:00)
+          </p>
+        </div>
+        <div class="footer-column">
+          <h4>Thông tin và chính sách</h4>
+          <ul>
+            <li><a href="#">Chính sách bảo hành</a></li>
+            <li><a href="#">Hướng dẫn mua hàng online</a></li>
+            <li><a href="#">Chính sách đổi trả</a></li>
+            <li><a href="#">Giao hàng & thanh toán</a></li>
+            <li><a href="#">Hướng dẫn mua hàng trả góp</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Dịch vụ và thông tin khác</h4>
+          <ul>
+            <li><a href="#">Khách hàng doanh nghiệp (B2B)</a></li>
+            <li><a href="#">Ưu đãi thanh toán</a></li>
+            <li><a href="#">Quy chế hoạt động</a></li>
+            <li><a href="#">Chính sách xử lý dữ liệu cá nhân</a></li>
+            <li><a href="#">Liên hệ hợp tác kinh doanh</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Kết nối với chúng tôi</h4>
+          <div class="social-icons">
+            <a href="#" aria-label="Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+            <a href="#" aria-label="Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="#" aria-label="Tiktok"><i class="fab fa-tiktok"></i></a>
+          </div>
         </div>
       </div>
-      <nav class="header-nav">
-        <a href="#" class="nav-item call"><i class="fas fa-phone"></i> <span>Gọi mua hàng</span></a>
-        <a href="/cart" class="nav-item buymaket"><i class="fas fa-shopping-cart"></i> <span>Giỏ hàng</span></a>
-        <a href="/profile" class="nav-item profile"><i class="fas fa-user"></i> <span>Tài khoản</span></a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container dashboard-section">
-    <div class="button-row">
-      <a href="/">
-        <button type="button">Quay về trang chủ</button>
-      </a>
-      <button type="button" id="info">Thông tin người dùng</button>
-      <button type="button" id="history">Lịch sử giao dịch</button>
-      <a href="/logout">
-        <button type="button">Đăng xuất</button>
-      </a>
-    </div>
-    <div class="text-area" id="text-area" aria-label="Vùng nhập liệu">
-
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-container container">
-      <div class="footer-column">
-        <h4>Tổng đài hỗ trợ miễn phí</h4>
-        <p><i class="fas fa-phone-alt"></i> Gọi mua hàng: <strong>1800.2097</strong> (7:30 - 22:00)</p>
-        <p><i class="fas fa-headset"></i> Khiếu nại: <strong>1800.2063</strong> (8:00 - 21:30)</p>
-        <p><i class="fas fa-tools"></i> Bảo hành: <strong>1800.2064</strong> (8:00 - 21:00)</p>
+      <div class="footer-bottom">
+        <p>
+          &copy; <span id="current-year"></span> Bản quyền thuộc về [Tên công ty
+          của bạn].
+        </p>
       </div>
-      <div class="footer-column">
-        <h4>Thông tin và chính sách</h4>
-        <ul>
-          <li><a href="#">Chính sách bảo hành</a></li>
-          <li><a href="#">Hướng dẫn mua hàng online</a></li>
-          <li><a href="#">Chính sách đổi trả</a></li>
-          <li><a href="#">Giao hàng & thanh toán</a></li>
-          <li><a href="#">Hướng dẫn mua hàng trả góp</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h4>Dịch vụ và thông tin khác</h4>
-        <ul>
-          <li><a href="#">Khách hàng doanh nghiệp (B2B)</a></li>
-          <li><a href="#">Ưu đãi thanh toán</a></li>
-          <li><a href="#">Quy chế hoạt động</a></li>
-          <li><a href="#">Chính sách xử lý dữ liệu cá nhân</a></li>
-          <li><a href="#">Liên hệ hợp tác kinh doanh</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h4>Kết nối với chúng tôi</h4>
-        <div class="social-icons">
-          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
-          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" aria-label="Tiktok"><i class="fab fa-tiktok"></i></a>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; <span id="current-year"></span> Bản quyền thuộc về [Tên công ty của bạn].</p>
-    </div>
-  </footer>
+    </footer>
+  </body>
+  <script th:inline="javascript">
+    let user = /*[[${user}]]*/ {};
 
-
-</body>
-<script th:inline="javascript">
-  let user = /*[[${user}]]*/ {};
-
-  document.getElementById("info").addEventListener("click", function () {
-    document.getElementById("text-area").innerHTML = `
+    document.getElementById("info").addEventListener("click", function () {
+      document.getElementById("text-area").innerHTML = `
       <div style="display: flex;justify-content: space-between;">
         <strong>Thông tin cá nhân:</strong>
         <i id="edit-icon" class="fa-solid fa-pen-to-square" style="color: black; cursor: pointer;"></i>
@@ -117,9 +161,11 @@
       </table>
     `;
 
-    // Gắn sự kiện cho icon bút sau khi nội dung được render
-    document.getElementById("edit-icon").addEventListener("click", function () {
-      document.getElementById("text-area").innerHTML = `
+      // Gắn sự kiện cho icon bút sau khi nội dung được render
+      document
+        .getElementById("edit-icon")
+        .addEventListener("click", function () {
+          document.getElementById("text-area").innerHTML = `
         <form action="/update-profile" method="post">
           <table>
             <tr>
@@ -166,58 +212,64 @@
         </form>
       `;
 
-
-      document.getElementById("cancel-btn").addEventListener("click", function () {
-        document.getElementById("info").click();
-      });
+          document
+            .getElementById("cancel-btn")
+            .addEventListener("click", function () {
+              document.getElementById("info").click();
+            });
+        });
     });
-  });
 
+    document.getElementById("info").click();
 
-  document.getElementById("info").click();
+    document.getElementById("history").addEventListener("click", function () {
+      fetchHistoryData(user.username); // Gọi hàm để lấy và hiển thị lịch sử
+    });
 
+    async function fetchHistoryData(currentUsername) {
+      const textArea = document.getElementById("text-area");
+      textArea.innerHTML = "<p>Đang tải lịch sử giao dịch...</p>";
 
-  document.getElementById("history").addEventListener("click", function() {
-    fetchHistoryData(user.username); // Gọi hàm để lấy và hiển thị lịch sử
-  });
+      try {
+        // Sử dụng Promise.all để tải đồng thời cả lịch sử và danh sách sản phẩm
+        const [historyResponse, productsResponse] = await Promise.all([
+          fetch("/lichsugiaodich/history.json"),
+          fetch("/data-product/product.json"), // Đường dẫn tới file product.json
+        ]);
 
-  async function fetchHistoryData(currentUsername) {
-    const textArea = document.getElementById("text-area");
-    textArea.innerHTML = '<p>Đang tải lịch sử giao dịch...</p>';
+        if (!historyResponse.ok) {
+          throw new Error(
+            `HTTP error! status: ${historyResponse.status} (history.json)`
+          );
+        }
+        if (!productsResponse.ok) {
+          throw new Error(
+            `HTTP error! status: ${productsResponse.status} (product.json)`
+          );
+        }
 
-    try {
-      // Sử dụng Promise.all để tải đồng thời cả lịch sử và danh sách sản phẩm
-      const [historyResponse, productsResponse] = await Promise.all([
-        fetch('/lichsugiaodich/history.json'),
-        fetch('/data-product/product.json') // Đường dẫn tới file product.json
-      ]);
+        const historyData = await historyResponse.json();
+        const productsData = await productsResponse.json();
 
-      if (!historyResponse.ok) {
-        throw new Error(`HTTP error! status: ${historyResponse.status} (history.json)`);
-      }
-      if (!productsResponse.ok) {
-        throw new Error(`HTTP error! status: ${productsResponse.status} (product.json)`);
-      }
+        // Tạo một đối tượng để dễ dàng tra cứu tên sản phẩm bằng ID
+        const productMap = {};
+        productsData.forEach((product) => {
+          productMap[product.id] = product.name; // Giả sử product.json có trường 'id' và 'name'
+        });
 
-      const historyData = await historyResponse.json();
-      const productsData = await productsResponse.json();
+        // Lọc lịch sử giao dịch của người dùng hiện tại
+        const userHistory = historyData.filter(
+          (entry) =>
+            entry.orderData && entry.orderData.username === currentUsername
+        );
 
-      // Tạo một đối tượng để dễ dàng tra cứu tên sản phẩm bằng ID
-      const productMap = {};
-      productsData.forEach(product => {
-        productMap[product.id] = product.name; // Giả sử product.json có trường 'id' và 'name'
-      });
+        if (userHistory.length === 0) {
+          textArea.innerHTML = "<p>Không có lịch sử giao dịch nào.</p>";
+          return;
+        }
 
-      // Lọc lịch sử giao dịch của người dùng hiện tại
-      const userHistory = historyData.filter(entry => entry.orderData && entry.orderData.username === currentUsername);
-
-      if (userHistory.length === 0) {
-        textArea.innerHTML = '<p>Không có lịch sử giao dịch nào.</p>';
-        return;
-      }
-
-      // Tạo bảng để hiển thị lịch sử
-      let historyHtml = `
+        // Tạo bảng để hiển thị lịch sử
+        let historyHtml = `
         <strong>Lịch sử giao dịch:</strong>
         <table class="history-table">
           <thead>
@@ -236,42 +288,48 @@
           <tbody>
       `;
 
-      userHistory.forEach((entry, index) => {
-        const orderData = entry.orderData || {};
-        const completedTimestamp = entry.completedTimestamp ? new Date(entry.completedTimestamp).toLocaleString('vi-VN') : 'N/A';
-        const employeeFullname = entry.employeeFullname || 'N/A';
-        // Lấy tên sản phẩm từ productMap, nếu không tìm thấy thì hiển thị productId
-        const productName = productMap[orderData.productId] || orderData.productId || 'N/A';
+        userHistory.forEach((entry, index) => {
+          const orderData = entry.orderData || {};
+          const completedTimestamp = entry.completedTimestamp
+            ? new Date(entry.completedTimestamp).toLocaleString("vi-VN")
+            : "N/A";
+          const employeeFullname = entry.employeeFullname || "N/A";
+          // Lấy tên sản phẩm từ productMap, nếu không tìm thấy thì hiển thị productId
+          const productName =
+            productMap[orderData.productId] || orderData.productId || "N/A";
 
-        const totalAmountFormatted = entry.totalAmount ? entry.totalAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) : 'N/A';
+          const totalAmountFormatted = entry.totalAmount
+            ? entry.totalAmount.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })
+            : "N/A";
 
-
-        historyHtml += `
+          historyHtml += `
           <tr>
             <td>${index + 1}</td>
             <td>${completedTimestamp}</td>
             <td>${productName}</td>
-            <td>${orderData.color || 'N/A'}</td>
-            <td>${orderData.quantity || 'N/A'}</td>
-            <td>${orderData.address || 'N/A'}</td>
-            <td>${orderData.phone || 'N/A'}</td>
+            <td>${orderData.color || "N/A"}</td>
+            <td>${orderData.quantity || "N/A"}</td>
+            <td>${orderData.address || "N/A"}</td>
+            <td>${orderData.phone || "N/A"}</td>
             <td>${employeeFullname}</td>
             <td>${totalAmountFormatted}</td>
           </tr>
         `;
-      });
+        });
 
-      historyHtml += `
+        historyHtml += `
           </tbody>
         </table>
       `;
-      textArea.innerHTML = historyHtml;
-
-    } catch (error) {
-      console.error("Lỗi khi tải lịch sử giao dịch:", error);
-      textArea.innerHTML = `<p style="color: red;">Không thể tải lịch sử giao dịch. Lỗi: ${error.message}. Vui lòng thử lại sau.</p>`;
+        textArea.innerHTML = historyHtml;
+      } catch (error) {
+        console.error("Lỗi khi tải lịch sử giao dịch:", error);
+        textArea.innerHTML = `<p style="color: red;">Không thể tải lịch sử giao dịch. Lỗi: ${error.message}. Vui lòng thử lại sau.</p>`;
+      }
     }
-  }
-</script>
-<script th:src="@{/js/search.js}"></script>
+  </script>
+  <script th:src="@{/js/search.js}"></script>
 </html>

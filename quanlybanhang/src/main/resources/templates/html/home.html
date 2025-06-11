@@ -1,231 +1,974 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang Chủ</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../static/css/genaral.css" />
+    <link
+      data-n-head="ssr"
+      rel="icon"
+      type="image/x-icon"
+      href="https://cdn2.cellphones.com.vn/200x/media/favicon/default/logo-cps.png"
+    />
+  </head>
 
-<head>
-  <style>
-    .advertisement-container {
-    width: 100%; /* Hoặc kích thước bạn muốn, ví dụ: 900px */
-    max-width: 900px; /* Giới hạn chiều rộng tối đa */
+  <body>
+    <div th:if="${showLoginPopup}" class="popup-overlay">
+      <div class="popup-box">
+        <div class="circle">
+          <i class="fa-solid fa-exclamation"></i>
+        </div>
+        <button
+          (click)="closePopup()"
+          class="close-popup-button"
+          aria-label="Đóng"
+          title="Đóng"
+        >
+          &times;
+        </button>
 
-    position: relative;
-    overflow: hidden; /* Quan trọng để ẩn các slide không hiển thị */
-    border-radius: 8px; /* Bo góc cho đẹp */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Thêm bóng đổ nhẹ */
-    /* background-color: #f0f0f0; /* Màu nền tạm thời nếu chưa có ảnh */
-}
-
-#homeAdvertisementSlider {
-    display: flex; /* Để các slide nằm ngang */
-    transition: transform 0.5s ease-in-out; /* Hiệu ứng trượt mượt mà */
-    min-height: 150px; /* Chiều cao tối thiểu để không bị xẹp khi chưa có ảnh */
-    /* Bạn có thể đặt chiều cao cố định hoặc để nó tự điều chỉnh theo ảnh cao nhất */
-    /* height: 300px; */
-}
-
-.advertisement-slide {
-    min-width: 100%; /* Mỗi slide chiếm toàn bộ chiều rộng của container */
-    box-sizing: border-box;
-    display: flex; /* Căn giữa ảnh trong slide */
-    align-items: center;
-    justify-content: center;
-    background-color: #e9e9e9; /* Màu nền cho từng slide nếu ảnh không full */
-}
-
-.advertisement-slide img {
-    width: 100%; /* Ảnh chiếm toàn bộ chiều rộng của slide */
-    height: auto;  /* Chiều cao tự động theo tỉ lệ ảnh */
-    max-height: 320px; /* Giới hạn chiều cao tối đa của ảnh, tùy chỉnh theo ý bạn */
-    display: block; /* Loại bỏ khoảng trắng thừa dưới ảnh */
-    object-fit: cover; /* 'cover' để ảnh lấp đầy, 'contain' để thấy toàn bộ ảnh */
-}
-
-.slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.4);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 20px;
-    z-index: 10;
-    border-radius: 50%; /* Làm nút tròn */
-    transition: background-color 0.3s ease;
-}
-
-.slider-btn:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-.slider-btn.prev {
-    left: 15px;
-}
-
-.slider-btn.next {
-    right: 15px;
-}
-
-#noHomeAdsMessage {
-    width: calc(100% - 40px); /* Để padding không làm vỡ layout */
-    box-sizing: border-box;
-}
-       .popup-box > a {
-    display: inline-block;  /* Quan trọng: Chuyển sang inline-block */
-    margin-top: 15px;       /* Bây giờ sẽ có tác dụng */
-    margin-left: 5px;       /* Thêm chút margin ngang nếu cần */
-    margin-right: 5px;      /* Thêm chút margin ngang nếu cần */
-    padding: 10px 15px;     /* Padding của bạn */
-    border: 1px solid var(--primary-color);
-    border-radius: var(--border-radius);
-    color: var(--primary-color);
-    background-color: var(--white-color);
-    font-weight: 500;
-    transition: background-color var(--transition-fast), color var(--transition-fast);
-}
-
-.popup-box > a:hover {
-    background-color: var(--primary-color);
-    color: var(--white-color);
-}
-
-  </style>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trang Chủ</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/genaral.css" />
-</head>
-
-<body>
-
-  <div th:if="${showLoginPopup}" class="popup-overlay">
-    <div class="popup-box">
-      <form method="get" action="/" style="text-align: right;">
-        <button type="submit" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
-      </form>
-      <h2>Bạn chưa đăng nhập</h2>
-      <a href="/login" class="btn">Đăng nhập</a>
-      <a href="/register" class="btn">Đăng ký</a>
-    </div>
-  </div>
-
-  <header class="native-bar" th:fragment="mainHeader">
-    <div class="native-bar-flex container">
-      <div class="logo">
-        <a href="/" style="cursor:pointer;"><img src="/images/logo.png" alt="Logo" /></a>
-      </div>
-      <div class="search-container">
-        <form id="search-form" action="/search" method="get" style="display: flex; width: 100%;">
-          <input class="search-input" type="text" name="tag" id="search-input-main"
-            placeholder="Tìm kiếm theo tags sản phẩm..." autocomplete="off" />
-          <button class="search-button" type="submit"><i class="fas fa-search"></i></button>
-        </form>
-        <div class="search-results-box" id="search-results-main">
+        <h2>Bạn chưa đăng nhập</h2>
+        <div class="button-container">
+          <button class="redirect" (click)="goToLoginPage()">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            <span>Đăng nhập</span>
+          </button>
+          <button class="redirect" (click)="goToRegisterPage()">
+            <i class="fa-solid fa-address-card"></i>
+            <span>Đăng ký</span>
+          </button>
         </div>
       </div>
-      <nav class="header-nav">
-        <a href="#" class="nav-item call"><i class="fas fa-phone"></i> <span>Gọi mua hàng</span></a>
-        <a href="/cart" class="nav-item buymaket"><i class="fas fa-shopping-cart"></i> <span>Giỏ hàng</span></a>
-        <a href="/profile" class="nav-item profile"><i class="fas fa-user"></i> <span>Tài khoản</span></a>
-      </nav>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="hero-section">
-      <div class="category-nav">
-        <button class="category-button" data-category="Điện thoại"><i class="fas fa-mobile-alt"></i> Điện thoại</button>
-        <button class="category-button" data-category="Laptop"><i class="fas fa-laptop"></i> Laptop</button>
-        <button class="category-button" data-category="Đồng hồ"><i class="fas fa-stopwatch"></i> Đồng hồ</button>
-        <button class="category-button" data-category="Tivi"><i class="fas fa-tv"></i> Tivi</button>
-        <button class="category-button" data-category="Phụ kiện"><i class="fas fa-headphones"></i> Phụ kiện</button>
-        <button class="category-button" data-category="Sim, thẻ"><i class="fas fa-sim-card"></i> Sim, thẻ</button>
-      </div>
-      <div class="advertisement-container">
-        <div id="homeAdvertisementSlider" class="slider">
-        </div>
-        <button class="slider-btn prev" id="homePrevAd" style="display:none;">&#10094;</button>
-        <button class="slider-btn next" id="homeNextAd" style="display:none;">&#10095;</button>
-        <p id="noHomeAdsMessage" style="display:none; text-align:center; padding: 20px; min-height: 50px; background-color: #f0f0f0; border: 1px dashed #ccc; margin-top:0; width:100%;">Hiện chưa có quảng cáo nào.</p>
-      </div>
-    </section>
-
-    <section class="product-display">
-      <h2 class="section-title">Sản phẩm</h2>
-      <div class="products-grid" id="products-grid-main">
-        <div class="tag-product" th:each="product : ${products}"
-          th:if="${products != null and not #lists.isEmpty(products)}">
-          <a th:href="@{/product/{productid}/{id}(productid=${product.id}, id=${product.variants[0].id} , colorid =${product.variants[0].colorprices[0].id})}"
-            class="product-link">
-            <img class="product-image" th:src="${product.variants[0].image}" alt="Hình ảnh sản phẩm"
-              onerror="this.onerror=null;this.src='/images/placeholder.png';" />
-            <div class="product-info">
-              <p class="product-name" th:text="${product.name}">Tên sản phẩm mẫu</p>
-              <p class="product-price" th:text="${product.variants[0].colorprices[0].formattedPrice} + '₫'">Giá:
-                10.000.000₫</p>
-              <p class="product-brand" th:text="'Thương hiệu: ' + ${product.brand}">Thương hiệu: ABC</p>
-            </div>
+    <header class="native-bar">
+      <div class="native-bar-flex container">
+        <div class="logo">
+          <a href="/" style="cursor: pointer">
+            <img src="/images/logo.png" alt="Logo" />
           </a>
         </div>
-      </div>
-      <p id="no-products-message" style="display:none; text-align:center; margin-top:20px;">Không có sản phẩm nào thuộc
-        danh mục này.</p>
-      <div th:if="${products == null or #lists.isEmpty(products)}" id="initial-no-products-container">
-        <p id="initial-no-products-message">Hiện chưa có sản phẩm nào.</p>
-      </div>
-    </section>
-  </main>
+        <div class="danhmuc">
+          <button class="button-danhmuc">
+            <i class="fas fa-bars"></i> Danh mục
+          </button>
+          <div class="danhmuc-dropdown">
+            <div class="button-dieuhuong">
+              <!-- Các button .bt1-dh giữ nguyên ở đây -->
+              <!-- ... -->
+              <button class="bt1-dh" >
+                <div class="icon-cate" style="background-image: url(https://cellphones.com.vn/media/icons/menu/icon-cps-3.svg);"></div>
+                <span>Điện thoại</span>
+                <div class="icon-right">
+                  <svg hight="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+                  </svg>
+                </div>
+                <div class="tooltip-bridge"></div>
+                <div class="bt1-tooltip" id="tooltip-dien-thoai">
+                  <div class="tooltip-columns-3">
+                    <div>
+                      <strong>Hãng điện thoại</strong>
+                      <div><a href="#">Apple</a></div>
+                      <div><a href="#">Samsung</a></div>
+                      <div><a href="#">Xiaomi</a></div>
+                      <div><a href="#">OPPO</a></div>
+                      <div><a href="#">Vivo</a></div>
+                      <div><a href="#">Realme</a></div>
+                      <div><a href="#">Nokia</a></div>
+                    </div>
+                    <div>
+                      <strong>Mức giá</strong>
+                      <div><a href="#">Dưới 2 triệu</a></div>
+                      <div><a href="#">2 - 4 triệu</a></div>
+                      <div><a href="#">4 - 7 triệu</a></div>
+                      <div><a href="#">7 - 13 triệu</a></div>
+                      <div><a href="#">Trên 13 triệu</a></div>
+                    </div>
+                    <div>
+                      <strong>Điện thoại hot</strong>
+                      <div><a href="#">iPhone 15 Pro Max</a></div>
+                      <div><a href="#">Samsung Galaxy S24 Ultra</a></div>
+                      <div><a href="#">Xiaomi 14</a></div>
+                      <div><a href="#">OPPO Reno11</a></div>
+                      <div><a href="#">Vivo V30</a></div>
+                    </div>
+                  </div>
+                </div>
+              </button>
+              <button class="bt1-dh" id="bt1-dh-laptop">
+                <div class="icon-cate" style="background-image: url(https://cdn2.cellphones.com.vn/x/media/icons/menu/icon-cps-380.svg);"></div>
+                <span>Laptop</span>
+                <div class="icon-right">
+                  <svg hight="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+                  </svg>
+                </div>
+                <div class="tooltip-bridge"></div>
+                <div class="bt1-tooltip" id="tooltip-dien-thoai">
+                  <div class="tooltip-columns-5">
+                    <div>
+                      <strong>Thương hiệu</strong>
+                      <div><a href="#">Mac</a></div>
+                      <div><a href="#">Asus</a></div>
+                      <div><a href="#">Lenovo</a></div>
+                      <div><a href="#">Dell</a></div>
+                      <div><a href="#">HP</a></div>
+                      <div><a href="#">Acer</a></div>
+                      <div><a href="#">LG</a></div>
+                      <div><a href="#">Huawei</a></div>
+                      <div><a href="#">MSI</a></div>
+                      <div><a href="#">Gigabyte</a></div>
+                    </div>
+                    <div>
+                      <strong>Phân khúc giá</strong>
+                      <div><a href="#">Dưới 10 triệu</a></div>
+                      <div><a href="#">10 - 15 triệu</a></div>
+                      <div><a href="#">15 - 20 triệu</a></div>
+                      <div><a href="#">20 - 25 triệu</a></div>
+                      <div><a href="#">25 - 30 triệu</a></div>
+                      <div><a href="#">Trên 30 triệu</a></div>
+                    </div>
+                    <div>
+                      <strong>Dòng chip</strong>
+                      <div><a href="#">Laptop Core i3</a></div>
+                      <div><a href="#">Laptop Core i5</a></div>
+                      <div><a href="#">Laptop Core i7</a></div>
+                      <div><a href="#">Laptop Core i9</a></div>
+                      <div><a href="#">Apple M1 Series</a></div>
+                      <div><a href="#">Apple M3 Series</a></div>
+                      <div><a href="#">Apple M4 Series</a></div>
+                      <div><a href="#">AMD Ryzen</a></div>
+                    </div>
+                    <div>
+                      <strong>Kích thước màn hình</strong>
+                      <div><a href="#">13 inch</a></div>
+                      <div><a href="#">14 inch</a></div>
+                      <div><a href="#">15 inch</a></div>
+                      <div><a href="#">16 inch</a></div>
+                      <div><a href="#">17 inch</a></div>
+                    </div>
+                    <div>
+                      <strong>Nhu cầu sử dụng</strong>
+                      <div><a href="#">Văn phòng</a></div>
+                      <div><a href="#">Gaming</a></div>
+                      <div><a href="#">Thiết kế đồ họa</a></div>
+                      <div><a href="#">Sinh viên</a></div>
+                      <div><a href="#">Mỏng - nhẹ</a></div>
+                      <div><a href="#">Cảm ứng</a></div>
 
-  <footer class="footer" th:fragment="mainFooter">
-    <div class="footer-container container">
-      <div class="footer-column">
-        <h4>Tổng đài hỗ trợ miễn phí</h4>
-        <p><i class="fas fa-phone-alt"></i> Gọi mua hàng: <strong>1800.2097</strong> (7:30 - 22:00)</p>
-        <p><i class="fas fa-headset"></i> Khiếu nại: <strong>1800.2063</strong> (8:00 - 21:30)</p>
-        <p><i class="fas fa-tools"></i> Bảo hành: <strong>1800.2064</strong> (8:00 - 21:00)</p>
+
+                    </div>
+                  </div>
+                </div>
+              </button>
+              <button class="bt1-dh" id="bt1-dh-dong-ho">
+                <div class="icon-cate" style="background-image: url(https://cellphones.com.vn/media/icons/menu/icon-cps-610.svg);"></div>
+                <span>Đồng hồ</span>
+                <div class="icon-right">
+                  <svg hight="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+                  </svg>
+                </div>
+                <div class="tooltip-bridge"></div>
+                <div class="bt1-tooltip" id="tooltip-dien-thoai">
+                  <div class="tooltip-columns-3">
+                    <div>
+                      <strong>Loại đồng hồ</strong>
+                      <div><a href="#">Đồng hồ thông minh</a></div>
+                      <div><a href="#">Vòng đeo tay thông minh</a></div>
+                      <div><a href="#">Đồng hồ định vị trẻ em</a></div>
+                      <div><a href="#">Dây đeo</a></div>
+                    </div>
+                    <div>
+                      <strong>Chọn theo thương hiệu</strong>
+                      <div><a href="#">Apple Watch</a></div>
+                      <div><a href="#">Samsung</a></div>
+                      <div><a href="#">Xiaomi</a></div>
+                      <div><a href="#">Huawei</a></div>
+                      <div><a href="#">Black Shark</a></div>
+                      <div><a href="#">Coros</a></div>
+                      <div><a href="#">Garmin</a></div>
+                    </div>
+                    <div>
+                      <strong>Sản phẩm nổi bật</strong>
+                      <div><a href="#">Apple Watch Series 10</a></div>
+                      <div><a href="#">Apple Watch Ultra 2</a></div>
+                      <div><a href="#">Samsung Galaxy Watch 7</a></div>
+                      <div><a href="#">Samsung Galaxy Watch Ultra</a></div>
+                      <div><a href="#">Huawei Watch Fit 4</a></div>
+                      <div><a href="#">Huawei Watch Fit 4 Pro</a></div>
+                      <div><a href="#">Apple Watch SE</a></div>
+                      <div><a href="#">Xiaomi Watch S4</a></div>
+                      <div><a href="#">Garmin Instinct E</a></div>
+                      <div><a href="#">Garmin Instinct 3</a></div>
+                    </div>
+                  </div>
+                </div>
+              </button>
+              <button class="bt1-dh" id="bt1-dh-tivi">
+                <div class="icon-cate" style="background-image: url(https://cellphones.com.vn/media/icons/menu/icon-cps-1124.svg);"></div>
+                <span>Tivi</span>
+                <div class="icon-right">
+                  <svg hight="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+                  </svg>
+                </div>
+                <div class="tooltip-bridge"></div>
+                <div class="bt1-tooltip" id="tooltip-dien-thoai">
+                  <div class="tooltip-columns-5">
+                    <div>
+                      <strong>Thương hiệu</strong>
+                      <div><a href="#">Samsung</a></div>
+                      <div><a href="#">LG</a></div>
+                      <div><a href="#">Xiaomi</a></div>
+                      <div><a href="#">Coocaa</a></div>
+                      <div><a href="#">Sony</a></div>
+                      <div><a href="#">Toshiba</a></div>
+                      <div><a href="#">TCL</a></div>
+                      <div><a href="#">Hisense</a></div>
+
+                    </div>
+                    <div>
+                      <strong>Phân khúc giá</strong>
+                      <div><a href="#">Dưới 5 triệu</a></div>
+                      <div><a href="#">5 - 9 triệu</a></div>
+                      <div><a href="#">9 - 12 triệu</a></div>
+                      <div><a href="#">12 - 15 triệu</a></div>
+                      <div><a href="#">Trên 15 triệu</a></div>
+                    </div>
+                    <div>
+                      <strong>Chọn theo độ phân giải</strong>
+                      <div><a href="#">Tivi 4K</a></div>
+                      <div><a href="#">Tivi 8K</a></div>
+                      <div><a href="#">Tivi Full HD</a></div>
+                      <div><a href="#">Tivi OLED</a></div>
+                      <div><a href="#">Tivi QLED</a></div>
+                      <div><a href="#">Android Tivi</a></div>
+                    </div>
+                    <div>
+                      <strong>Kích thước màn hình</strong>
+                      <div><a href="#">Tivi 32 inch</a></div>
+                      <div><a href="#">Tivi 43 inch</a></div>
+                      <div><a href="#">Tivi 50 inch</a></div>
+                      <div><a href="#">Tivi 55 inch</a></div>
+                      <div><a href="#">Tivi 65 inch</a></div>
+                      <div><a href="#">Tivi 70 inch</a></div>
+                      <div><a href="#">Tivi 85 inch</a></div>
+                    </div>
+                    <div>
+                      <strong>Sản phẩm nổi bật</strong>
+                      <div><a href="#">Tivi Samsung 4K</a></div>
+                      <div><a href="#">Tivi LG OLED</a></div>
+                      <div><a href="#">Tivi Sony 8K</a></div>
+                      <div><a href="#">Tivi TCL 55 inch</a></div>
+                      <div><a href="#">Tivi Xiaomi 70 inch</a></div>
+                    </div>
+                  </div>
+                </div>
+              </button>
+              <button class="bt1-dh" id="bt1-dh-phu-kien">
+                <div class="icon-cate" style="background-image:url(https://cellphones.com.vn/media/icons/menu/icon-cps-30.svg);"></div>
+                <span>Phụ kiện</span>
+                <div class="icon-right">
+                  <svg hight="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+                  </svg>
+                </div>
+                <div class="tooltip-bridge"></div>
+                <div class="bt1-tooltip" id="tooltip-dien-thoai">
+                  <div class="tooltip-columns-5">
+                    <div>
+                      <strong>Phụ kiện di động</strong>
+                      <div><a href="#">Phụ kiện Apple</a></div>
+                      <div><a href="#">Dán màn hình</a></div>
+                      <div><a href="#">Ốp lưng - bao da</a></div>
+                      <div><a href="#">Thẻ nhớ</a></div>
+                      <div><a href="#">Cáp, sạc</a></div>
+                      <div><a href="#">Pin dự phòng</a></div>
+                      <div><a href="#">Phụ kiện điện thoại</a></div>
+
+
+                    </div>
+                    <div>
+                      <strong>Phụ kiện laptop</strong>
+                      <div><a href="#">Chuột, bàn phím</a></div>
+                      <div><a href="#">Balo laptop | Túi chống sốc</a></div>
+                      <div><a href="#">Phần mềm</a></div>
+                      <div><a href="#">WebCam</a></div>
+                      <div><a href="#">Giá đỡ</a></div>
+                      <div><a href="#">Thảm, lót chuột</a></div>
+                      <div><a href="#">Sạc laptop</a></div>
+                    </div>
+                    <div>
+                      <strong>Thiết bị mạng</strong>
+                      <div><a href="#">Thiết bị phát sóng</a></div>
+                      <div><a href="#">Bộ phát Wifi di động </a></div>
+                      <div><a href="#">Bộ kích sóng Wifi</a></div>
+                    </div>
+                    <div>
+                      <strong>Thiết bị lưu trữ</strong>
+                      <div><a href="#">Ổ cứng di động</a></div>
+                      <div><a href="#">USB Flash Drive</a></div>
+                      <div><a href="#">Thẻ nhớ</a></div>
+                      <div><a href="#">NAS</a></div>
+                      <div><a href="#">Cloud Storage</a></div>
+                    </div>
+                    <div>
+                      <strong>Phụ kiện khác</strong>
+                      <div><a href="#">Dây đeo đồng hồ</a></div>
+                      <div><a href="#">Phụ kiện tiện ích</a></div>
+                      <div><a href="#">Phụ kiện oto</a></div>
+                      <div><a href="#">Bút cảm ứng</a></div>
+                      <div><a href="#">Thiết bị định vị</a></div>
+                    </div>
+                  </div>
+                </div>
+              </button>
+              <button class="bt1-dh" id="bt1-dh-do-gia-dung">
+                <div class="icon-cate" style="background-image:url(https://cellphones.com.vn/media/icons/menu/icon-cps-845.svg);"></div>
+            <span>Đồ gia dụng</span>
+                <div class="icon-right">
+                  <svg hight="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+                  </svg>
+                </div>
+                <div class="tooltip-bridge"></div>
+                <div class="bt1-tooltip" id="tooltip-dien-thoai">
+                  <div class="tooltip-columns-3">
+                    <div>
+                      <strong>Gia dụng nhà bếp</strong>
+                      <div><a href="#">Nồi chiên không dầu</a></div>
+                      <div><a href="#">Máy rửa bát</a></div>
+                      <div><a href="#">Lò vi sóng</a></div>
+                      <div><a href="#">Bếp điện từ</a></div>
+                      <div><a href="#">Máy pha cà phê</a></div>
+                      <div><a href="#">Máy hút bụi</a></div>
+                      <div><a href="#">Tủ lạnh</a></div>
+                      <div><a href="#">Nồi cơm điện</a></div>
+                      <div><a href="#">Máy xay sinh tố</a></div>
+                    </div>
+                    <div>
+                      <strong>Sức khoẻ - làm đẹp</strong>
+                      <div><a href="#">Máy đo huyết áp</a></div>
+                      <div><a href="#">Máy massage</a></div>
+                      <div><a href="#">Máy xông mặt</a></div>
+                      <div><a href="#">Máy triệt lông</a></div>
+                      <div><a href="#">Máy tăm nước</a></div>
+                      <div><a href="#">Máy rửa mặt</a></div>
+                      <div><a href="#">Cân sức khoẻ</a></div>
+                    </div>
+                    <div>
+                      <strong>Thiết bị gia đình</strong>
+                      <div><a href="#">Máy lọc không khí</a></div>
+                      <div><a href="#">Tủ lạnh</a></div>
+                      <div><a href="#">Máy hút bụi</a></div>
+                      <div><a href="#">Lò vi sóng</a></div>
+                      <div><a href="#">Bếp điện từ</a></div>
+                      <div><a href="#">Quạt</a></div>
+                      <div><a href="#">Máy rửa chén</a></div>
+                      <div><a href="#">TV Box</a></div>
+                      <div><a href="#">Máy chiếu</a></div>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            
+            </div>
+          </div>
+
+          <div class="danhmuc-overlay"></div>
+        </div>
+        
+        <div class="search-container">
+          <input
+            class="search-input"
+            type="text"
+            placeholder="Bạn tìm gì hôm nay?"
+          />
+          <button class="search-button"><i class="fas fa-search"></i></button>
+        </div>
+        <nav class="header-nav">
+          <a href="#" class="nav-item call"
+            ><i class="fas fa-phone"></i> <span>Gọi mua hàng</span></a
+          >
+          <a href="#" class="nav-item buymaket"
+            ><i class="fas fa-shopping-cart"></i> <span>Giỏ hàng</span></a
+          >
+          <a href="/profile" class="nav-item profile"
+            ><i class="fas fa-user"></i> <span>Tài khoản</span></a
+          >
+        </nav>
       </div>
-      <div class="footer-column">
-        <h4>Thông tin và chính sách</h4>
-        <ul>
-          <li><a href="#">Chính sách bảo hành</a></li>
-          <li><a href="#">Hướng dẫn mua hàng online</a></li>
-          <li><a href="#">Chính sách đổi trả</a></li>
-          <li><a href="#">Giao hàng & thanh toán</a></li>
-          <li><a href="#">Hướng dẫn mua hàng trả góp</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h4>Dịch vụ và thông tin khác</h4>
-        <ul>
-          <li><a href="#">Khách hàng doanh nghiệp (B2B)</a></li>
-          <li><a href="#">Ưu đãi thanh toán</a></li>
-          <li><a href="#">Quy chế hoạt động</a></li>
-          <li><a href="#">Chính sách xử lý dữ liệu cá nhân</a></li>
-          <li><a href="#">Liên hệ hợp tác kinh doanh</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h4>Kết nối với chúng tôi</h4>
-        <div class="social-icons">
-          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
-          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" aria-label="Tiktok"><i class="fab fa-tiktok"></i></a>
+    </header>
+
+    <main class="container">
+      <section class="hero-section">
+        <div class="category-nav">
+          <button class="category-button" data-dropdown="dropdown1">
+            <i class="fas fa-mobile-alt"></i><span> Điện thoại</span>
+            <div class="icon-right">
+              <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+              </svg>
+            </div>
+          </button>
+          <div class="dropdown-category" id="dropdown1">
+            <div class="brand-buttons">
+              <button class="brand-btn">Apple</button>
+              <button class="brand-btn">Samsung</button>
+              <button class="brand-btn">Xiaomi</button>
+              <button class="brand-btn">OPPO</button>
+              <button class="brand-btn">Vivo</button>
+              <button class="brand-btn">Realme</button>
+              <button class="brand-btn">Nokia</button>
+            </div>
+          </div>
+
+          <button class="category-button" data-dropdown="dropdown2">
+            <i class="fas fa-laptop"></i><span> Laptop</span>
+            <div class="icon-right">
+              <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+              </svg>
+            </div>
+          </button>
+
+          <div class="dropdown-category" id="dropdown2">
+            <div class="brand-buttons">
+              <button class="brand-btn">Dell</button>
+              <button class="brand-btn">HP</button>
+              <button class="brand-btn">Apple</button>
+              <button class="brand-btn">Asus</button>
+              <button class="brand-btn">Acer</button>
+              <button class="brand-btn">Lenovo</button>
+              <button class="brand-btn">MSI</button>
+            </div>
+          </div>
+          
+          <button class="category-button" data-dropdown="dropdown3">
+            <i class="fas fa-stopwatch"></i><span> Đồng hồ</span>
+            <div class="icon-right">
+              <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+              </svg>
+            </div>
+          </button>
+
+          <div class="dropdown-category" id="dropdown3">
+            <div class="brand-buttons">
+              <button class="brand-btn">Apple Watch</button>
+              <button class="brand-btn">Samsung</button>
+              <button class="brand-btn">Garmin</button>
+              <button class="brand-btn">Xiaomi</button>
+              <button class="brand-btn">Amazfit</button>
+              <button class="brand-btn">Casio</button>
+              <button class="brand-btn">Citizen</button>
+            </div>
+          </div>
+          
+          
+          <button class="category-button" data-dropdown="dropdown4">
+            <i class="fas fa-tv"></i><span> Tivi</span>
+            <div class="icon-right">
+              <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+              </svg>
+            </div>
+          </button>
+          <div class="dropdown-category" id="dropdown4">
+            <div class="brand-buttons">
+              <button class="brand-btn">Sony</button>
+              <button class="brand-btn">Samsung</button>
+              <button class="brand-btn">LG</button>
+              <button class="brand-btn">TCL</button>
+              <button class="brand-btn">Panasonic</button>
+              <button class="brand-btn">Casper</button>
+            </div>
+          </div>
+          
+          
+          <button class="category-button" data-dropdown="dropdown5">
+            <i class="fas fa-headphones"></i><span> Phụ kiện</span>
+            <div class="icon-right">
+              <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+              </svg>
+            </div>
+          </button>
+
+          <div class="dropdown-category" id="dropdown5">
+            <div class="brand-buttons">
+              <button class="brand-btn">Tai nghe</button>
+              <button class="brand-btn">Sạc dự phòng</button>
+              <button class="brand-btn">Cáp sạc</button>
+              <button class="brand-btn">Ốp lưng</button>
+              <button class="brand-btn">Dán màn hình</button>
+              <button class="brand-btn">Chuột máy tính</button>
+              <button class="brand-btn">Bàn phím</button>
+              <button class="brand-btn">Thẻ nhớ</button>
+              <button class="brand-btn">USB</button>
+              <button class="brand-btn">Loa Bluetooth</button>
+            </div>
+          </div>
+          
+          <button class="category-button" data-dropdown="dropdown6">
+            <i class="fas fa-sim-card"></i><span> Sim, thẻ</span>
+            <div class="icon-right">
+              <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"></path>
+              </svg>
+            </div>
+          </button>
+          <div class="dropdown-category" id="dropdown6">
+            <div class="brand-buttons">
+              <button class="brand-btn">Viettel</button>
+              <button class="brand-btn">Vinaphone</button>
+              <button class="brand-btn">Mobifone</button>
+              <button class="brand-btn">Itelecom</button>
+            </div>
+          </div>
+        </div>
+        <div class="ad-banner">
+          <div class="slide-track">
+            <div class="slide-track-inner">
+              <img
+                src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/iphone-16-pro-max-thu-cu-moi-home.jpg"
+                alt="Quảng cáo"
+                loading="lazy"
+              />
+              <img
+                src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/tai-nghe-sony-home.jpg"
+                alt="Quảng cáo"
+                loading="lazy"
+                style="height: 380px"
+              />
+              <img
+                src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/s25-home-moi.png"
+                alt="Quảng cáo"
+                loading="lazy"
+              />
+              <img
+                src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/oppo-find-n5-home-mu-ngay-14-4.jpg"
+                alt="Quảng cáo"
+                loading="lazy"
+              />
+              <img
+                src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:90/plain/https://dashboard.cellphones.com.vn/storage/vivo-v50-home.png"
+                alt="Quảng cáo"
+                loading="lazy"
+              />
+            </div>
+            <button type="button" class="arrow previous-image">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <button class="arrow next-image">
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="slide-content-container">
+            <div class="slide-content">
+              <p>iPhone 16 Pro Max</p>
+              <p>Giá: 30.000.000₫</p>
+              <p>Khuyến mãi: Giảm 10%</p>
+            </div>
+            
+            <div class="slide-content">
+              <p class="twoline">TAI NGHE SONY</p>
+              <p class="twoline">Chỉ từ 1.090 triệu</p>
+            </div>
+            <div class="slide-content">
+              <p class="twoline">GALAXY S25 ULTRA</p>
+              <p class="twoline">Giá tốt chốt ngay</p>
+            </div>
+            <div class="slide-content">
+              <p class="twoline">OPPO FIND N5 </p>
+              <p class="twoline">Ưu đãi tốt mua ngay</p>
+            </div>
+            <div class="slide-content">
+              <p class="twoline">VIVO V50 LITE </p>
+              <p class="twoline">Giá chỉ 10.69 triệu</p>
+            </div>
+          </div>
+        </div>
+        </div>
+      </section>
+
+      <section class="product-display">
+        <h2 class="section-title">Sản phẩm nổi bật</h2>
+        <div
+          class="products-grid"
+          th:if="${products != null and not #lists.isEmpty(products)}"
+        >
+          <div class="tag-product" th:each="product : ${products}">
+            <a th:href="@{'/product?id=' + ${product.id}}" class="product-link">
+              <img
+                class="product-image"
+                th:src="${product.variants[0].image}"
+                alt="Hình ảnh sản phẩm"
+              />
+              <div class="product-info">
+                <p class="product-name" th:text="${product.name}">
+                  Tên sản phẩm mẫu
+                </p>
+                <p
+                  class="product-price"
+                  th:text="${#numbers.formatDecimal(product.variants[0].price, 0, 'POINT', 0, 'COMMA')} + '₫'"
+                >
+                  Giá: 10.000.000₫
+                </p>
+                <p
+                  class="product-brand"
+                  th:text="'Thương hiệu: ' + ${product.brand}"
+                >
+                  Thương hiệu: ABC
+                </p>
+              </div>
+            </a>
+          </div>
+          <div class="tag-product" th:each="product : ${products}">
+            <a th:href="@{'/product?id=' + ${product.id}}" class="product-link">
+              <img
+                class="product-image"
+                th:src="${product.variants[0].image}"
+                alt="Hình ảnh sản phẩm"
+              />
+              <div class="product-info">
+                <p class="product-name" th:text="${product.name}">
+                  Tên sản phẩm mẫu
+                </p>
+                <p
+                  class="product-price"
+                  th:text="${#numbers.formatDecimal(product.variants[0].price, 0, 'POINT', 0, 'COMMA')} + '₫'"
+                >
+                  Giá: 10.000.000₫
+                </p>
+                <p
+                  class="product-brand"
+                  th:text="'Thương hiệu: ' + ${product.brand}"
+                >
+                  Thương hiệu: ABC
+                </p>
+              </div>
+            </a>
+          </div>
+          <div class="tag-product" th:each="product : ${products}">
+            <a th:href="@{'/product?id=' + ${product.id}}" class="product-link">
+              <img
+                class="product-image"
+                th:src="${product.variants[0].image}"
+                alt="Hình ảnh sản phẩm"
+              />
+              <div class="product-info">
+                <p class="product-name" th:text="${product.name}">
+                  Tên sản phẩm mẫu
+                </p>
+                <p
+                  class="product-price"
+                  th:text="${#numbers.formatDecimal(product.variants[0].price, 0, 'POINT', 0, 'COMMA')} + '₫'"
+                >
+                  Giá: 10.000.000₫
+                </p>
+                <p
+                  class="product-brand"
+                  th:text="'Thương hiệu: ' + ${product.brand}"
+                >
+                  Thương hiệu: ABC
+                </p>
+              </div>
+            </a>
+          </div>
+          <div class="tag-product" th:each="product : ${products}">
+            <a th:href="@{'/product?id=' + ${product.id}}" class="product-link">
+              <img
+                class="product-image"
+                th:src="${product.variants[0].image}"
+                alt="Hình ảnh sản phẩm"
+              />
+              <div class="product-info">
+                <p class="product-name" th:text="${product.name}">
+                  Tên sản phẩm mẫu
+                </p>
+                <p
+                  class="product-price"
+                  th:text="${#numbers.formatDecimal(product.variants[0].price, 0, 'POINT', 0, 'COMMA')} + '₫'"
+                >
+                  Giá: 10.000.000₫
+                </p>
+                <p
+                  class="product-brand"
+                  th:text="'Thương hiệu: ' + ${product.brand}"
+                >
+                  Thương hiệu: ABC
+                </p>
+              </div>
+            </a>
+          </div>
+          <div class="tag-product" th:each="product : ${products}">
+            <a th:href="@{'/product?id=' + ${product.id}}" class="product-link">
+              <img
+                class="product-image"
+                th:src="${product.variants[0].image}"
+                alt="Hình ảnh sản phẩm"
+              />
+              <div class="product-info">
+                <p class="product-name" th:text="${product.name}">
+                  Tên sản phẩm mẫu
+                </p>
+                <p
+                  class="product-price"
+                  th:text="${#numbers.formatDecimal(product.variants[0].price, 0, 'POINT', 0, 'COMMA')} + '₫'"
+                >
+                  Giá: 10.000.000₫
+                </p>
+                <p
+                  class="product-brand"
+                  th:text="'Thương hiệu: ' + ${product.brand}"
+                >
+                  Thương hiệu: ABC
+                </p>
+              </div>
+            </a>
+          </div>
+          <div class="tag-product" th:each="product : ${products}">
+            <a th:href="@{'/product?id=' + ${product.id}}" class="product-link">
+              <img
+                class="product-image"
+                th:src="${product.variants[0].image}"
+                alt="Hình ảnh sản phẩm"
+              />
+              <div class="product-info">
+                <p class="product-name" th:text="${product.name}">
+                  Tên sản phẩm mẫu
+                </p>
+                <p
+                  class="product-price"
+                  th:text="${#numbers.formatDecimal(product.variants[0].price, 0, 'POINT', 0, 'COMMA')} + '₫'"
+                >
+                  Giá: 10.000.000₫
+                </p>
+                <p
+                  class="product-brand"
+                  th:text="'Thương hiệu: ' + ${product.brand}"
+                >
+                  Thương hiệu: ABC
+                </p>
+              </div>
+            </a>
+          </div>
+          <div class="tag-product" th:each="product : ${products}">
+            <a th:href="@{'/product?id=' + ${product.id}}" class="product-link">
+              <img
+                class="product-image"
+                th:src="${product.variants[0].image}"
+                alt="Hình ảnh sản phẩm"
+              />
+              <div class="product-info">
+                <p class="product-name" th:text="${product.name}">
+                  Tên sản phẩm mẫu
+                </p>
+                <p
+                  class="product-price"
+                  th:text="${#numbers.formatDecimal(product.variants[0].price, 0, 'POINT', 0, 'COMMA')} + '₫'"
+                >
+                  Giá: 10.000.000₫
+                </p>
+                <p
+                  class="product-brand"
+                  th:text="'Thương hiệu: ' + ${product.brand}"
+                >
+                  Thương hiệu: ABC
+                </p>
+              </div>
+            </a>
+          </div>
+          <div class="tag-product" th:each="product : ${products}">
+            <a th:href="@{'/product?id=' + ${product.id}}" class="product-link">
+              <img
+                class="product-image"
+                th:src="${product.variants[0].image}"
+                alt="Hình ảnh sản phẩm"
+              />
+              <div class="product-info">
+                <p class="product-name" th:text="${product.name}">
+                  Tên sản phẩm mẫu
+                </p>
+                <p
+                  class="product-price"
+                  th:text="${#numbers.formatDecimal(product.variants[0].price, 0, 'POINT', 0, 'COMMA')} + '₫'"
+                >
+                  Giá: 10.000.000₫
+                </p>
+                <p
+                  class="product-brand"
+                  th:text="'Thương hiệu: ' + ${product.brand}"
+                >
+                  Thương hiệu: ABC
+                </p>
+              </div>
+            </a>
+          </div>
+          <div class="tag-product" th:each="product : ${products}">
+            <a th:href="@{'/product?id=' + ${product.id}}" class="product-link">
+              <img
+                class="product-image"
+                th:src="${product.variants[0].image}"
+                alt="Hình ảnh sản phẩm"
+              />
+              <div class="product-info">
+                <p class="product-name" th:text="${product.name}">
+                  Tên sản phẩm mẫu
+                </p>
+                <p
+                  class="product-price"
+                  th:text="${#numbers.formatDecimal(product.variants[0].price, 0, 'POINT', 0, 'COMMA')} + '₫'"
+                >
+                  Giá: 10.000.000₫
+                </p>
+                <p
+                  class="product-brand"
+                  th:text="'Thương hiệu: ' + ${product.brand}"
+                >
+                  Thương hiệu: ABC
+                </p>
+              </div>
+            </a>
+          </div>
+          <div class="tag-product" th:each="product : ${products}">
+            <a th:href="@{'/product?id=' + ${product.id}}" class="product-link">
+              <img
+                class="product-image"
+                th:src="${product.variants[0].image}"
+                alt="Hình ảnh sản phẩm"
+              />
+              <div class="product-info">
+                <p class="product-name" th:text="${product.name}">
+                  Tên sản phẩm mẫu
+                </p>
+                <p
+                  class="product-price"
+                  th:text="${#numbers.formatDecimal(product.variants[0].price, 0, 'POINT', 0, 'COMMA')} + '₫'"
+                >
+                  Giá: 10.000.000₫
+                </p>
+                <p
+                  class="product-brand"
+                  th:text="'Thương hiệu: ' + ${product.brand}"
+                >
+                  Thương hiệu: ABC
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div th:if="${products == null or #lists.isEmpty(products)}">
+          <p>Hiện chưa có sản phẩm nào.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-container container">
+        <div class="footer-column">
+          <h4>Tổng đài hỗ trợ miễn phí</h4>
+          <p>
+            <i class="fas fa-phone-alt"></i> Gọi mua hàng:
+            <strong>1800.2097</strong> (7:30 - 22:00)
+          </p>
+          <p>
+            <i class="fas fa-headset"></i> Khiếu nại:
+            <strong>1800.2063</strong> (8:00 - 21:30)
+          </p>
+          <p>
+            <i class="fas fa-tools"></i> Bảo hành:
+            <strong>1800.2064</strong> (8:00 - 21:00)
+          </p>
+        </div>
+        <div class="footer-column">
+          <h4>Thông tin và chính sách</h4>
+          <ul>
+            <li><a href="#">Chính sách bảo hành</a></li>
+            <li><a href="#">Hướng dẫn mua hàng online</a></li>
+            <li><a href="#">Chính sách đổi trả</a></li>
+            <li><a href="#">Giao hàng & thanh toán</a></li>
+            <li><a href="#">Hướng dẫn mua hàng trả góp</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Dịch vụ và thông tin khác</h4>
+          <ul>
+            <li><a href="#">Khách hàng doanh nghiệp (B2B)</a></li>
+            <li><a href="#">Ưu đãi thanh toán</a></li>
+            <li><a href="#">Quy chế hoạt động</a></li>
+            <li><a href="#">Chính sách xử lý dữ liệu cá nhân</a></li>
+            <li><a href="#">Liên hệ hợp tác kinh doanh</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Kết nối với chúng tôi</h4>
+          <div class="social-icons">
+            <a href="#" aria-label="Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+            <a href="#" aria-label="Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="#" aria-label="Tiktok"><i class="fab fa-tiktok"></i></a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; <span id="current-year"></span> Bản quyền thuộc về [Tên công ty của bạn].</p>
-    </div>
-  </footer>
+      <div class="footer-bottom">
+        <p>
+          &copy; <span id="current-year"></span> Bản quyền thuộc về [Tên công ty
+          của bạn].
+        </p>
+      </div>
+    </footer>
 
-  <script th:src="@{/js/home.js}"></script>
+    <button id="go-to-head" title="Lên đầu trang"
+      style="position: fixed; bottom: 40px; right: 40px; z-index: 9999; background: #ff424e; color: #fff; border: none; width: 60px; height: 60px; font-size: 22px; cursor: pointer; display: none;">
+      <i class="fa fa-arrow-up"></i>
+    </button>
 
-  <script th:src="@{/js/search.js}"></script>
-</body>
+    <script>
+      // Script cũ giữ nguyên
+      function goHome() {
+        if (window.location.pathname === "/") {
+          window.location.reload();
+        } else {
+          window.location.href = "/";
+        }
+      }
 
+      // Thêm script để cập nhật năm hiện tại trong footer
+      document.getElementById("current-year").textContent = new Date().getFullYear();
+        const goToHeadBtn = document.getElementById("go-to-head");
+        window.addEventListener('scroll', function () {
+          if (window.scrollY > 200) {
+            goToHeadBtn.style.display = "block";
+          } else {
+            goToHeadBtn.style.display = "none";
+          }
+        });
+        goToHeadBtn.onclick = function () {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+    </script>
+    <script src="../../static/js/home.js"></script>
+    <script src="../../static/js/arrow.js"></script>
+    <script src="../../static/js/slide-content.js"></script>
+    <script src="../../static/js/img+content.js"></script>
+  </body>
 </html>

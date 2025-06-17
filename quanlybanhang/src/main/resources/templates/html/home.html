@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../../static/css/genaral.css" />
+    <link rel="stylesheet" href="/css/general.css" />
     <link
       data-n-head="ssr"
       rel="icon"
@@ -966,9 +966,9 @@
           window.scrollTo({ top: 0, behavior: "smooth" });
         };
     </script>
-    <script src="../../static/js/home.js"></script>
-    <script src="../../static/js/arrow.js"></script>
-    <script src="../../static/js/slide-content.js"></script>
-    <script src="../../static/js/img+content.js"></script>
+    <script th:src="@{/js/home.js}"></script>
+    <script th:src="@{/js/arrow.js}"></script>
+    <script th:src="@{/js/slide-content.js}"></script>
+    <script th:src="@{/js/img-content.js}"></script>
   </body>
 </html>

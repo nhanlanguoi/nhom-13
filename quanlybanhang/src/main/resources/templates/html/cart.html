@@ -160,9 +160,7 @@
 
       <div th:if="${cart == null or #lists.isEmpty(cart)}" style="text-align: center; padding: 20px;">
         <p>Giỏ hàng của bạn đang trống.</p>
-        <a href="/" class="button-primary"
-          style="text-decoration: none; padding: 10px 20px; background-color: #d70018; color: white; border-radius: 5px;">Tiếp
-          tục mua sắm</a>
+
       </div>
 
       <div th:each="cartItem : ${cart}" th:unless="${#lists.isEmpty(cart)}">

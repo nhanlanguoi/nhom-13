@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <style>
+        /* ... CSS của bạn tương tự home.html cho search-results-box ... */
+        .search-container {
+            position: relative;
+        }
+
+        .search-results-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1001;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-result-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .search-result-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .popup-overlay {
+            /* ... */
+        }
+
+        .popup-box {
+            /* ... */
+        }
+
+        .no-products-found-message {
+            text-align: center;
+            font-size: 1.1em;
+            color: #555;
+            padding: 40px 0;
+        }
+
+        .back-to-home-link {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${searchQuery != null and searchQuery != '' ? 'Kết quả cho: ' + searchQuery : 'Sản phẩm'}">Sản phẩm
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/genaral.css" />
+</head>
+
+<body>
+
+<div th:if="${showLoginPopup}" class="popup-overlay">
+</div>
+
+<header th:replace="~{html/home :: mainHeader}"></header>
+
+<main class="container">
+    <style>
+        .service-call-section {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .service-call-section .section-title {
+            color: #d70018;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+            display: inline-block;
+        }
+
+        .service-info-box .intro-text {
+            font-size: 1.1em;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .phone-number-box {
+            background-color: #f8f9fa;
+            border: 2px dashed #d70018;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 0 auto 35px auto;
+            max-width: 400px;
+        }
+
+        .phone-number-box p {
+            margin: 0;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .phone-number-box .phone-number {
+            display: block;
+            font-size: 2.8em;
+            font-weight: bold;
+            color: #d70018;
+            margin: 10px 0;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .phone-number-box .phone-number:hover {
+            transform: scale(1.05);
+        }
+
+        .phone-number-box .call-suggestion {
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        .regulations {
+            text-align: left;
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 25px;
+        }
+
+        .regulations h3 {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .regulations ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .regulations li {
+            margin-bottom: 12px;
+            font-size: 1em;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+
+        .regulations li i {
+            color: #d70018;
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+    </style>
+
+    <section class="service-call-section">
+        <h2 class="section-title">Dịch Vụ Hỗ Trợ Khách Hàng Qua Điện Thoại</h2>
+        <div class="service-info-box">
+            <p class="intro-text">Đây là số dịch vụ để khách hàng gọi phản ánh, báo cáo sự cố hoặc yêu cầu thay đổi thông tin cá nhân. Quý khách vui lòng gọi đến số điện thoại dưới đây để được hỗ trợ một cách nhanh chóng và hiệu quả nhất.</p>
+
+            <div class="phone-number-box">
+                <p>Vui lòng gọi đến số:</p>
+                <a href="tel:19001008" class="phone-number">1900.1008</a>
+                <p class="call-suggestion">(Cước phí 1.000đ/phút)</p>
+            </div>
+
+            <div class="regulations">
+                <h3>Nội quy và Lưu ý khi gọi:</h3>
+                <ul>
+                    <li><i class="fas fa-clock"></i> Thời gian hỗ trợ: <strong>8:00 - 21:30</strong> hàng ngày, bao gồm cả ngày lễ và cuối tuần.</li>
+                    <li><i class="fas fa-user-check"></i> Vui lòng chuẩn bị sẵn thông tin tài khoản (tên đăng nhập) hoặc mã đơn hàng để được hỗ trợ nhanh nhất.</li>
+                    <li><i class="fas fa-shield-alt"></i> Mọi thông tin của quý khách sẽ được bảo mật theo chính sách của công ty.</li>
+                    <li><i class="fas fa-exclamation-triangle"></i> Nghiêm cấm sử dụng những lời lẽ, từ ngữ xúc phạm, thiếu văn hóa đối với nhân viên hỗ trợ.</li>
+                    <li><i class="fas fa-headset"></i> Để đảm bảo chất lượng dịch vụ, cuộc gọi của quý khách có thể được ghi âm.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</main>
+
+<br><br><br><br><br>
+
+<footer th:replace="~{html/home :: mainFooter}"></footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentYearSpan = document.getElementById('current-year');
+        if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
+
+
+        const searchInput = document.getElementById('search-input-main');
+        const searchResultsBox = document.getElementById('search-results-main');
+        const searchForm = document.getElementById('search-form');
+
+        if (searchInput && searchResultsBox && searchForm) {
+            let debounceSearchTimeout;
+
+            searchInput.addEventListener('input', function () {
+                const query = this.value.trim();
+                clearTimeout(debounceSearchTimeout);
+                if (query.length > 0) {
+                    debounceSearchTimeout = setTimeout(() => fetchTagSuggestions(query), 300);
+                } else {
+                    searchResultsBox.style.display = 'none';
+                    searchResultsBox.innerHTML = '';
+                }
+            });
+
+            searchInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    if (searchInput.value.trim() !== '') {
+                        searchForm.submit();
+                    }
+                }
+            });
+
+            document.addEventListener('click', function (e) {
+                if (e.target !== searchInput && !searchResultsBox.contains(e.target) && !searchInput.contains(e.target)) {
+                    if (searchResultsBox.style.display !== 'none') {
+                        searchResultsBox.style.display = 'none';
+                    }
+                }
+            });
+
+            searchInput.addEventListener('focus', function () {
+                if (this.value.trim().length > 0 && searchResultsBox.children.length > 0) {
+                    searchResultsBox.style.display = 'block';
+                } else if (this.value.trim().length > 0) {
+                    fetchTagSuggestions(this.value.trim());
+                }
+            });
+
+            function fetchTagSuggestions(query) {
+                fetch(`/api/products/tags/suggest?q=${encodeURIComponent(query)}`)
+                    .then(response => {
+                        if (response.status === 204) return [];
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        return response.json();
+                    })
+                    .then(tags => displayTagSuggestions(tags, query))
+                    .catch(error => {
+                        console.error('Error fetching tag suggestions:', error);
+                        if (searchResultsBox) {
+                            searchResultsBox.style.display = 'none';
+                            searchResultsBox.innerHTML = '';
+                        }
+                    });
+            }
+
+            function displayTagSuggestions(tags, originalQuery) {
+                if (!searchResultsBox) return;
+                searchResultsBox.innerHTML = '';
+                if (tags && tags.length > 0) {
+                    tags.forEach(tag => {
+                        const item = document.createElement('div');
+                        item.classList.add('search-result-item');
+                        item.textContent = tag;
+                        item.addEventListener('click', function () {
+                            if (searchInput) searchInput.value = this.textContent;
+                            searchResultsBox.style.display = 'none';
+                            if (searchForm) searchForm.submit();
+                        });
+                        searchResultsBox.appendChild(item);
+                    });
+                    searchResultsBox.style.display = 'block';
+                } else {
+                    if (originalQuery && originalQuery.length > 0) {
+                        const noResultItem = document.createElement('div');
+                        noResultItem.classList.add('search-result-item');
+                        noResultItem.style.color = '#777';
+                        noResultItem.textContent = `Không có gợi ý cho "${originalQuery}"`;
+                        searchResultsBox.appendChild(noResultItem);
+                        searchResultsBox.style.display = 'block';
+                    } else {
+                        searchResultsBox.style.display = 'none';
+                    }
+                }
+            }
+        }
+
+
+
+
+    });
+</script>
+</body>
+
+</html>

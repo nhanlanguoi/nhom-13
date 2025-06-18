@@ -8,21 +8,23 @@
   "variants" : [ {
     "id" : "cfe31e4e-f501-4538-89a3-bdbf3652c6fa-variant-7d61",
     "storage" : "5G",
-    "ram" : "18GB",
+    "ram" : "16GB",
     "colorprices" : [ {
       "id" : 1,
       "color" : "Trắng",
+      "image" : "/data-product/image/prod_3398_newvar0_0d7b208c.webp",
       "price" : "30000000",
-      "discount" : 30
+      "discount" : 10
     }, {
       "id" : 2,
       "color" : "Đen",
-      "price" : "1000000",
-      "discount" : 30
+      "image" : "/data-product/image/cfe31e4e-f501-4538-89a3-bdbf3652c6fa_var1_52e2660f.webp",
+      "price" : "30000000",
+      "discount" : 10
     } ],
     "image" : "/data-product/image/prod_3398_newvar0_0d7b208c.webp",
     "screen" : "Dynamic AMOLED 2X 11",
-    "chip" : "Snapdragon 8 Gen 2 for Galaxy",
+    "chip" : "A18",
     "memory" : "128GB",
     "camera_end" : "13 MP",
     "camera_start" : "12 MP",
@@ -30,18 +32,25 @@
     "power" : "45 W"
   }, {
     "id" : "cfe31e4e-f501-4538-89a3-bdbf3652c6fa-variant-170e",
-    "storage" : "5G",
-    "ram" : "8GB",
+    "storage" : "5GB",
+    "ram" : "16GB",
     "colorprices" : [ {
       "id" : 1,
+      "color" : "Trắng",
+      "image" : "/data-product/image/prod_3398_newvar0_0d7b208c.webp",
+      "price" : "35000000",
+      "discount" : 20
+    }, {
+      "id" : 2,
       "color" : "Đen",
-      "price" : "2894290000",
+      "image" : "/data-product/image/cfe31e4e-f501-4538-89a3-bdbf3652c6fa_var1_52e2660f.webp",
+      "price" : "35000000",
       "discount" : 20
     } ],
     "image" : "/data-product/image/cfe31e4e-f501-4538-89a3-bdbf3652c6fa_var1_52e2660f.webp",
     "screen" : "Dynamic AMOLED 2X 11",
-    "chip" : "Snapdragon 8 Gen 2 for Galaxy",
-    "memory" : "1528GB",
+    "chip" : "A18",
+    "memory" : "512GB",
     "camera_end" : "13 MP",
     "camera_start" : "12 MP",
     "pin" : "8400 mAh",
@@ -52,13 +61,13 @@
 }, {
   "id" : "7aed7e9f-a6ac-40e7-8d0a-89ce0cd1dcc4",
   "name" : "MacBook Air M2 2024",
-  "brand" : "Apple ",
+  "brand" : "Apple",
   "category" : "Laptop",
   "description" : "laptop",
   "rating" : 4.0,
   "variants" : [ {
     "id" : "7aed7e9f-a6ac-40e7-8d0a-89ce0cd1dcc4-variant-1d9f",
-    "storage" : "256 GB",
+    "storage" : "5G",
     "ram" : "8GB",
     "colorprices" : [ {
       "id" : 1,
@@ -76,5 +85,313 @@
     "power" : "45 W"
   } ],
   "tags" : [ "macbook", "mới", "giảm giá", "cao cấp", "Apple" ],
+  "releaseDate" : null
+}, {
+  "id" : "tai-nghe-chup-tai-sony-wh-ch520-_1_",
+  "name" : "Tai nghe chụp tai Sony WH-CH250",
+  "brand" : "Sony",
+  "category" : "Phụ kiện",
+  "description" : "Tai nghe",
+  "rating" : 4.4,
+  "variants" : [ {
+    "id" : "tai-nghe-chup-tai-sony-wh-ch520-_1_-variant-8yh4",
+    "storage" : "256 GB",
+    "ram" : "Âm thanh kỹ thuật số / Công nghệ ENC / 360 Reality Audio / DSEE / Equalizer",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Trắng",
+      "image" : "/data-product/image/tai-nghe-chup-tai-sony-wh-ch520-_1_.webp",
+      "price" : "2180000",
+      "discount" : 50
+    },{
+      "id" : 2,
+      "color" : "Đen",
+      "image" : "/data-product/image/tai-nghe-chup-tai-sony-wh-ch520-5.webp",
+      "price" : "2180000",
+      "discount" : 50
+    }, {
+      "id" : 3,
+      "color" : "Hồng",
+      "image" : "/data-product/image/sony-wh-ch520-2.webp",
+      "price" : "2180000",
+      "discount" : 50
+    }, {
+      "id" : 4,
+      "color" : "Vàng",
+      "image" : "/data-product/image/sony-wh-ch520-go-3.webp",
+      "price" : "2180000",
+      "discount" : 50
+    } ],
+    "image" : "/data-product/image/tai-nghe-chup-tai-sony-wh-ch520-_1_.webp",
+    "screen" : "Dài 22.8 cm - Rộng 17.2 cm - Cao 4.4 cm",
+    "chip" : "147 gram",
+    "memory" : "256 GB",
+    "camera_end" : "Có",
+    "camera_start" : "50 giờ",
+    "pin" : "Nút bấm vật lý",
+    "power" : "Sạc nhanh / Chống ồn đàm thoại"
+  } ],
+  "tags" : [ "tai nghe", "mới", "giảm giá", "cao cấp", "Sony" ],
+  "releaseDate" : null
+}, {
+  "id" : "dien-thoai-samsung-galaxy-s25-ultra",
+  "name" : "Samsung Galaxy S25 Ultra",
+  "brand" : "Samsung",
+  "category" : "Điện thoại",
+  "description" : "Điện thoại",
+  "rating" : 5.0,
+  "variants" : [ {
+    "id" : "dien-thoai-samsung-galaxy-s25-ultra-variant-101",
+    "storage" : "S25 Ultra",
+    "ram" : "1TB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Xám",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_1__3.webp",
+      "price" : "44790000",
+      "discount" : 20
+    },{
+      "id" : 2,
+      "color" : "Đen",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_3__6.webp",
+      "price" : "44790000",
+      "discount" : 20
+    }, {
+      "id" : 3,
+      "color" : "Xanh Dương",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_2__6.webp",
+      "price" : "44790000",
+      "discount" : 20
+    }, {
+      "id" : 4,
+      "color" : "Trắng/Bạc",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_5.webp",
+      "price" : "44790000",
+      "discount" : 20
+    } ],
+    "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_1__3.webp",
+    "screen" : "6.9 inches / Dynamic AMOLED 2X",
+    "chip" : "Snapdragon 8 Elite dành cho Galaxy (3nm)",
+    "memory" : "12GB",
+    "camera_end" : "Camera siêu rộng 50MP / Camera góc rộng 200 MP / Camera Tele (5x) 50MP / Camera Tele (3x) 10MP",
+    "camera_start" : "12 MP",
+    "pin" : "5000 mAh",
+    "power" : "45W"
+  }, {
+    "id" : "dien-thoai-samsung-galaxy-s25-ultra-variant-102",
+    "storage" : "S25 Ultra",
+    "ram" : "512GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Xám",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_1__3.webp",
+      "price" : "37490000",
+      "discount" : 20
+    },{
+      "id" : 2,
+      "color" : "Đen",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_3__6.webp",
+      "price" : "37490000",
+      "discount" : 20
+    }, {
+      "id" : 3,
+      "color" : "Xanh Dương",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_2__6.webp",
+      "price" : "37490000",
+      "discount" : 20
+    }, {
+      "id" : 4,
+      "color" : "Trắng/Bạc",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_5.webp",
+      "price" : "37490000",
+      "discount" : 20
+    } ],
+    "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_3__6.webp",
+    "screen" : "6.9 inches / Dynamic AMOLED 2X",
+    "chip" : "Snapdragon 8 Elite dành cho Galaxy (3nm)",
+    "memory" : "12GB",
+    "camera_end" : "Camera siêu rộng 50MP / Camera góc rộng 200 MP / Camera Tele (5x) 50MP / Camera Tele (3x) 10MP",
+    "camera_start" : "12 MP",
+    "pin" : "5000 mAh",
+    "power" : "45W"
+  }, {
+    "id" : "dien-thoai-samsung-galaxy-s25-ultra-variant-103",
+    "storage" : "S25 Ultra",
+    "ram" : "256GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Xám",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_1__3.webp",
+      "price" : "33990000",
+      "discount" : 20
+    },{
+      "id" : 2,
+      "color" : "Đen",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_3__6.webp",
+      "price" : "33990000",
+      "discount" : 20
+    }, {
+      "id" : 3,
+      "color" : "Xanh Dương",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_2__6.webp",
+      "price" : "33990000",
+      "discount" : 20
+    }, {
+      "id" : 4,
+      "color" : "Trắng/Bạc",
+      "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_5.webp",
+      "price" : "33990000",
+      "discount" : 20
+    } ],
+    "image" : "/data-product/image/dien-thoai-samsung-galaxy-s25-ultra_2__6.webp",
+    "screen" : "6.9 inches / Dynamic AMOLED 2X",
+    "chip" : "Snapdragon 8 Elite dành cho Galaxy (3nm)",
+    "memory" : "12GB",
+    "camera_end" : "Camera siêu rộng 50MP / Camera góc rộng 200 MP / Camera Tele (5x) 50MP / Camera Tele (3x) 10MP",
+    "camera_start" : "12 MP",
+    "pin" : "5000 mAh",
+    "power" : "45W"
+  } ],
+  "tags" : [ "điện thoại", "mới", "giảm giá", "cao cấp", "Samsung" ],
+  "releaseDate" : null
+}, {
+  "id" : "dien-thoai-oppo-find-n5",
+  "name" : "OPPO Find N5",
+  "brand" : "OPPO",
+  "category" : "Điện thoại",
+  "description" : "Điện thoại",
+  "rating" : 5.0,
+  "variants" : [ {
+    "id" : "dien-thoai-oppo-find-n5-variant-84yj",
+    "storage" : "5G",
+    "ram" : "16GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Trắng",
+      "image" : "/data-product/image/photo_2025-03-21_10-27-52_1.webp",
+      "price" : "44990000",
+      "discount" : 0
+    }, {
+      "id" : 2,
+      "color" : "Đen",
+      "image" : "/data-product/image/photo_2025-03-21_10-27-36.webp",
+      "price" : "44990000",
+      "discount" : 0
+    } ],
+    "image" : "/data-product/image/photo_2025-03-21_10-27-52_1.webp",
+    "screen" : "8.12 inches / AMOLED",
+    "chip" : "Qualcomm Snapdragon® 8 Elite",
+    "memory" : "512 GB",
+    "camera_end" : "50MP, ƒ/1.8 OIS (Chính) + 8MP, ƒ/2.2 (Góc rộng) + 50MP, ƒ/2.7 (Tele)",
+    "camera_start" : "Màn hình chính: 8MP, ƒ/2.4 / Màn hình ngoài: 8MP, ƒ/2.4",
+    "pin" : "5600 mAh",
+    "power" : "50 W"
+  } ],
+  "tags" : [ "điện thoại", "mới", "giảm giá", "cao cấp", "OPPO" ],
+  "releaseDate" : null
+}, {
+  "id" : "vivo-v50-lite-5g",
+  "name" : "vivo V50 LITE 5G",
+  "brand" : "Vivo",
+  "category" : "Điện thoại",
+  "description" : "Điện thoại",
+  "rating" : 4.8,
+  "variants" : [ {
+    "id" : "vivo-v50-lite-5g-variant-2g15",
+    "storage" : "5G",
+    "ram" : "12GB",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Vàng",
+      "image" : "/data-product/image/vivo-v50-lite-5g.1_1.webp",
+      "price" : "10990000",
+      "discount" : 5
+    }, {
+      "id" : 2,
+      "color" : "Đen/Tím",
+      "image" : "/data-product/image/vivo-v50-lite-5g_1__1_2.webp",
+      "price" : "10990000",
+      "discount" : 5
+    } ],
+    "image" : "/data-product/image/vivo-v50-lite-5g.1_1.webp",
+    "screen" : "6.77 inches / AMOLED",
+    "chip" : "Dimensity 6300",
+    "memory" : "256 GB",
+    "camera_end" : "Camera chính: 50MP / Camera góc rộng: 8MP",
+    "camera_start" : "Màn hình chính: 8MP, ƒ/2.4 / Màn hình ngoài: 8MP, ƒ/2.4",
+    "pin" : "5600 mAh",
+    "power" : "50 W"
+  } ],
+  "tags" : [ "điện thoại", "mới", "giảm giá", "cao cấp", "Vivo" ],
+  "releaseDate" : null
+}, {
+  "id" : "chuot-gaming-khong-day-logitech-g304-lightspeed",
+  "name" : "Chuột gaming không dây Logitech G304 Lightspeed",
+  "brand" : "Logitech",
+  "category" : "Phụ kiện",
+  "description" : "Chuột máy tính",
+  "rating" : 4.8,
+  "variants" : [ {
+    "id" : "chuot-gaming-khong-day-logitech-g304-lightspeed-variant-4ab5",
+    "storage" : "5G",
+    "ram" : "LIGHTSPEED không dây",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Trắng",
+      "image" : "/data-product/image/g304-wireless.webp",
+      "price" : "949000",
+      "discount" : 20
+    }, {
+      "id" : 2,
+      "color" : "Đen",
+      "image" : "/data-product/image/t_i_xu_ng_36__1.webp",
+      "price" : "949000",
+      "discount" : 20
+    } ],
+    "image" : "/data-product/image/g304-wireless.webp",
+    "screen" : "Windows® 7 trở lên / macOS 10.13 trở lên / ChromeOS",
+    "chip" : "200 - 12000 DPI",
+    "memory" : "250 giờ",
+    "camera_end" : "Logitech",
+    "camera_start" : "Màn hình chính: 8MP, ƒ/2.4 / Màn hình ngoài: 8MP, ƒ/2.4",
+    "pin" : "5600 mAh",
+    "power" : "50 W"
+  } ],
+  "tags" : [ "chuột", "mới", "giảm giá", "cao cấp", "Logitech" ],
+  "releaseDate" : null
+}, {
+  "id" : "ban-phim-co-dareu-ek75-dream-switch",
+  "name" : "Bàn phím cơ Dareu EK Dream Switch",
+  "brand" : "Dareu",
+  "category" : "Phụ kiện",
+  "description" : "Bàn phím",
+  "rating" : 4.4,
+  "variants" : [ {
+    "id" : "ban-phim-co-dareu-ek75-dream-switch-variant-165b",
+    "storage" : "256 GB",
+    "ram" : "OEM profile, PBT Double-Shot",
+    "colorprices" : [ {
+      "id" : 1,
+      "color" : "Trắng Đen",
+      "image" : "/data-product/image/ban-phim-co-dareu-ek75-dream-switch-1.webp",
+      "price" : "699000",
+      "discount" : 15
+    },{
+      "id" : 2,
+      "color" : "Xám Đen",
+      "image" : "/data-product/image/ban-phim-co-co-day-dareu-ek75-rbg-grey-black_4_.webp",
+      "price" : "699000",
+      "discount" : 15
+    } ],
+    "image" : "/data-product/image/ban-phim-co-dareu-ek75-dream-switch-1.webp",
+    "screen" : "Tenkeyless cỡ 75%",
+    "chip" : "81 key",
+    "memory" : "Windows / macOS",
+    "camera_end" : "USB Receiver (đầu thu USB) / Dây cắm USB / Bluetooth",
+    "camera_start" : "RGB 16.8 triệu màu",
+    "pin" : "3750 mAh / Thời gian sạc:10.5 giờ",
+    "power" : "Hotswap / 12 chế độ đèn nền / Cấu trúc: Gasket-Mount / Đèn LED 2 bên hông"
+  } ],
+  "tags" : [ "bàn phím", "mới", "giảm giá", "cao cấp", "Dareu" ],
   "releaseDate" : null
 } ]

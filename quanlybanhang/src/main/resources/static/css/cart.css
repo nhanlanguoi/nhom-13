@@ -428,7 +428,7 @@ button {
 
 .footer-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); /* Điều chỉnh minmax */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Điều chỉnh minmax */
     gap: 25px; /* Giảm gap */
     /* width: 90%; /* Được xử lý bởi .container */
     /* max-width: 1200px; */

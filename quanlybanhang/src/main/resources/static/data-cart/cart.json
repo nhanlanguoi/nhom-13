@@ -1,5 +1,198 @@
 [ {
   "username" : "zepphi1",
   "createdatdaytime" : "2025-05-22T23:24:03.557676",
-  "iteam" : [ ]
+  "iteam" : [ {
+    "variantId" : "cfe31e4e-f501-4538-89a3-bdbf3652c6fa-variant-7d61",
+    "quantity" : 1,
+    "color" : "Trắng",
+    "priceAtOrderTime" : 30000000,
+    "discount" : 30,
+    "image" : "/data-product/image/prod_3398_newvar0_0d7b208c.webp",
+    "variant" : {
+      "id" : "cfe31e4e-f501-4538-89a3-bdbf3652c6fa-variant-7d61",
+      "storage" : "5G",
+      "ram" : "16GB",
+      "colorprices" : [ {
+        "id" : 1,
+        "color" : "Trắng",
+        "image" : "/data-product/image/prod_3398_newvar0_0d7b208c.webp",
+        "price" : "30000000",
+        "discount" : 30
+      }, {
+        "id" : 2,
+        "color" : "Đen",
+        "image" : "/data-product/image/cfe31e4e-f501-4538-89a3-bdbf3652c6fa_var1_52e2660f.webp",
+        "price" : "30000000",
+        "discount" : 30
+      } ],
+      "image" : "/data-product/image/prod_3398_newvar0_0d7b208c.webp",
+      "screen" : "Dynamic AMOLED 2X 11",
+      "chip" : "A18",
+      "memory" : "128GB",
+      "camera_end" : "13 MP",
+      "camera_start" : "12 MP",
+      "pin" : "8400 mAh",
+      "power" : "45 W"
+    },
+    "product" : {
+      "id" : "cfe31e4e-f501-4538-89a3-bdbf3652c6fa",
+      "name" : "iphone16",
+      "brand" : "Apple",
+      "category" : "Điện thoại",
+      "description" : "điện thoại",
+      "rating" : 4.0,
+      "variants" : [ {
+        "id" : "cfe31e4e-f501-4538-89a3-bdbf3652c6fa-variant-7d61",
+        "storage" : "5G",
+        "ram" : "16GB",
+        "colorprices" : [ {
+          "id" : 1,
+          "color" : "Trắng",
+          "image" : "/data-product/image/prod_3398_newvar0_0d7b208c.webp",
+          "price" : "30000000",
+          "discount" : 30
+        }, {
+          "id" : 2,
+          "color" : "Đen",
+          "image" : "/data-product/image/cfe31e4e-f501-4538-89a3-bdbf3652c6fa_var1_52e2660f.webp",
+          "price" : "30000000",
+          "discount" : 30
+        } ],
+        "image" : "/data-product/image/prod_3398_newvar0_0d7b208c.webp",
+        "screen" : "Dynamic AMOLED 2X 11",
+        "chip" : "A18",
+        "memory" : "128GB",
+        "camera_end" : "13 MP",
+        "camera_start" : "12 MP",
+        "pin" : "8400 mAh",
+        "power" : "45 W"
+      }, {
+        "id" : "cfe31e4e-f501-4538-89a3-bdbf3652c6fa-variant-170e",
+        "storage" : "5GB",
+        "ram" : "16GB",
+        "colorprices" : [ {
+          "id" : 1,
+          "color" : "Trắng",
+          "image" : "/data-product/image/prod_3398_newvar0_0d7b208c.webp",
+          "price" : "35000000",
+          "discount" : 20
+        }, {
+          "id" : 2,
+          "color" : "Đen",
+          "image" : "/data-product/image/cfe31e4e-f501-4538-89a3-bdbf3652c6fa_var1_52e2660f.webp",
+          "price" : "35000000",
+          "discount" : 20
+        } ],
+        "image" : "/data-product/image/cfe31e4e-f501-4538-89a3-bdbf3652c6fa_var1_52e2660f.webp",
+        "screen" : "Dynamic AMOLED 2X 11",
+        "chip" : "A18",
+        "memory" : "512GB",
+        "camera_end" : "13 MP",
+        "camera_start" : "12 MP",
+        "pin" : "8400 mAh",
+        "power" : "45 W"
+      } ],
+      "tags" : [ "iphone", "mới", "giảm giá", "cao cấp", "Apple", "iphone16", "apple" ],
+      "releaseDate" : null
+    },
+    "formattedPrice" : "30.000.000.",
+    "formattedPricewas" : "21.000.000.",
+    "formattedPricesale" : "9.000.000."
+  }, {
+    "variantId" : "tai-nghe-chup-tai-sony-wh-ch520-_1_-variant-8yh4",
+    "quantity" : 2,
+    "color" : "Trắng",
+    "priceAtOrderTime" : 2180000,
+    "discount" : 50,
+    "image" : "/data-product/image/tai-nghe-chup-tai-sony-wh-ch520-_1_.webp",
+    "variant" : {
+      "id" : "tai-nghe-chup-tai-sony-wh-ch520-_1_-variant-8yh4",
+      "storage" : "256 GB",
+      "ram" : "Âm thanh kỹ thuật số / Công nghệ ENC / 360 Reality Audio / DSEE / Equalizer",
+      "colorprices" : [ {
+        "id" : 1,
+        "color" : "Trắng",
+        "image" : "/data-product/image/tai-nghe-chup-tai-sony-wh-ch520-_1_.webp",
+        "price" : "2180000",
+        "discount" : 50
+      }, {
+        "id" : 2,
+        "color" : "Đen",
+        "image" : "/data-product/image/tai-nghe-chup-tai-sony-wh-ch520-5.webp",
+        "price" : "2180000",
+        "discount" : 50
+      }, {
+        "id" : 3,
+        "color" : "Hồng",
+        "image" : "/data-product/image/sony-wh-ch520-2.webp",
+        "price" : "2180000",
+        "discount" : 50
+      }, {
+        "id" : 4,
+        "color" : "Vàng",
+        "image" : "/data-product/image/sony-wh-ch520-go-3.webp",
+        "price" : "2180000",
+        "discount" : 50
+      } ],
+      "image" : "/data-product/image/tai-nghe-chup-tai-sony-wh-ch520-_1_.webp",
+      "screen" : "Dài 22.8 cm - Rộng 17.2 cm - Cao 4.4 cm",
+      "chip" : "147 gram",
+      "memory" : "256 GB",
+      "camera_end" : "Có",
+      "camera_start" : "50 giờ",
+      "pin" : "Nút bấm vật lý",
+      "power" : "Sạc nhanh / Chống ồn đàm thoại"
+    },
+    "product" : {
+      "id" : "tai-nghe-chup-tai-sony-wh-ch520-_1_",
+      "name" : "Tai nghe chụp tai Sony WH-CH250",
+      "brand" : "Sony ",
+      "category" : "Phụ kiện",
+      "description" : "Tai nghe",
+      "rating" : 4.4,
+      "variants" : [ {
+        "id" : "tai-nghe-chup-tai-sony-wh-ch520-_1_-variant-8yh4",
+        "storage" : "256 GB",
+        "ram" : "Âm thanh kỹ thuật số / Công nghệ ENC / 360 Reality Audio / DSEE / Equalizer",
+        "colorprices" : [ {
+          "id" : 1,
+          "color" : "Trắng",
+          "image" : "/data-product/image/tai-nghe-chup-tai-sony-wh-ch520-_1_.webp",
+          "price" : "2180000",
+          "discount" : 50
+        }, {
+          "id" : 2,
+          "color" : "Đen",
+          "image" : "/data-product/image/tai-nghe-chup-tai-sony-wh-ch520-5.webp",
+          "price" : "2180000",
+          "discount" : 50
+        }, {
+          "id" : 3,
+          "color" : "Hồng",
+          "image" : "/data-product/image/sony-wh-ch520-2.webp",
+          "price" : "2180000",
+          "discount" : 50
+        }, {
+          "id" : 4,
+          "color" : "Vàng",
+          "image" : "/data-product/image/sony-wh-ch520-go-3.webp",
+          "price" : "2180000",
+          "discount" : 50
+        } ],
+        "image" : "/data-product/image/tai-nghe-chup-tai-sony-wh-ch520-_1_.webp",
+        "screen" : "Dài 22.8 cm - Rộng 17.2 cm - Cao 4.4 cm",
+        "chip" : "147 gram",
+        "memory" : "256 GB",
+        "camera_end" : "Có",
+        "camera_start" : "50 giờ",
+        "pin" : "Nút bấm vật lý",
+        "power" : "Sạc nhanh / Chống ồn đàm thoại"
+      } ],
+      "tags" : [ "macbook", "mới", "giảm giá", "cao cấp", "Apple" ],
+      "releaseDate" : null
+    },
+    "formattedPrice" : "2.180.000.",
+    "formattedPricewas" : "1.090.000.",
+    "formattedPricesale" : "1.090.000."
+  } ]
 } ]

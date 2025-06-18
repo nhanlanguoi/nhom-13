@@ -1,14 +1,18 @@
 
 package com.project.quanlybanhang.Product;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/products") // Đường dẫn cơ sở cho API liên quan đến sản phẩm
@@ -47,7 +51,8 @@ public class ProductApiController {
      */
     // Trong ProductApiController.java
     @GetMapping("/tags/suggest")
-    public ResponseEntity<List<String>> suggestTags(@RequestParam(name = "q", required = false, defaultValue = "") String query) {
+    public ResponseEntity<List<String>> suggestTags(
+            @RequestParam(name = "q", required = false, defaultValue = "") String query) {
         try {
             List<String> allTags = productService.getAllUniqueTags();
             System.out.println("[APIController DEBUG] suggestTags - Query: '" + query + "'");
@@ -67,6 +72,25 @@ public class ProductApiController {
         } catch (IOException e) {
             System.err.println("Error suggesting tags: " + e.getMessage());
             return ResponseEntity.status(500).body(new ArrayList<>());
+        }
+    }
+    
+    @GetMapping("/{categoryName}/brand/{brandName}")
+    public ResponseEntity<List<Product>> getProductsByBrandWithCategory(@PathVariable String categoryName, @PathVariable String brandName) {
+        try {
+            List<Product> products = productService.getProductsByBrandWithCategory(categoryName, brandName); // Sử dụng phương thức mới
+            if (products.isEmpty()) {
+                // Trả về 204 No Content nếu không có sản phẩm nào
+                return ResponseEntity.noContent().build();
+            }
+            // Trả về 200 OK cùng với danh sách sản phẩm
+            return ResponseEntity.ok(products);
+        } catch (IOException e) {
+            // Ghi log lỗi ở đây nếu cần
+            System.err.println("Error fetching products by category: " + brandName + " - " + e.getMessage());
+            e.printStackTrace();
+            // Trả về lỗi 500 Internal Server Error
+            return ResponseEntity.status(500).body(null);
         }
     }
 }

@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const productsGrid = document.getElementById('products-grid-main');
       const noCateProductsMessage = document.getElementById('no-products-message');
       const initialNoProductsContainer = document.getElementById('initial-no-products-container');
-      const sectionTitle = document.querySelector('.product-display .section-title');
+    const sectionTitle = document.querySelector('.product-display .section-title');
+    const brandButtons = document.querySelectorAll('.brand-btn');
 
       if(categoryButtons.length > 0 && productsGrid && productsGrid.closest('body')) {
           categoryButtons.forEach(button => {
@@ -17,6 +18,20 @@ document.addEventListener('DOMContentLoaded', function () {
                   fetchProductsByCategory(categoryName);
               });
           });
+          brandButtons.forEach(button => {
+              button.addEventListener('click', function () {
+                  
+                
+                const categoryName = this.dataset.category;
+                const brandName = this.innerHTML;
+                  
+
+                if(initialNoProductsContainer && initialNoProductsContainer.closest('body')) {
+                    initialNoProductsContainer.style.display = 'none';
+                  }
+                  fetchProductsByBrandWithCategory(categoryName, brandName);
+              })
+          })
       }
 
       function fetchProductsByCategory(categoryName) {
@@ -38,7 +53,28 @@ document.addEventListener('DOMContentLoaded', function () {
                   }
                   if(noCateProductsMessage && noCateProductsMessage.closest('body')) noCateProductsMessage.style.display = 'none';
               });
-      }
+    }
+    
+    function fetchProductsByBrandWithCategory(brandCategory, brandName) {
+        if (!productsGrid || !productsGrid.closest('body')) return;
+        productsGrid.innerHTML = '<p style="text-align:center; padding: 20px;">Đang tải sản phẩm...</p>';
+        if(noCateProductsMessage && noCateProductsMessage.closest('body')) noCateProductsMessage.style.display = 'none';
+
+        fetch(`/api/products/${encodeURIComponent(brandCategory)}/brand/${encodeURIComponent(brandName)}`)
+            .then(response => {
+                if (response.status === 204) return [];
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json();
+            })
+            .then(products => renderProducts(products))
+            .catch(error => {
+                console.error('Error fetching products by brand:', error);
+                if (productsGrid && productsGrid.closest('body')) {
+                  productsGrid.innerHTML = '<p style="text-align:center; color:red; padding: 20px;">Lỗi khi tải sản phẩm.</p>';
+                }
+                if(noCateProductsMessage && noCateProductsMessage.closest('body')) noCateProductsMessage.style.display = 'none';
+            });
+    }
 
       function renderProducts(products) {
           if (!productsGrid || !productsGrid.closest('body')) return;
@@ -102,7 +138,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const adSliderElement = document.getElementById('homeAdvertisementSlider');
           const prevAdButton = document.getElementById('homePrevAd');
           const nextAdButton = document.getElementById('homeNextAd');
-          const noAdsMsgElement = document.getElementById('noHomeAdsMessage');
+    const noAdsMsgElement = document.getElementById('noHomeAdsMessage');
+    
 
           let currentAdIndex = 0;
           let adImageUrls = [];
@@ -213,29 +250,56 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     const nav = document.querySelector('.category-nav');
   const buttons = nav.querySelectorAll('.category-button');
-  const dropdowns = nav.querySelectorAll('.dropdown-category');
+    const dropdowns = nav.querySelectorAll('.dropdown-category');
+    const icons = document.querySelectorAll('.arrow-icon');
 
   buttons.forEach(btn => {
     btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      // Ẩn tất cả dropdown
-      dropdowns.forEach(d => d.classList.remove('active'));
-      // Lấy id dropdown từ data-dropdown
-      const dropdownId = btn.getAttribute('data-dropdown');
-      const dropdown = nav.querySelector('#' + dropdownId);
-      if (dropdown && dropdown.classList.contains('active')) {
-        dropdown.classList.remove('active');
-      } else {
-        dropdowns.forEach(d => d.classList.remove('active'));
-        if (dropdown) dropdown.classList.add('active');
-      }
+        e.stopPropagation();
+
+        const dropdownId = btn.getAttribute('data-dropdown');
+        const dropdown = nav.querySelector('#' + dropdownId);
+        const icon = btn.querySelector('.arrow-icon');
+        
+    
+        // Toggle dropdown hiện tại
+        const isActive = dropdown && dropdown.classList.contains('active');
+        const isRotate = icon && icon.classList.contains('icon-rotate');
+
+    
+        // Ẩn tất cả dropdown khác
+        dropdowns.forEach(d => {
+            if (d !== dropdown) {
+                d.classList.remove('active');
+            } 
+            
+        });
+
+        icons.forEach(i => {
+            if (i !== icon) {
+                i.classList.remove('icon-rotate');
+            } 
+            
+        });
+    
+        // Hiện dropdown nếu chưa hiện
+        if (dropdown && !isActive) {
+            dropdown.classList.add('active');
+        }
+        if (icon && !isRotate) {
+            icon.classList.add('icon-rotate');
+        }
     });
   });
 
-  // Đóng dropdown khi click ra ngoài
-  document.addEventListener('click', function () {
-    dropdowns.forEach(d => d.classList.remove('active'));
-  });
+    const brandbtns = document.querySelectorAll(".brand-btn");
+    brandbtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.dropdown-category').forEach(function(menu) {
+                menu.classList.remove('active');
+            });
+        });
+      });
     
   const btn = document.querySelector('.button-danhmuc');
   const dropdown = document.querySelector('.danhmuc-dropdown');
@@ -257,5 +321,6 @@ document.addEventListener('DOMContentLoaded', function () {
     dropdown.addEventListener('click', function (e) {
       e.stopPropagation();
     });
-  }
+    }
+    
 });

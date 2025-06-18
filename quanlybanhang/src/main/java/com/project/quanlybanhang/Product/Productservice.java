@@ -149,6 +149,51 @@ public class Productservice implements managerdataproduct {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Lấy danh sách sản phẩm dựa trên tên danh mục.
+     * Nếu categoryName là null hoặc rỗng, trả về tất cả sản phẩm.
+     * So sánh không phân biệt hoa thường.
+     * @param brandName Tên danh mục cần lọc.
+     * @return Danh sách sản phẩm thuộc danh mục đã cho.
+     * @throws IOException Nếu có lỗi khi tải tất cả sản phẩm.
+     */
+    public List<Product> getProductsByBrand(String brandName) throws IOException {
+        List<Product> allProducts = getAllProducts(); // Lấy tất cả sản phẩm hiện có
+        if (brandName == null || brandName.trim().isEmpty()) {
+            // Nếu không có tên danh mục hoặc tên danh mục rỗng, trả về tất cả sản phẩm
+            return allProducts;
+        }
+        // Lọc danh sách sản phẩm dựa trên categoryName (không phân biệt hoa thường)
+        return allProducts.stream()
+                .filter(product -> brandName.equalsIgnoreCase(product.getBrand()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Lấy danh sách sản phẩm dựa trên tên danh mục.
+     * Nếu categoryName là null hoặc rỗng, trả về tất cả sản phẩm.
+     * So sánh không phân biệt hoa thường.
+     * @param brandName Tên danh mục cần lọc.
+     * @return Danh sách sản phẩm thuộc danh mục đã cho.
+     * @throws IOException Nếu có lỗi khi tải tất cả sản phẩm.
+     */
+    public List<Product> getProductsByBrandWithCategory(String categoryName, String brandName) throws IOException {
+        List<Product> allProducts = getAllProducts(); // Lấy tất cả sản phẩm hiện có
+        if (categoryName == null || categoryName.trim().isEmpty()) {
+            if (brandName == null || brandName.trim().isEmpty()) {
+                // Nếu không có tên danh mục hoặc tên danh mục rỗng, trả về tất cả sản phẩm
+                return allProducts;
+            }
+            // Nếu không có tên danh mục hoặc tên danh mục rỗng, trả về tất cả sản phẩm
+            return allProducts;
+        }
+        List<Product> products = (allProducts.stream()
+        .filter(product -> categoryName.equalsIgnoreCase(product.getCategory()))
+        .collect(Collectors.toList()));
+        // Lọc danh sách sản phẩm dựa trên categoryName (không phân biệt hoa thường)
+        return products.stream().filter(product -> brandName.equalsIgnoreCase(product.getBrand())).collect(Collectors.toList());
+    }
+
 
     /**
      * Lưu danh sách sản phẩm vào file.
@@ -268,11 +313,27 @@ public class Productservice implements managerdataproduct {
     }
 
     public static long processingprice(long price, int discount) {
-        if (discount < 0) discount = 0;
-        if (discount > 100) discount = 100;
+        if (discount < 0)
+            discount = 0;
+        if (discount > 100)
+            discount = 100;
         double discountRate = discount / 100.0;
         long discountAmount = (long) (price * discountRate);
         return price - discountAmount;
+    }
+    
+    public String getImgSourceByIdAndVariantId(String id, String variantId) throws IOException {
+        List<Product> products = getAllProducts();
+        for (Product product : products) {
+            if (product.getId().equals(id) && product.getVariants() != null) {
+                for (Variant variant : product.getVariants()) {
+                    if (variant.getId().equals(variantId)) {
+                        return variant.getImage();
+                    }
+                }
+            }
+        }
+        return null; // Không tìm thấy
     }
 
     /**

@@ -9,15 +9,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class colorprice {
     private int id;
     private String color;
+    private String image;
     private String price;
     private int discount;
 
     public colorprice() {
     }
 
-    public colorprice(int id, String color, String price, int discount) {
+    public colorprice(int id, String color, String image, String price, int discount) {
         this.id = id;
         this.color = color;
+        this.image = image;
         this.price = price;
         this.discount = discount;
     }
@@ -29,6 +31,10 @@ public class colorprice {
 
     public String getColor() {
         return color;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public String getPrice() {
@@ -46,6 +52,10 @@ public class colorprice {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setPrice(String price) {
